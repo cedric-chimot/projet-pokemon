@@ -52,7 +52,19 @@ public class PokemonShiny {
     @JoinColumn(name = "id_sexe")
     private Sexe sexe;
 
-    public PokemonShiny(String numDex, String nomPokemon, Natures nature, Dresseurs dresseur, Pokeballs pokeball, String ivManquant, Types type1, Types type2, Sexe sexe) {
+    @Column(name = "attaque1", nullable = false)
+    private String attaque1;
+
+    @Column(name = "attaque2", nullable = false)
+    private String attaque2;
+
+    @Column(name = "attaque3", nullable = false)
+    private String attaque3;
+
+    @Column(name = "attaque4", nullable = false)
+    private String attaque4;
+
+    public PokemonShiny(String numDex, String nomPokemon, Natures nature, Dresseurs dresseur, Pokeballs pokeball, String ivManquant, Types type1, Types type2, Sexe sexe, String attaque1, String attaque2, String attaque3, String attaque4) {
         this.numDex = numDex;
         this.nomPokemon = nomPokemon;
         this.nature = nature;
@@ -62,6 +74,10 @@ public class PokemonShiny {
         this.type1 = type1;
         this.type2 = type2;
         this.sexe = sexe;
+        this.attaque1 = attaque1;
+        this.attaque2 = attaque2;
+        this.attaque3 = attaque3;
+        this.attaque4 = attaque4;
     }
 
     @Override
@@ -77,6 +93,10 @@ public class PokemonShiny {
                 ", type1=" + type1 +
                 ", type2=" + type2 +
                 ", sexe=" + sexe +
+                ", attaque1='" + attaque1 + '\'' +
+                ", attaque2='" + attaque2 + '\'' +
+                ", attaque3='" + attaque3 + '\'' +
+                ", attaque4='" + attaque4 + '\'' +
                 '}';
     }
 }

@@ -38,6 +38,10 @@ public class PokemonShinyService {
                     dto.setType1(shiny.getType1() != null ? new TypeDTO(shiny.getType1().getNomType()) : null);
                     dto.setType2(shiny.getType2() != null ? new TypeDTO(shiny.getType2().getNomType()) : null);
                     dto.setSexe(shiny.getSexe() != null ? new SexeDTO(shiny.getSexe().getSexe()) : null);
+                    dto.setAttaque1(shiny.getAttaque1());
+                    dto.setAttaque2(shiny.getAttaque2());
+                    dto.setAttaque3(shiny.getAttaque3());
+                    dto.setAttaque4(shiny.getAttaque4());
                     return dto;
                 }).collect(Collectors.toList());
     }
@@ -60,6 +64,10 @@ public class PokemonShinyService {
                 dto.setType1(shiny.getType1() != null ? new TypeDTO(shiny.getType1().getNomType()) : null);
                 dto.setType2(shiny.getType2() != null ? new TypeDTO(shiny.getType2().getNomType()) : null);
                 dto.setSexe(shiny.getSexe() != null ? new SexeDTO(shiny.getSexe().getSexe()) : null);
+                dto.setAttaque1(shiny.getAttaque1());
+                dto.setAttaque2(shiny.getAttaque2());
+                dto.setAttaque3(shiny.getAttaque3());
+                dto.setAttaque4(shiny.getAttaque4());
                 return dto;
             });
     }

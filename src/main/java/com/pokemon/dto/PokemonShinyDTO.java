@@ -25,4 +25,12 @@ public class PokemonShinyDTO {
 
     private SexeDTO sexe;
 
+    private String attaque1;
+
+    private String attaque2;
+
+    private String attaque3;
+
+    private String attaque4;
+
 }
