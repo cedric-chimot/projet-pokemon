@@ -48,7 +48,11 @@ public class PokemonShiny {
     @JoinColumn(name = "type2")
     private Types type2;
 
-    public PokemonShiny(String numDex, String nomPokemon, Natures nature, Dresseurs dresseur, Pokeballs pokeball, String ivManquant, Types type1, Types type2) {
+    @ManyToOne
+    @JoinColumn(name = "id_sexe")
+    private Sexe sexe;
+
+    public PokemonShiny(String numDex, String nomPokemon, Natures nature, Dresseurs dresseur, Pokeballs pokeball, String ivManquant, Types type1, Types type2, Sexe sexe) {
         this.numDex = numDex;
         this.nomPokemon = nomPokemon;
         this.nature = nature;
@@ -57,6 +61,7 @@ public class PokemonShiny {
         this.ivManquant = ivManquant;
         this.type1 = type1;
         this.type2 = type2;
+        this.sexe = sexe;
     }
 
     @Override
@@ -71,6 +76,7 @@ public class PokemonShiny {
                 ", ivManquant='" + ivManquant + '\'' +
                 ", type1=" + type1 +
                 ", type2=" + type2 +
+                ", sexe=" + sexe +
                 '}';
     }
 }

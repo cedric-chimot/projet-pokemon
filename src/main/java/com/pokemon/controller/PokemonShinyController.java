@@ -29,7 +29,7 @@ public class PokemonShinyController {
     }
 
     @GetMapping("/{id}")
-    public Optional<PokemonShinyDTO> getById(@PathVariable Long id) {
+    public Optional<PokemonShinyDTO> getById(@PathVariable Integer id) {
         return shinyService.findById(id);
     }
 

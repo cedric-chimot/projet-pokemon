@@ -23,4 +23,6 @@ public class PokemonShinyDTO {
 
     private TypeDTO type2;
 
+    private SexeDTO sexe;
+
 }

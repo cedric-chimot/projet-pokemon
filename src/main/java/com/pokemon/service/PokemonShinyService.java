@@ -37,6 +37,7 @@ public class PokemonShinyService {
                     dto.setPokeball(shiny.getNature() != null ? new PokeballDTO(shiny.getPokeball().getNomPokeball()) : null);
                     dto.setType1(shiny.getType1() != null ? new TypeDTO(shiny.getType1().getNomType()) : null);
                     dto.setType2(shiny.getType2() != null ? new TypeDTO(shiny.getType2().getNomType()) : null);
+                    dto.setSexe(shiny.getSexe() != null ? new SexeDTO(shiny.getSexe().getSexe()) : null);
                     return dto;
                 }).collect(Collectors.toList());
     }
@@ -45,7 +46,7 @@ public class PokemonShinyService {
      * @param id l'id du pokémon recherché
      * @return le pokémon et toutes ses données
      */
-    public Optional<PokemonShinyDTO> findById(Long id) {
+    public Optional<PokemonShinyDTO> findById(Integer id) {
         return shinyRepository.findById(id)
             .map(shiny -> {
                 PokemonShinyDTO dto = new PokemonShinyDTO();
@@ -58,6 +59,7 @@ public class PokemonShinyService {
                 dto.setPokeball(shiny.getNature() != null ? new PokeballDTO(shiny.getPokeball().getNomPokeball()) : null);
                 dto.setType1(shiny.getType1() != null ? new TypeDTO(shiny.getType1().getNomType()) : null);
                 dto.setType2(shiny.getType2() != null ? new TypeDTO(shiny.getType2().getNomType()) : null);
+                dto.setSexe(shiny.getSexe() != null ? new SexeDTO(shiny.getSexe().getSexe()) : null);
                 return dto;
             });
     }
