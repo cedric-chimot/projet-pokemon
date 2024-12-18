@@ -9,8 +9,11 @@ public class DresseurDTO {
 
     private String nomDresseur;
 
-    public DresseurDTO(String idDresseur, String nomDresseur) {
-        this.idDresseur = idDresseur;
-        this.nomDresseur = nomDresseur;
+    private Long nb_pokemon;
+
+    private Long nb_shiny;
+
+    public DresseurDTO() {
+
     }
 }

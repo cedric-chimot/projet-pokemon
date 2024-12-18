@@ -13,7 +13,7 @@ public class PokemonShinyDTO {
 
     private NatureDTO nature;
 
-    private DresseurDTO dresseur;
+    private DresseurShinyDTO dresseur;
 
     private PokeballDTO pokeball;
 
@@ -33,4 +33,8 @@ public class PokemonShinyDTO {
 
     private String attaque4;
 
+    private String boite;
+
+    public PokemonShinyDTO() {
+    }
 }
