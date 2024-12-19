@@ -1,5 +1,6 @@
 package com.pokemon.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,6 +34,7 @@ public class Dresseurs {
     @Column(name = "nb_shiny")
     private Long nbShiny;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "dresseur")
     private List<PokemonShiny> shinyList;
 

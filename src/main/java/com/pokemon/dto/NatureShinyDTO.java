@@ -3,11 +3,11 @@ package com.pokemon.dto;
 import lombok.Data;
 
 @Data
-public class NatureDTO {
+public class NatureShinyDTO {
 
     private String nomNature;
 
-    public NatureDTO(String nomNature) {
+    public NatureShinyDTO(String nomNature) {
         this.nomNature = nomNature;
     }
 }

@@ -1,5 +1,6 @@
 package com.pokemon.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,9 +28,11 @@ public class Types {
     @Column(name = "nb_shiny")
     private Integer nbShiny;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "type1")
     private List<PokemonShiny> shinyListType1;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "type2")
     private List<PokemonShiny> shinyListType2;
 

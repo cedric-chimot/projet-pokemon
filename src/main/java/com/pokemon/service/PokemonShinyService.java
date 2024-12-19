@@ -32,7 +32,7 @@ public class PokemonShinyService {
                     dto.setNumDex(shiny.getNumDex());
                     dto.setNomPokemon(shiny.getNomPokemon());
                     dto.setIvManquant(shiny.getIvManquant());
-                    dto.setNature(shiny.getNature() != null ? new NatureDTO(shiny.getNature().getNomNature()) : null);
+                    dto.setNature(shiny.getNature() != null ? new NatureShinyDTO(shiny.getNature().getNomNature()) : null);
 
                     if (shiny.getDresseur() != null) {
                         dto.setDresseur(new DresseurShinyDTO(
@@ -41,7 +41,7 @@ public class PokemonShinyService {
                         ));
                     }
 
-                    dto.setPokeball(shiny.getNature() != null ? new PokeballDTO(shiny.getPokeball().getNomPokeball()) : null);
+                    dto.setPokeball(shiny.getNature() != null ? new PokeballShinyDTO(shiny.getPokeball().getNomPokeball()) : null);
                     dto.setType1(shiny.getType1() != null ? new TypeDTO(shiny.getType1().getNomType()) : null);
                     dto.setType2(shiny.getType2() != null ? new TypeDTO(shiny.getType2().getNomType()) : null);
                     dto.setSexe(shiny.getSexe() != null ? new SexeDTO(shiny.getSexe().getSexe()) : null);
@@ -66,7 +66,7 @@ public class PokemonShinyService {
                 dto.setNumDex(shiny.getNumDex());
                 dto.setNomPokemon(shiny.getNomPokemon());
                 dto.setIvManquant(shiny.getIvManquant());
-                dto.setNature(shiny.getNature() != null ? new NatureDTO(shiny.getNature().getNomNature()) : null);
+                dto.setNature(shiny.getNature() != null ? new NatureShinyDTO(shiny.getNature().getNomNature()) : null);
 
                 if (shiny.getDresseur() != null) {
                     dto.setDresseur(new DresseurShinyDTO(
@@ -75,7 +75,7 @@ public class PokemonShinyService {
                     ));
                 }
 
-                dto.setPokeball(shiny.getNature() != null ? new PokeballDTO(shiny.getPokeball().getNomPokeball()) : null);
+                dto.setPokeball(shiny.getNature() != null ? new PokeballShinyDTO(shiny.getPokeball().getNomPokeball()) : null);
                 dto.setType1(shiny.getType1() != null ? new TypeDTO(shiny.getType1().getNomType()) : null);
                 dto.setType2(shiny.getType2() != null ? new TypeDTO(shiny.getType2().getNomType()) : null);
                 dto.setSexe(shiny.getSexe() != null ? new SexeDTO(shiny.getSexe().getSexe()) : null);
@@ -92,6 +92,32 @@ public class PokemonShinyService {
         List<PokemonDTO> shinies = shinyRepository.findByNumDex(numDex);
         return shinies.stream()
                 .map(shiny -> new PokemonDTO(shiny.getId(), shiny.getNumDex(), shiny.getNomPokemon()))
+                .collect(Collectors.toList());
+    }
+
+    public List<PokemonShinyDTO> findByBoite(String boite) {
+        List<PokemonShiny> shinyList = shinyRepository.findByBoitePosition(boite);
+        return shinyList.stream()
+                .map(pokemonShiny -> new PokemonShinyDTO(
+                        pokemonShiny.getId(),
+                        pokemonShiny.getNumDex(),
+                        pokemonShiny.getNomPokemon(),
+                        pokemonShiny.getNature() != null ? pokemonShiny.getNature().getNomNature() : null,
+                        pokemonShiny.getDresseur() != null ? pokemonShiny.getDresseur().getIdDresseur() : null,
+                        pokemonShiny.getDresseur() != null ? pokemonShiny.getDresseur().getNomDresseur() : null,
+                        new PokeballShinyDTO(pokemonShiny.getPokeball().getNomPokeball()),
+                        pokemonShiny.getIvManquant(),
+                        new TypeDTO(pokemonShiny.getType1().getNomType()),
+                        pokemonShiny.getType2() != null && !pokemonShiny.getType2().getNomType().isEmpty() ?
+                                new TypeDTO(pokemonShiny.getType2().getNomType()) : null,
+                        new SexeDTO(pokemonShiny.getSexe().getSexe()),
+                        pokemonShiny.getAttaque1(),
+                        pokemonShiny.getAttaque2(),
+                        pokemonShiny.getAttaque3(),
+                        pokemonShiny.getAttaque4(),
+                        pokemonShiny.getBoite(),
+                        pokemonShiny.getPosition()
+                ))
                 .collect(Collectors.toList());
     }
 

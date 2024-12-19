@@ -9,6 +9,10 @@ public class DresseurShinyDTO {
 
     private String nomDresseur;
 
+    public DresseurShinyDTO(String nomDresseur) {
+        this.nomDresseur = nomDresseur;
+    }
+
     public DresseurShinyDTO(String idDresseur, String nomDresseur) {
         this.idDresseur = idDresseur;
         this.nomDresseur = nomDresseur;

@@ -16,5 +16,7 @@ public interface PokemonShinyRepository extends JpaRepository<PokemonShiny, Inte
     @Query("SELECT new com.pokemon.dto.PokemonDTO(p.id, p.numDex, p.nomPokemon) FROM PokemonShiny p WHERE p.numDex = :numDex")
     List<PokemonDTO> findByNumDex(@Param("numDex") String numDex);
 
+    @Query("SELECT p FROM PokemonShiny p WHERE p.boite = :boite ORDER BY p.position ASC")
+    List<PokemonShiny> findByBoitePosition(@Param("boite") String boite);
 
 }

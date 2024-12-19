@@ -28,6 +28,7 @@ public class DresseurService {
         return dresseurRepository.findAll()
                 .stream().map(dresseurs -> {
                     DresseurDTO dto = new DresseurDTO();
+                    dto.setId(dresseurs.getId());
                     dto.setIdDresseur(dresseurs.getIdDresseur());
                     dto.setNomDresseur(dresseurs.getNomDresseur());
                     dto.setNb_pokemon(dresseurs.getNbPokemon());
@@ -40,6 +41,7 @@ public class DresseurService {
         return dresseurRepository.findById(id)
                 .map(dresseurs -> {
                     DresseurDTO dto = new DresseurDTO();
+                    dto.setId(dresseurs.getId());
                     dto.setIdDresseur(dresseurs.getIdDresseur());
                     dto.setNomDresseur(dresseurs.getNomDresseur());
                     dto.setNb_pokemon(dresseurs.getNbPokemon());

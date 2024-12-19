@@ -51,4 +51,9 @@ public class PokemonShinyController {
         return ResponseEntity.ok(shinies);
     }
 
+    @GetMapping("/boite")
+    public List<PokemonShinyDTO> getShinyByBoite(@RequestParam("boite") String boite) {
+        return shinyService.findByBoite(boite);
+    }
+
 }

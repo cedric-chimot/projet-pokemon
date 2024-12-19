@@ -67,8 +67,11 @@ public class PokemonShiny {
     @Column(name = "boite", nullable = false)
     private String boite;
 
+    @Column(name = "position", nullable = false)
+    private Integer position;
+
     public PokemonShiny(String numDex, String nomPokemon, Natures nature, Dresseurs dresseur, Pokeballs pokeball, String ivManquant, Types type1,
-                        Types type2, Sexe sexe, String attaque1, String attaque2, String attaque3, String attaque4, String boite) {
+                        Types type2, Sexe sexe, String attaque1, String attaque2, String attaque3, String attaque4, String boite, Integer position) {
         this.numDex = numDex;
         this.nomPokemon = nomPokemon;
         this.nature = nature;
@@ -83,6 +86,7 @@ public class PokemonShiny {
         this.attaque3 = attaque3;
         this.attaque4 = attaque4;
         this.boite = boite;
+        this.position = position;
     }
 
     @Override
@@ -103,6 +107,7 @@ public class PokemonShiny {
                 ", attaque3='" + attaque3 + '\'' +
                 ", attaque4='" + attaque4 + '\'' +
                 ", boite='" + boite + '\'' +
+                ", position=" + position +
                 '}';
     }
 }

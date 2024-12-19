@@ -1,5 +1,6 @@
 package com.pokemon.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class Natures {
     @Column(name = "nb_shiny")
     private Long nbShiny;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "nature")
     private List<PokemonShiny> shinyList;
 
