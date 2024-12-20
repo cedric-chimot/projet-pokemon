@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/dresseurs")
+@CrossOrigin
 public class DresseurController {
 
     private final DresseurService dresseurService;

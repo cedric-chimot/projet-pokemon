@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/pokemonShiny")
+@CrossOrigin
 public class PokemonShinyController {
 
     private final PokemonShinyService shinyService;
@@ -51,9 +52,14 @@ public class PokemonShinyController {
         return ResponseEntity.ok(shinies);
     }
 
-    @GetMapping("/boite")
-    public List<PokemonShinyDTO> getShinyByBoite(@RequestParam("boite") String boite) {
-        return shinyService.findByBoite(boite);
+    @GetMapping("/boites")
+    public ResponseEntity<List<PokemonShinyDTO>> getPokemonsByBoite(@RequestParam("boite") String boite) {
+        if (boite == null || boite.isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        System.out.println("Boite reçue: " + boite); // Pour le débogage
+        List<PokemonShinyDTO> pokemons = shinyService.findByBoite(boite);
+        return ResponseEntity.ok(pokemons);
     }
 
 }
