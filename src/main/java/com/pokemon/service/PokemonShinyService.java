@@ -3,6 +3,7 @@ package com.pokemon.service;
 import com.pokemon.dto.*;
 import com.pokemon.entity.PokemonShiny;
 import com.pokemon.repository.PokemonShinyRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -10,20 +11,39 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Le service PokemonShiny
+ */
 @Service
+@Transactional
 public class PokemonShinyService {
 
+    /**
+     * Le repository PokemonShiny
+     */
     private final PokemonShinyRepository shinyRepository;
 
+    /**
+     * Le constructeur du service
+     * @param shinyRepository Injection du repository Shiny
+     */
     public PokemonShinyService(PokemonShinyRepository shinyRepository) {
         this.shinyRepository = shinyRepository;
     }
 
-    @Transactional
+    /**
+     * Méthode pour ajouter un shiny
+     * @param shiny Le shiny à ajouter
+     * @return Le shiny ajouté
+     */
     public PokemonShiny shinySave(PokemonShiny shiny) {
         return shinyRepository.save(shiny);
     }
 
+    /**
+     * Méthode pour afficher la liste de tous les shinies
+     * @return La liste de shinies
+     */
     public List<PokemonShinyDTO> findAllShiny() {
         return shinyRepository.findAll()
                 .stream().map(shiny -> {
@@ -50,13 +70,15 @@ public class PokemonShinyService {
                     dto.setAttaque3(shiny.getAttaque3());
                     dto.setAttaque4(shiny.getAttaque4());
                     dto.setBoite(shiny.getBoite());
+                    dto.setPosition(shiny.getPosition());
                     return dto;
                 }).collect(Collectors.toList());
     }
 
     /**
-     * @param id l'id du pokémon recherché
-     * @return le pokémon et toutes ses données
+     * Méthode pour trouver un pokemon par son id
+     * @param id L'id du pokemon recherché
+     * @return le pokemon trouvé
      */
     public Optional<PokemonShinyDTO> findById(Integer id) {
         return shinyRepository.findById(id)
@@ -84,10 +106,16 @@ public class PokemonShinyService {
                 dto.setAttaque3(shiny.getAttaque3());
                 dto.setAttaque4(shiny.getAttaque4());
                 dto.setBoite(shiny.getBoite());
+                dto.setPosition(shiny.getPosition());
                 return dto;
             });
     }
 
+    /**
+     * Méthode pour trouver un shiny selon son numéro de pokédex
+     * @param numDex Le numéro de pokédex recherché
+     * @return Les données du pokémon trouvé
+     */
     public List<PokemonDTO> findByNumDex(String numDex) {
         List<PokemonDTO> shinies = shinyRepository.findByNumDex(numDex);
         return shinies.stream()
@@ -95,6 +123,11 @@ public class PokemonShinyService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Méthode pour trouver et afficher tous les shinies d'une boite
+     * @param boite La boite recherché
+     * @return La liste des shinies de la boite
+     */
     public List<PokemonShinyDTO> findByBoite(String boite) {
         List<PokemonShiny> shinyList = shinyRepository.findByBoitePosition(boite);
         return shinyList.stream()
@@ -119,6 +152,41 @@ public class PokemonShinyService {
                         pokemonShiny.getPosition()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Mettre à jour un shiny
+     * @param shiny L'objet à mettre à jour
+     * @return L'objet mis à jour
+     */
+    public PokemonShiny update(PokemonShiny shiny) {
+        return shinyRepository.save(shiny);
+    }
+
+    /**
+     * Méthode pour supprimer un shiny par son Id
+     * @param id L'identifiant du shiny à supprimer
+     * @return L'objet supprimé
+     */
+    public PokemonShiny deleteById(Integer id) {
+        // Récupérer l'objet dans un Optional
+        Optional<PokemonShiny> optionalShiny = shinyRepository.findById(id);
+
+        // Vérifier si l'objet existe
+        if (optionalShiny.isPresent()) {
+            PokemonShiny shiny = optionalShiny.get();
+            shinyRepository.delete(shiny); // Supprimer l'objet
+            return shiny; // Retourner l'objet supprimé
+        } else {
+            throw new EntityNotFoundException("PokemonShiny with id " + id + " not found");
+        }
+    }
+
+    /**
+     * Supprimer tous les shiny
+     */
+    public void deleteAll() {
+        shinyRepository.deleteAll();
     }
 
 }
