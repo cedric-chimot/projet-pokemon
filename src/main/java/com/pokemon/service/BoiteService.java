@@ -6,8 +6,11 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -28,6 +31,38 @@ public class BoiteService {
     
     public Optional<Boites> getBoiteById(Integer id) {
         return boitesRepository.findById(id);
+    }
+
+    public Map<String, List<Map<String, Object>>> getStatsByBoite(Integer boiteId) {
+        Map<String, List<Map<String, Object>>> stats = new HashMap<>();
+
+        stats.put("Pokeballs", mapStats(boitesRepository.findStatsByPokeball(boiteId)));
+        stats.put("Dresseurs", mapStats(boitesRepository.findStatsByDresseur(boiteId)));
+        stats.put("Sexes", mapStats(boitesRepository.findStatsBySexe(boiteId)));
+        stats.put("Natures", mapStats(boitesRepository.findStatsByNature(boiteId)));
+        stats.put("Types", mapStats(boitesRepository.findStatsByType(boiteId)));
+
+        return stats;
+    }
+
+    public List<Map<String, Object>> mapStats(List<Object[]> results) {
+        return results.stream()
+                .map(result -> {
+                    // Vérifie si la donnée concerne un dresseur
+                    if (result.length == 3) { // Cas où il y a 3 éléments (idDresseur, nomDresseur, nbPokemon)
+                        return Map.of(
+                                "idDresseur", result[0],
+                                "dresseur", result[1],
+                                "nbPokemon", result[2]
+                        );
+                    } else { // Cas des autres éléments où il n'y a que 2 éléments (nomType, nbPokemon)
+                        return Map.of(
+                                "name", result[0],
+                                "nbPokemon", result[1]
+                        );
+                    }
+                })
+                .collect(Collectors.toList());
     }
 
     /**

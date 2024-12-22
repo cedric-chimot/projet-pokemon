@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -28,6 +29,12 @@ public class BoitesController {
     public ResponseEntity<Boites> getBoiteById(@PathVariable Integer id) {
         Optional<Boites> boite = boiteService.getBoiteById(id);
         return boite.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{boiteId}/stats")
+    @ResponseBody
+    public Map<String, List<Map<String, Object>>> getStats(@PathVariable Integer boiteId) {
+        return boiteService.getStatsByBoite(boiteId);
     }
 
     @PostMapping("/create")
