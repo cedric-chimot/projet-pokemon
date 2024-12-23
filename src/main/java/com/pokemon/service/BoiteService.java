@@ -6,7 +6,6 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -58,24 +57,20 @@ public class BoiteService {
         return boitesRepository.findById(id);
     }
 
-    /**
-     * Récupère les statistiques d'une boîte spécifiée en fonction de l'ID de la boîte.
-     * Les statistiques incluent les données sur les Pokéballs, Dresseurs, Sexes, Natures et Types.
-     *
-     * @param boiteId L'ID de la boîte dont on veut récupérer les statistiques.
-     * @return Un map contenant des statistiques sous forme de liste pour chaque catégorie :
-     *         Pokéballs, Dresseurs, Sexes, Natures, Types.
-     */
-    public Map<String, Object> getAllStats(Integer boiteId) {
-        Map<String, Object> stats = new HashMap<>();
+    // Récupérer les statistiques globales
+    public List<Map<String, Object>> getStatsGlobales(String type) {
+        // Convertir en minuscule pour éviter les problèmes de casse
+        type = type.toLowerCase();
 
-        stats.put("Pokeballs", mapStats(boitesRepository.findStatsByPokeball(boiteId)));
-        stats.put("Dresseurs", mapStats(boitesRepository.findStatsByDresseur(boiteId)));
-        stats.put("Sexes", mapStats(boitesRepository.findStatsBySexe(boiteId)));
-        stats.put("Natures", mapStats(boitesRepository.findStatsByNature(boiteId)));
-        stats.put("Types", mapStats(boitesRepository.findStatsByType(boiteId)));
-
-        return stats;
+        List<Object[]> results = switch (type) {
+            case "pokeballs" -> boitesRepository.allStatsByPokeball();
+            case "dresseurs" -> boitesRepository.allStatsByDresseur();
+            case "natures" -> boitesRepository.allStatsByNature();
+            case "sexes" -> boitesRepository.allStatsBySexe();
+            case "types" -> boitesRepository.allStatsByType();
+            default -> throw new IllegalArgumentException("Type inconnu : " + type);
+        };
+        return mapShinyStats(results, type);
     }
 
     public List<Map<String, Object>> getDresseursStats(Integer boiteId) {
@@ -101,20 +96,6 @@ public class BoiteService {
     public List<Map<String, Object>> getTypesStats(Integer boiteId) {
         List<Object[]> results = boitesRepository.findStatsByType(boiteId);
         return mapStats(results);
-    }
-
-    public List<Map<String, Object>> getGeneralStats(Integer boiteId, String type) {
-        List<Object[]> results = switch (type.toLowerCase()) {
-            case "pokeballs" -> boitesRepository.findStatsByPokeball(boiteId); // Inclut nbShiny
-            case "dresseurs" -> boitesRepository.findStatsByDresseur(boiteId); // Inclut nbShiny
-            case "natures" -> boitesRepository.findStatsByNature(boiteId); // Inclut nbShiny
-            case "sexes" -> boitesRepository.findStatsBySexe(boiteId); // Inclut nbShiny
-            case "types" -> boitesRepository.findStatsByType(boiteId); // Inclut nbShiny
-            default -> throw new IllegalArgumentException("Type inconnu : " + type);
-        };
-
-        // Retourne les résultats après les avoir mappés en fonction de nbShiny
-        return mapShinyStats(results, type); // On utilise ici mapShinyStats car on récupère uniquement les stats shiny
     }
 
     /**
@@ -149,14 +130,14 @@ public class BoiteService {
     public List<Map<String, Object>> mapShinyStats(List<Object[]> results, String type) {
         return results.stream()
                 .map(result -> {
-                    if ("dresseurs".equals(type) && result.length == 4) {
+                    if ("dresseurs".equals(type) && result.length == 3) {
                         // Cas des dresseurs, qui ont 3 éléments
                         return Map.of(
                                 "idDresseur", result[0],
                                 "dresseur", result[1],
                                 "nbShiny", result[2]
                         );
-                    } else if (result.length == 3) {
+                    } else if (result.length == 2) {
                         // Cas des autres types avec 2 éléments (nomType, nbShiny)
                         return Map.of(
                                 "name", result[0],

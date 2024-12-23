@@ -50,16 +50,6 @@ public class BoitesController {
         return boite.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    /**
-     * Afficher la liste des stats d'une boite
-     * @param boiteId l'id de la boite recherchée
-     * @return la boite trouvée et ses statistiques
-     */
-    @GetMapping("/{boiteId}/all-stats")
-    public ResponseEntity<Map<String, Object>> getAllStats(@PathVariable Integer boiteId) {
-        return ResponseEntity.ok(boiteService.getAllStats(boiteId));
-    }
-
     @GetMapping("/{boiteId}/dresseurs")
     public ResponseEntity<List<Map<String, Object>>> getDresseursStats(@PathVariable Integer boiteId) {
         List<Map<String, Object>> stats = boiteService.getDresseursStats(boiteId);
@@ -90,16 +80,14 @@ public class BoitesController {
         return ResponseEntity.ok(stats);
     }
 
-    // Récupérer les statistiques générales par catégorie (Pokeballs, Dresseurs, etc.)
-    @GetMapping("/general/{boiteId}/{type}")
-    public ResponseEntity<List<Map<String, Object>>> getGeneralStats(
-            @PathVariable Integer boiteId,
+    // Récupérer les statistiques globales
+    @GetMapping("/global/{type}")
+    public ResponseEntity<List<Map<String, Object>>> getStatsGlobales(
             @PathVariable String type) {
+        // Convertir en minuscule pour éviter les problèmes de casse
+        type = type.toLowerCase();
 
-        // Appel au service pour récupérer les statistiques
-        List<Map<String, Object>> stats = boiteService.getGeneralStats(boiteId, type);
-
-        // Retourner les résultats avec un statut HTTP 200 OK
+        List<Map<String, Object>> stats = boiteService.getStatsGlobales(type);
         return ResponseEntity.ok(stats);
     }
 
