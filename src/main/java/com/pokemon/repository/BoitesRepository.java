@@ -9,31 +9,31 @@ import java.util.List;
 
 public interface BoitesRepository extends JpaRepository<Boites, Integer> {
 
-    @Query("SELECT p.nomPokeball AS pokeball, bp.nbPokemon " +
+    @Query("SELECT p.nomPokeball AS pokeball, bp.nbPokemon, p.nbShiny " +
             "FROM BoitePokeball bp " +
             "JOIN bp.pokeball p " +
             "WHERE bp.boite.id = :boiteId")
     List<Object[]> findStatsByPokeball(@Param("boiteId") Integer boiteId);
 
-    @Query("SELECT d.idDresseur AS idDresseur, d.nomDresseur AS dresseur, bd.nbPokemon " +
+    @Query("SELECT d.idDresseur AS idDresseur, d.nomDresseur AS dresseur, bd.nbPokemon, d.nbShiny " +
             "FROM BoiteDresseur bd " +
             "JOIN bd.dresseur d " +
             "WHERE bd.boite.id = :boiteId")
     List<Object[]> findStatsByDresseur(@Param("boiteId") Integer boiteId);
 
-    @Query("SELECT s.sexe AS sexe, bs.nbPokemon " +
+    @Query("SELECT s.sexe AS sexe, bs.nbPokemon, s.nbShiny " +
             "FROM BoiteSexe bs " +
             "JOIN bs.sexe s " +
             "WHERE bs.boite.id = :boiteId")
     List<Object[]> findStatsBySexe(@Param("boiteId") Integer boiteId);
 
-    @Query("SELECT n.nomNature AS nature, bn.nbPokemon " +
+    @Query("SELECT n.nomNature AS nature, bn.nbPokemon, n.nbShiny " +
             "FROM BoiteNature bn " +
             "JOIN bn.nature n " +
             "WHERE bn.boite.id = :boiteId")
     List<Object[]> findStatsByNature(@Param("boiteId") Integer boiteId);
 
-    @Query("SELECT t.nomType AS type, bt.nbPokemon " +
+    @Query("SELECT t.nomType AS type, bt.nbPokemon, t.nbShiny " +
             "FROM BoiteType bt " +
             "JOIN bt.type t " +
             "WHERE bt.boite.id = :boiteId")

@@ -125,7 +125,7 @@ public class PokemonShinyService {
 
     /**
      * Méthode pour trouver et afficher tous les shinies d'une boite
-     * @param boite La boite recherché
+     * @param boite La boite recherchée
      * @return La liste des shinies de la boite
      */
     public List<PokemonShinyDTO> findByBoite(String boite) {

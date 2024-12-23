@@ -103,6 +103,20 @@ public class BoiteService {
         return mapStats(results);
     }
 
+    public List<Map<String, Object>> getGeneralStats(Integer boiteId, String type) {
+        List<Object[]> results = switch (type.toLowerCase()) {
+            case "pokeballs" -> boitesRepository.findStatsByPokeball(boiteId); // Inclut nbShiny
+            case "dresseurs" -> boitesRepository.findStatsByDresseur(boiteId); // Inclut nbShiny
+            case "natures" -> boitesRepository.findStatsByNature(boiteId); // Inclut nbShiny
+            case "sexes" -> boitesRepository.findStatsBySexe(boiteId); // Inclut nbShiny
+            case "types" -> boitesRepository.findStatsByType(boiteId); // Inclut nbShiny
+            default -> throw new IllegalArgumentException("Type inconnu : " + type);
+        };
+
+        // Retourne les résultats après les avoir mappés en fonction de nbShiny
+        return mapShinyStats(results, type); // On utilise ici mapShinyStats car on récupère uniquement les stats shiny
+    }
+
     /**
      * Transforme une liste de résultats sous forme d'objets en une liste de maps contenant les données correspondantes.
      * Cette méthode traite différemment les cas où les résultats contiennent 2 ou 3 éléments :
@@ -116,7 +130,7 @@ public class BoiteService {
         return results.stream()
                 .map(result -> {
                     // Vérifie si la donnée concerne un dresseur
-                    if (result.length == 3) { // Cas où il y a 3 éléments (idDresseur, nomDresseur, nbPokemon)
+                    if (result.length == 4) { // Cas où il y a 3 éléments (idDresseur, nomDresseur, nbPokemon)
                         return Map.of(
                                 "idDresseur", result[0],
                                 "dresseur", result[1],
@@ -127,6 +141,29 @@ public class BoiteService {
                                 "name", result[0],
                                 "nbPokemon", result[1]
                         );
+                    }
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<Map<String, Object>> mapShinyStats(List<Object[]> results, String type) {
+        return results.stream()
+                .map(result -> {
+                    if ("dresseurs".equals(type) && result.length == 4) {
+                        // Cas des dresseurs, qui ont 3 éléments
+                        return Map.of(
+                                "idDresseur", result[0],
+                                "dresseur", result[1],
+                                "nbShiny", result[2]
+                        );
+                    } else if (result.length == 3) {
+                        // Cas des autres types avec 2 éléments (nomType, nbShiny)
+                        return Map.of(
+                                "name", result[0],
+                                "nbShiny", result[1]
+                        );
+                    } else {
+                        throw new IllegalArgumentException("Unexpected result length: " + result.length);
                     }
                 })
                 .collect(Collectors.toList());

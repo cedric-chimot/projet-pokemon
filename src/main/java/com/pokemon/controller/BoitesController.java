@@ -90,6 +90,19 @@ public class BoitesController {
         return ResponseEntity.ok(stats);
     }
 
+    // Récupérer les statistiques générales par catégorie (Pokeballs, Dresseurs, etc.)
+    @GetMapping("/general/{boiteId}/{type}")
+    public ResponseEntity<List<Map<String, Object>>> getGeneralStats(
+            @PathVariable Integer boiteId,
+            @PathVariable String type) {
+
+        // Appel au service pour récupérer les statistiques
+        List<Map<String, Object>> stats = boiteService.getGeneralStats(boiteId, type);
+
+        // Retourner les résultats avec un statut HTTP 200 OK
+        return ResponseEntity.ok(stats);
+    }
+
     /**
      * Créer une nouvelle boite
      * @param boite la boite à créer
