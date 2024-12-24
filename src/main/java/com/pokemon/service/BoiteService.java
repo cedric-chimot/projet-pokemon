@@ -59,9 +59,7 @@ public class BoiteService {
 
     // Récupérer les statistiques globales
     public List<Map<String, Object>> getStatsGlobales(String type) {
-        // Convertir en minuscule pour éviter les problèmes de casse
         type = type.toLowerCase();
-
         List<Object[]> results = switch (type) {
             case "pokeballs" -> boitesRepository.allStatsByPokeball();
             case "dresseurs" -> boitesRepository.allStatsByDresseur();
@@ -73,29 +71,18 @@ public class BoiteService {
         return mapShinyStats(results, type);
     }
 
-    public List<Map<String, Object>> getDresseursStats(Integer boiteId) {
-        List<Object[]> results = boitesRepository.findStatsByDresseur(boiteId);
-        return mapStats(results);
-    }
-
-    public List<Map<String, Object>> getPokeballsStats(Integer boiteId) {
-        List<Object[]> results = boitesRepository.findStatsByPokeball(boiteId);
-        return mapStats(results);
-    }
-
-    public List<Map<String, Object>> getNaturesStats(Integer boiteId) {
-        List<Object[]> results = boitesRepository.findStatsByNature(boiteId);
-        return mapStats(results);
-    }
-
-    public List<Map<String, Object>> getSexesStats(Integer boiteId) {
-        List<Object[]> results = boitesRepository.findStatsBySexe(boiteId);
-        return mapStats(results);
-    }
-
-    public List<Map<String, Object>> getTypesStats(Integer boiteId) {
-        List<Object[]> results = boitesRepository.findStatsByType(boiteId);
-        return mapStats(results);
+    // Récupérer les statistiques par boîte
+    public List<Map<String, Object>> getStatsParBoite(String type, Integer boiteId) {
+        type = type.toLowerCase();
+        List<Object[]> results = switch (type) {
+            case "pokeballs" -> boitesRepository.findStatsByPokeball(boiteId);
+            case "dresseurs" -> boitesRepository.findStatsByDresseur(boiteId);
+            case "natures" -> boitesRepository.findStatsByNature(boiteId);
+            case "sexes" -> boitesRepository.findStatsBySexe(boiteId);
+            case "types" -> boitesRepository.findStatsByType(boiteId);
+            default -> throw new IllegalArgumentException("Type inconnu : " + type);
+        };
+        return mapBoiteStats(results, type);
     }
 
     /**
@@ -107,41 +94,55 @@ public class BoiteService {
      * @param results Une liste d'objets représentant les résultats récupérés (par exemple depuis une requête SQL).
      * @return Une liste de maps, chaque map contenant les informations mappées selon la structure des résultats.
      */
-    public List<Map<String, Object>> mapStats(List<Object[]> results) {
-        return results.stream()
-                .map(result -> {
-                    // Vérifie si la donnée concerne un dresseur
-                    if (result.length == 4) { // Cas où il y a 3 éléments (idDresseur, nomDresseur, nbPokemon)
-                        return Map.of(
-                                "idDresseur", result[0],
-                                "dresseur", result[1],
-                                "nbPokemon", result[2]
-                        );
-                    } else { // Cas des autres éléments où il n'y a que 2 éléments (nomType, nbPokemon)
-                        return Map.of(
-                                "name", result[0],
-                                "nbPokemon", result[1]
-                        );
-                    }
-                })
-                .collect(Collectors.toList());
-    }
-
-    public List<Map<String, Object>> mapShinyStats(List<Object[]> results, String type) {
+    private List<Map<String, Object>> mapShinyStats(List<Object[]> results, String type) {
         return results.stream()
                 .map(result -> {
                     if ("dresseurs".equals(type) && result.length == 3) {
-                        // Cas des dresseurs, qui ont 3 éléments
                         return Map.of(
                                 "idDresseur", result[0],
                                 "dresseur", result[1],
                                 "nbShiny", result[2]
                         );
                     } else if (result.length == 2) {
-                        // Cas des autres types avec 2 éléments (nomType, nbShiny)
                         return Map.of(
                                 "name", result[0],
                                 "nbShiny", result[1]
+                        );
+                    } else {
+                        throw new IllegalArgumentException("Unexpected result length: " + result.length);
+                    }
+                })
+                .collect(Collectors.toList());
+    }
+
+    private List<Map<String, Object>> mapBoiteStats(List<Object[]> results, String type) {
+        return results.stream()
+                .map(result -> {
+                    if ("dresseurs".equals(type) && result.length == 3) {
+                        return Map.of(
+                                "idDresseur", result[0],
+                                "dresseur", result[1],
+                                "nbPokemon", result[2]
+                        );
+                    } else if ("pokeballs".equals(type) && result.length == 2) {
+                        return Map.of(
+                                "pokeball", result[0], // Utilisation de la clé dynamique pour le type de pokeball
+                                "nbPokemon", result[1]
+                        );
+                    } else if ("natures".equals(type) && result.length == 2) {
+                        return Map.of(
+                                "nature", result[0], // Clé dynamique pour nature
+                                "nbPokemon", result[1]
+                        );
+                    } else if ("sexes".equals(type) && result.length == 2) {
+                        return Map.of(
+                                "sexe", result[0], // Clé dynamique pour sexe
+                                "nbPokemon", result[1]
+                        );
+                    } else if ("types".equals(type) && result.length == 2) {
+                        return Map.of(
+                                "type", result[0], // Clé dynamique pour type
+                                "nbPokemon", result[1]
                         );
                     } else {
                         throw new IllegalArgumentException("Unexpected result length: " + result.length);

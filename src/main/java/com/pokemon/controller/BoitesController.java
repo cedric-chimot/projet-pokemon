@@ -50,45 +50,28 @@ public class BoitesController {
         return boite.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{boiteId}/dresseurs")
-    public ResponseEntity<List<Map<String, Object>>> getDresseursStats(@PathVariable Integer boiteId) {
-        List<Map<String, Object>> stats = boiteService.getDresseursStats(boiteId);
-        return ResponseEntity.ok(stats);
-    }
-
-    @GetMapping("/{boiteId}/pokeballs")
-    public ResponseEntity<List<Map<String, Object>>> getPokeballsStats(@PathVariable Integer boiteId) {
-        List<Map<String, Object>> stats = boiteService.getPokeballsStats(boiteId);
-        return ResponseEntity.ok(stats);
-    }
-
-    @GetMapping("/{boiteId}/natures")
-    public ResponseEntity<List<Map<String, Object>>> getNaturesStats(@PathVariable Integer boiteId) {
-        List<Map<String, Object>> stats = boiteService.getNaturesStats(boiteId);
-        return ResponseEntity.ok(stats);
-    }
-
-    @GetMapping("/{boiteId}/sexes")
-    public ResponseEntity<List<Map<String, Object>>> getSexesStats(@PathVariable Integer boiteId) {
-        List<Map<String, Object>> stats = boiteService.getSexesStats(boiteId);
-        return ResponseEntity.ok(stats);
-    }
-
-    @GetMapping("/{boiteId}/types")
-    public ResponseEntity<List<Map<String, Object>>> getTypesStats(@PathVariable Integer boiteId) {
-        List<Map<String, Object>> stats = boiteService.getTypesStats(boiteId);
-        return ResponseEntity.ok(stats);
+    // Récupérer les statistiques par boîte
+    @GetMapping("/{boiteId}/{type}")
+    public ResponseEntity<List<Map<String, Object>>> getStatsParBoite(
+            @PathVariable Integer boiteId,
+            @PathVariable String type) {
+        try {
+            List<Map<String, Object>> stats = boiteService.getStatsParBoite(type, boiteId);
+            return ResponseEntity.ok(stats);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     // Récupérer les statistiques globales
     @GetMapping("/global/{type}")
-    public ResponseEntity<List<Map<String, Object>>> getStatsGlobales(
-            @PathVariable String type) {
-        // Convertir en minuscule pour éviter les problèmes de casse
-        type = type.toLowerCase();
-
-        List<Map<String, Object>> stats = boiteService.getStatsGlobales(type);
-        return ResponseEntity.ok(stats);
+    public ResponseEntity<List<Map<String, Object>>> getStatsGlobales(@PathVariable String type) {
+        try {
+            List<Map<String, Object>> stats = boiteService.getStatsGlobales(type);
+            return ResponseEntity.ok(stats);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     /**
