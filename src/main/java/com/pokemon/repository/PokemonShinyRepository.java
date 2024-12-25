@@ -19,4 +19,10 @@ public interface PokemonShinyRepository extends JpaRepository<PokemonShiny, Inte
     @Query("SELECT p FROM PokemonShiny p WHERE p.boite = :boite ORDER BY p.position ASC")
     List<PokemonShiny> findByBoitePosition(@Param("boite") String boite);
 
+    @Query("SELECT p.ivManquant AS ivManquant, COUNT(p) AS count " +
+            "FROM PokemonShiny p " +
+            "GROUP BY p.ivManquant " +
+            "ORDER BY p.ivManquant")
+    List<Object[]> getStatsIvManquant();
+
 }

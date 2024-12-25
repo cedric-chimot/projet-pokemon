@@ -2,6 +2,7 @@ package com.pokemon.controller;
 
 import com.pokemon.dto.PokemonDTO;
 import com.pokemon.dto.PokemonShinyDTO;
+import com.pokemon.dto.StatIvManquantDTO;
 import com.pokemon.entity.PokemonShiny;
 import com.pokemon.service.PokemonShinyService;
 import org.springframework.http.ResponseEntity;
@@ -89,6 +90,15 @@ public class PokemonShinyController {
         System.out.println("Boite reçue: " + boite); // Pour le débogage
         List<PokemonShinyDTO> pokemons = shinyService.findByBoite(boite);
         return ResponseEntity.ok(pokemons);
+    }
+
+    /**
+     * Récupérer le nombre de shiny par Ivs manquants
+     * @return la liste du nombre de pokémon par Ivs manquants
+     */
+    @GetMapping("/iv-manquants")
+    public List<StatIvManquantDTO> getStatsByIvManquants() {
+        return shinyService.getStatsIvManquant();
     }
 
     /**

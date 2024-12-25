@@ -155,6 +155,18 @@ public class PokemonShinyService {
     }
 
     /**
+     * Trouver le nombre de pokémon par Ivs Manquants
+     * @return la liste des Ivs manquants et le nombre pour chaque
+     */
+    public List<StatIvManquantDTO> getStatsIvManquant() {
+        List<Object[]> results = shinyRepository.getStatsIvManquant();
+
+        return results.stream()
+                .map(row -> new StatIvManquantDTO((String) row[0], (Long) row[1]))
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Mettre à jour un shiny
      * @param shiny L'objet à mettre à jour
      * @return L'objet mis à jour
