@@ -1,13 +1,14 @@
 package com.pokemon.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class TypeDTO {
 
     private String nomType;
 
-    public TypeDTO(String nomType) {
-        this.nomType = nomType;
-    }
 }

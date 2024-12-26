@@ -1,9 +1,12 @@
 package com.pokemon.service;
 
-import com.pokemon.dto.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pokemon.dto.PokemonDTO;
+import com.pokemon.dto.PokemonShinyDTO;
+import com.pokemon.dto.StatIvManquantDTO;
 import com.pokemon.entity.PokemonShiny;
+import com.pokemon.exceptions.CustomException;
 import com.pokemon.repository.PokemonShinyRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +27,18 @@ public class PokemonShinyService {
     private final PokemonShinyRepository shinyRepository;
 
     /**
+     * Sérialisation d'objet Java au format Json
+     */
+    private final ObjectMapper objectMapper;
+
+    /**
      * Le constructeur du service
      * @param shinyRepository Injection du repository Shiny
+     * @param objectMapper Injection de l'ObjectMapper
      */
-    public PokemonShinyService(PokemonShinyRepository shinyRepository) {
+    public PokemonShinyService(PokemonShinyRepository shinyRepository, ObjectMapper objectMapper) {
         this.shinyRepository = shinyRepository;
+        this.objectMapper = objectMapper;
     }
 
     /**
@@ -44,71 +54,21 @@ public class PokemonShinyService {
      * Méthode pour afficher la liste de tous les shinies
      * @return La liste de shinies
      */
-    public List<PokemonShinyDTO> findAllShiny() {
-        return shinyRepository.findAll()
-                .stream().map(shiny -> {
-                    PokemonShinyDTO dto = new PokemonShinyDTO();
-                    dto.setId(shiny.getId());
-                    dto.setNumDex(shiny.getNumDex());
-                    dto.setNomPokemon(shiny.getNomPokemon());
-                    dto.setIvManquant(shiny.getIvManquant());
-                    dto.setNature(shiny.getNature() != null ? new NatureShinyDTO(shiny.getNature().getNomNature()) : null);
-
-                    if (shiny.getDresseur() != null) {
-                        dto.setDresseur(new DresseurShinyDTO(
-                                shiny.getDresseur().getIdDresseur(),
-                                shiny.getDresseur().getNomDresseur()
-                        ));
-                    }
-
-                    dto.setPokeball(shiny.getNature() != null ? new PokeballShinyDTO(shiny.getPokeball().getNomPokeball()) : null);
-                    dto.setType1(shiny.getType1() != null ? new TypeDTO(shiny.getType1().getNomType()) : null);
-                    dto.setType2(shiny.getType2() != null ? new TypeDTO(shiny.getType2().getNomType()) : null);
-                    dto.setSexe(shiny.getSexe() != null ? new SexeDTO(shiny.getSexe().getSexe()) : null);
-                    dto.setAttaque1(shiny.getAttaque1());
-                    dto.setAttaque2(shiny.getAttaque2());
-                    dto.setAttaque3(shiny.getAttaque3());
-                    dto.setAttaque4(shiny.getAttaque4());
-                    dto.setBoite(shiny.getBoite());
-                    dto.setPosition(shiny.getPosition());
-                    return dto;
-                }).collect(Collectors.toList());
+    public List<PokemonShinyDTO> findAllShinies() {
+        List<PokemonShiny> shinyList = shinyRepository.findAll();
+        return shinyList.stream()
+                .map(shiny -> objectMapper.convertValue(shiny, PokemonShinyDTO.class))
+                .collect(Collectors.toList());
     }
 
     /**
      * Méthode pour trouver un pokemon par son id
      * @param id L'id du pokemon recherché
-     * @return le pokemon trouvé
+     * @return le pokemon trouvé et toutes ses informations
      */
     public Optional<PokemonShinyDTO> findById(Integer id) {
         return shinyRepository.findById(id)
-            .map(shiny -> {
-                PokemonShinyDTO dto = new PokemonShinyDTO();
-                dto.setId(shiny.getId());
-                dto.setNumDex(shiny.getNumDex());
-                dto.setNomPokemon(shiny.getNomPokemon());
-                dto.setIvManquant(shiny.getIvManquant());
-                dto.setNature(shiny.getNature() != null ? new NatureShinyDTO(shiny.getNature().getNomNature()) : null);
-
-                if (shiny.getDresseur() != null) {
-                    dto.setDresseur(new DresseurShinyDTO(
-                            shiny.getDresseur().getIdDresseur(),
-                            shiny.getDresseur().getNomDresseur()
-                    ));
-                }
-
-                dto.setPokeball(shiny.getNature() != null ? new PokeballShinyDTO(shiny.getPokeball().getNomPokeball()) : null);
-                dto.setType1(shiny.getType1() != null ? new TypeDTO(shiny.getType1().getNomType()) : null);
-                dto.setType2(shiny.getType2() != null ? new TypeDTO(shiny.getType2().getNomType()) : null);
-                dto.setSexe(shiny.getSexe() != null ? new SexeDTO(shiny.getSexe().getSexe()) : null);
-                dto.setAttaque1(shiny.getAttaque1());
-                dto.setAttaque2(shiny.getAttaque2());
-                dto.setAttaque3(shiny.getAttaque3());
-                dto.setAttaque4(shiny.getAttaque4());
-                dto.setBoite(shiny.getBoite());
-                dto.setPosition(shiny.getPosition());
-                return dto;
-            });
+                .map(shiny -> objectMapper.convertValue(shiny, PokemonShinyDTO.class));
     }
 
     /**
@@ -131,26 +91,7 @@ public class PokemonShinyService {
     public List<PokemonShinyDTO> findByBoite(String boite) {
         List<PokemonShiny> shinyList = shinyRepository.findByBoitePosition(boite);
         return shinyList.stream()
-                .map(pokemonShiny -> new PokemonShinyDTO(
-                        pokemonShiny.getId(),
-                        pokemonShiny.getNumDex(),
-                        pokemonShiny.getNomPokemon(),
-                        pokemonShiny.getNature() != null ? pokemonShiny.getNature().getNomNature() : null,
-                        pokemonShiny.getDresseur() != null ? pokemonShiny.getDresseur().getIdDresseur() : null,
-                        pokemonShiny.getDresseur() != null ? pokemonShiny.getDresseur().getNomDresseur() : null,
-                        new PokeballShinyDTO(pokemonShiny.getPokeball().getNomPokeball()),
-                        pokemonShiny.getIvManquant(),
-                        new TypeDTO(pokemonShiny.getType1().getNomType()),
-                        pokemonShiny.getType2() != null && !pokemonShiny.getType2().getNomType().isEmpty() ?
-                                new TypeDTO(pokemonShiny.getType2().getNomType()) : null,
-                        new SexeDTO(pokemonShiny.getSexe().getSexe()),
-                        pokemonShiny.getAttaque1(),
-                        pokemonShiny.getAttaque2(),
-                        pokemonShiny.getAttaque3(),
-                        pokemonShiny.getAttaque4(),
-                        pokemonShiny.getBoite(),
-                        pokemonShiny.getPosition()
-                ))
+                .map(shiny -> objectMapper.convertValue(shiny, PokemonShinyDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -190,7 +131,7 @@ public class PokemonShinyService {
             shinyRepository.delete(shiny); // Supprimer l'objet
             return shiny; // Retourner l'objet supprimé
         } else {
-            throw new EntityNotFoundException("PokemonShiny with id " + id + " not found");
+            throw new CustomException("Shiny", "id", id);
         }
     }
 

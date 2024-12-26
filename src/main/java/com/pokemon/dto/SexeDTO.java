@@ -1,13 +1,14 @@
 package com.pokemon.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SexeDTO {
 
     private String sexe;
 
-    public SexeDTO(String sexe) {
-        this.sexe = sexe;
-    }
 }
