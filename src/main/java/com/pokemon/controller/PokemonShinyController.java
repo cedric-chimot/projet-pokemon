@@ -46,7 +46,7 @@ public class PokemonShinyController {
      * Afficher la liste de tous les shinies
      * @return la liste de tous les shinies
      */
-    @GetMapping
+    @GetMapping("/all")
     public List<PokemonShinyDTO> findAll() {
         return shinyService.findAllShiny();
     }
