@@ -12,8 +12,7 @@ public interface BoitesRepository extends JpaRepository<Boites, Integer> {
     // Stats globales par Pokeball
     @Query("SELECT p.nomPokeball AS pokeball, p.nbShiny " +
             "FROM Pokeballs p " +
-            "WHERE p.nbShiny > 0 AND p.nbShiny IS NOT NULL " +
-            "ORDER BY p.nbShiny DESC")
+            "WHERE p.nbShiny > 0 AND p.nbShiny IS NOT NULL")
     List<Object[]> allStatsByPokeball();
 
     // Stats globales par Dresseur
@@ -36,8 +35,7 @@ public interface BoitesRepository extends JpaRepository<Boites, Integer> {
     // Stats globales par Nature
     @Query("SELECT n.nomNature AS nature, n.nbShiny " +
             "FROM Natures n " +
-            "WHERE n.nbShiny > 0 AND n.nbShiny IS NOT NULL " +
-            "ORDER BY n.nbShiny DESC")
+            "WHERE n.nbShiny > 0 AND n.nbShiny IS NOT NULL")
     List<Object[]> allStatsByNature();
 
     // Stats globales par Type
