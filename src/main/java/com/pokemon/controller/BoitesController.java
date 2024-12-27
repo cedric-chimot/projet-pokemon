@@ -50,20 +50,29 @@ public class BoitesController {
         return boite.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Récupérer les statistiques par boîte
+    /**
+     * Récupérer les stats par boite
+     * @param boiteId l'id de la boite
+     * @param type le type pour lequel on récupère les données
+     * @return les stats par boite pour chaque type
+     */
     @GetMapping("/{boiteId}/{type}")
-    public ResponseEntity<List<Map<String, Object>>> getStatsParBoite(
+    public ResponseEntity<List<Map<String, Object>>> getStatsByBoite(
             @PathVariable Integer boiteId,
             @PathVariable String type) {
         try {
-            List<Map<String, Object>> stats = boiteService.getStatsParBoite(type, boiteId);
+            List<Map<String, Object>> stats = boiteService.getStatsByBoite(type, boiteId);
             return ResponseEntity.ok(stats);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
         }
     }
 
-    // Récupérer les statistiques globales
+    /**
+     * Récupérer les stats globales pour chaque type
+     * @param type le type pour lequel on récupère les données
+     * @return toutes les stats pour chaque type
+     */
     @GetMapping("/global/{type}")
     public ResponseEntity<List<Map<String, Object>>> getStatsGlobales(@PathVariable String type) {
         try {

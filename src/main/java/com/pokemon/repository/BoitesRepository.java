@@ -16,9 +16,15 @@ public interface BoitesRepository extends JpaRepository<Boites, Integer> {
     List<Object[]> allStatsByPokeball();
 
     // Stats globales par Dresseur
-    @Query("SELECT d.idDresseur, d.nomDresseur AS dresseur, d.nbShiny " +
-            "FROM Dresseurs d " +
-            "WHERE d.nbShiny > 0 AND d.nbShiny IS NOT NULL")
+    @Query("SELECT " +
+            "CASE WHEN d.nomDresseur = 'event' THEN 'event' ELSE d.nomDresseur END AS dresseur, " +
+            "SUM(bd.nbPokemon) AS nbPokemon, " +
+            "CASE WHEN d.nomDresseur = 'event' THEN NULL ELSE d.idDresseur END AS idDresseur " +
+            "FROM BoiteDresseur bd " +
+            "JOIN bd.dresseur d " +
+            "GROUP BY CASE WHEN d.nomDresseur = 'event' THEN 'event' ELSE d.nomDresseur END, " +
+            "CASE WHEN d.nomDresseur = 'event' THEN NULL ELSE d.idDresseur END " +
+            "ORDER BY CASE WHEN d.nomDresseur = 'event' THEN 1 ELSE 0 END, d.id")
     List<Object[]> allStatsByDresseur();
 
     // Stats globales par Sexe
@@ -41,30 +47,30 @@ public interface BoitesRepository extends JpaRepository<Boites, Integer> {
             "FROM BoitePokeball bp " +
             "JOIN bp.pokeball p " +
             "WHERE bp.boite.id = :boiteId")
-    List<Object[]> findStatsByPokeball(@Param("boiteId") Integer boiteId);
+    List<Object[]> statsByBoitePokeball(@Param("boiteId") Integer boiteId);
 
     @Query("SELECT d.idDresseur AS idDresseur, d.nomDresseur AS dresseur, bd.nbPokemon " +
             "FROM BoiteDresseur bd " +
             "JOIN bd.dresseur d " +
             "WHERE bd.boite.id = :boiteId ")
-    List<Object[]> findStatsByDresseur(@Param("boiteId") Integer boiteId);
+    List<Object[]> statsByBoiteDresseur(@Param("boiteId") Integer boiteId);
 
     @Query("SELECT s.sexe AS sexe, bs.nbPokemon " +
             "FROM BoiteSexe bs " +
             "JOIN bs.sexe s " +
             "WHERE bs.boite.id = :boiteId")
-    List<Object[]> findStatsBySexe(@Param("boiteId") Integer boiteId);
+    List<Object[]> statsByBoiteSexe(@Param("boiteId") Integer boiteId);
 
     @Query("SELECT n.nomNature AS nature, bn.nbPokemon " +
             "FROM BoiteNature bn " +
             "JOIN bn.nature n " +
             "WHERE bn.boite.id = :boiteId")
-    List<Object[]> findStatsByNature(@Param("boiteId") Integer boiteId);
+    List<Object[]> statsByBoiteNature(@Param("boiteId") Integer boiteId);
 
     @Query("SELECT t.nomType AS type, bt.nbPokemon " +
             "FROM BoiteType bt " +
             "JOIN bt.type t " +
             "WHERE bt.boite.id = :boiteId")
-    List<Object[]> findStatsByType(@Param("boiteId") Integer boiteId);
+    List<Object[]> statsByBoiteType(@Param("boiteId") Integer boiteId);
 
 }

@@ -1,8 +1,8 @@
 package com.pokemon.service;
 
 import com.pokemon.entity.Boites;
+import com.pokemon.exceptions.CustomException;
 import com.pokemon.repository.BoitesRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +57,11 @@ public class BoiteService {
         return boitesRepository.findById(id);
     }
 
-    // Récupérer les statistiques globales
+    /**
+     * Récupération des statistiques globales
+     * @param type le type pour lequel on récupère les données
+     * @return toutes les stats pour chaque type
+     */
     public List<Map<String, Object>> getStatsGlobales(String type) {
         type = type.toLowerCase();
         List<Object[]> results = switch (type) {
@@ -68,18 +72,23 @@ public class BoiteService {
             case "types" -> boitesRepository.allStatsByType();
             default -> throw new IllegalArgumentException("Type inconnu : " + type);
         };
-        return mapShinyStats(results, type);
+        return mapAllStats(results, type);
     }
 
-    // Récupérer les statistiques par boîte
-    public List<Map<String, Object>> getStatsParBoite(String type, Integer boiteId) {
+    /**
+     * Récupération des statistiques par boite
+     * @param type le type pour lequel on récupère les données
+     * @param boiteId l'identifiant de la boite
+     * @return toutes les stats pour chaque type par boite
+     */
+    public List<Map<String, Object>> getStatsByBoite(String type, Integer boiteId) {
         type = type.toLowerCase();
         List<Object[]> results = switch (type) {
-            case "pokeballs" -> boitesRepository.findStatsByPokeball(boiteId);
-            case "dresseurs" -> boitesRepository.findStatsByDresseur(boiteId);
-            case "natures" -> boitesRepository.findStatsByNature(boiteId);
-            case "sexes" -> boitesRepository.findStatsBySexe(boiteId);
-            case "types" -> boitesRepository.findStatsByType(boiteId);
+            case "pokeballs" -> boitesRepository.statsByBoitePokeball(boiteId);
+            case "dresseurs" -> boitesRepository.statsByBoiteDresseur(boiteId);
+            case "natures" -> boitesRepository.statsByBoiteNature(boiteId);
+            case "sexes" -> boitesRepository.statsByBoiteSexe(boiteId);
+            case "types" -> boitesRepository.statsByBoiteType(boiteId);
             default -> throw new IllegalArgumentException("Type inconnu : " + type);
         };
         return mapBoiteStats(results, type);
@@ -94,14 +103,16 @@ public class BoiteService {
      * @param results Une liste d'objets représentant les résultats récupérés (par exemple depuis une requête SQL).
      * @return Une liste de maps, chaque map contenant les informations mappées selon la structure des résultats.
      */
-    private List<Map<String, Object>> mapShinyStats(List<Object[]> results, String type) {
+    private List<Map<String, Object>> mapAllStats(List<Object[]> results, String type) {
         return results.stream()
                 .map(result -> {
                     if ("dresseurs".equals(type) && result.length == 3) {
+                        // Gérer le cas de `idDresseur` qui peut être NULL
+                        Object idDresseur = result[2] == null ? "Aucun ID" : result[2];
                         return Map.of(
-                                "idDresseur", result[0],
-                                "dresseur", result[1],
-                                "nbShiny", result[2]
+                                "idDresseur", idDresseur,
+                                "dresseur", result[0],
+                                "nbShiny", result[1]
                         );
                     } else if (result.length == 2) {
                         return Map.of(
@@ -115,6 +126,12 @@ public class BoiteService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Mapping d'une liste de résultats pour regrouper les données par boite
+     * @param results la liste de résultat
+     * @param type le type de données (dresseur, pokeball etc)
+     * @return Une liste de résultats de données pour chaque type
+     */
     private List<Map<String, Object>> mapBoiteStats(List<Object[]> results, String type) {
         return results.stream()
                 .map(result -> {
@@ -175,7 +192,7 @@ public class BoiteService {
             boitesRepository.delete(boite); // Supprimer l'objet
             return boite; // Retourner l'objet supprimé
         } else {
-            throw new EntityNotFoundException("Boites with id " + id + " not found");
+            throw new CustomException("Boite", "id",  id);
         }
     }
 
