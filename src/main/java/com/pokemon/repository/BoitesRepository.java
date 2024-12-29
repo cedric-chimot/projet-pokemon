@@ -12,7 +12,8 @@ public interface BoitesRepository extends JpaRepository<Boites, Integer> {
     // Stats globales par Pokeball
     @Query("SELECT p.nomPokeball AS pokeball, p.nbShiny " +
             "FROM Pokeballs p " +
-            "WHERE p.nbShiny > 0 AND p.nbShiny IS NOT NULL")
+            "WHERE p.nbShiny > 0 AND p.nbShiny IS NOT NULL " +
+            "ORDER BY p.nomPokeball ASC")
     List<Object[]> allStatsByPokeball();
 
     // Stats globales par Dresseur
