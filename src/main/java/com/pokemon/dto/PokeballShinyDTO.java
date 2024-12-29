@@ -1,14 +1,15 @@
 package com.pokemon.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class PokeballShinyDTO {
 
     private String nomPokeball;
 
+    public PokeballShinyDTO(String nomPokeball) {
+        this.nomPokeball = nomPokeball;
+    }
 }

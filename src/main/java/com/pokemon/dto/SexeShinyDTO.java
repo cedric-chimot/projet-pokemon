@@ -5,16 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class SexeDTO {
-
-    private Integer id;
+@AllArgsConstructor
+public class SexeShinyDTO {
 
     private String sexe;
-
-    private Integer nbPokemon;
-
-    private Integer nbShiny;
 
 }

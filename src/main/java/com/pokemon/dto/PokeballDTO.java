@@ -7,14 +7,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SexeDTO {
+public class PokeballDTO {
 
     private Integer id;
 
-    private String sexe;
+    private String nomPokeball;
 
-    private Integer nbPokemon;
+    private Long nbPokemon;
 
-    private Integer nbShiny;
+    private Long nbShiny;
 
 }

@@ -82,7 +82,7 @@ public class DresseurController {
      * Supprimer tous les dresseurs
      */
     @DeleteMapping("/delete/all")
-    public void deleteAllShinies() {
+    public void deleteAllDresseurs() {
         dresseurService.deleteAll();
     }
 

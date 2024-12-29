@@ -2,8 +2,8 @@ package com.pokemon.service;
 
 import com.pokemon.dto.DresseurDTO;
 import com.pokemon.entity.Dresseurs;
+import com.pokemon.exceptions.CustomException;
 import com.pokemon.repository.DresseurRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +58,7 @@ public class DresseurService {
     }
 
     /**
-     * Méthode pour trouver u dresseur par son id
+     * Méthode pour trouver un dresseur par son id
      * @param id l'id du dresseur recherché
      * @return le dresseur trouvé
      */
@@ -99,7 +99,7 @@ public class DresseurService {
             dresseurRepository.delete(shiny); // Supprimer l'objet
             return shiny; // Retourner l'objet supprimé
         } else {
-            throw new EntityNotFoundException("Dresseur with id " + id + " not found");
+            throw new CustomException("Dresseur", "id",  id);
         }
     }
 

@@ -5,14 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class TypeDTO {
-
-    private Integer id;
+@AllArgsConstructor
+public class TypeShinyDTO {
 
     private String nomType;
-
-    private Integer nbShiny;
 
 }
