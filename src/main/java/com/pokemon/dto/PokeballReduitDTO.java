@@ -5,11 +5,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class PokeballShinyDTO {
+public class PokeballReduitDTO {
 
     private String nomPokeball;
 
-    public PokeballShinyDTO(String nomPokeball) {
+    public PokeballReduitDTO(String nomPokeball) {
         this.nomPokeball = nomPokeball;
     }
 }

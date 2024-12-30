@@ -22,8 +22,8 @@ public class Dresseurs {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "id_dresseur", nullable = false)
-    private String idDresseur;
+    @Column(name = "num_dresseur", nullable = false)
+    private String numDresseur;
 
     @Column(name = "nom_dresseur", nullable = false)
     private String nomDresseur;
@@ -38,8 +38,12 @@ public class Dresseurs {
     @OneToMany(mappedBy = "dresseur")
     private List<PokemonShiny> shinyList;
 
-    public Dresseurs(String idDresseur, String nomDresseur, Long nbPokemon, Long nbShiny) {
-        this.idDresseur = idDresseur;
+    @JsonIgnore
+    @OneToMany(mappedBy = "dresseurPokedex")
+    private List<PokedexNational> pokemonList;
+
+    public Dresseurs(String numDresseur, String nomDresseur, Long nbPokemon, Long nbShiny) {
+        this.numDresseur = numDresseur;
         this.nomDresseur = nomDresseur;
         this.nbPokemon = nbPokemon;
         this.nbShiny = nbShiny;
@@ -49,7 +53,7 @@ public class Dresseurs {
     public String toString() {
         return "Dresseurs{" +
                 "id=" + id +
-                ", idDresseur='" + idDresseur + '\'' +
+                ", numDresseur='" + numDresseur + '\'' +
                 ", nomDresseur='" + nomDresseur + '\'' +
                 ", nbPokemon=" + nbPokemon +
                 ", nbShiny=" + nbShiny +

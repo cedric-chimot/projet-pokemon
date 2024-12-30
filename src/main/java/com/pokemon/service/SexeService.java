@@ -1,5 +1,6 @@
 package com.pokemon.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pokemon.dto.SexeDTO;
 import com.pokemon.entity.Sexe;
 import com.pokemon.exceptions.CustomException;
@@ -24,11 +25,17 @@ public class SexeService {
     private final SexeRepository sexeRepository;
 
     /**
+     * Sérialisation d'objet Java au format Json
+     */
+    private final ObjectMapper objectMapper;
+
+    /**
      * Le constructeur
      * @param sexeRepository Injection du repository
      */
-    public SexeService(SexeRepository sexeRepository) {
+    public SexeService(SexeRepository sexeRepository, ObjectMapper objectMapper) {
         this.sexeRepository = sexeRepository;
+        this.objectMapper = objectMapper;
     }
 
     /**
@@ -45,32 +52,20 @@ public class SexeService {
      * @return la liste de tous les sexes
      */
     public List<SexeDTO> findAllSexes() {
-        return sexeRepository.findAll()
-                .stream().map(sexes -> {
-                    SexeDTO dto = new SexeDTO();
-                    dto.setId(sexes.getId());
-                    dto.setSexe(sexes.getSexe());
-                    dto.setNbPokemon(sexes.getNbTotal());
-                    dto.setNbShiny(sexes.getNbShiny());
-                    return dto;
-                }).collect(Collectors.toList());
+        List<Sexe> sexeList = sexeRepository.findAll();
+        return sexeList.stream()
+                .map(sexe -> objectMapper.convertValue(sexe, SexeDTO.class))
+                .collect(Collectors.toList());
     }
 
     /**
      * Méthode pour trouver un sexe par son id
-     * @param id l'id du sexe recherché
+     * @param id l'id de la  sexe recherché
      * @return le sexe trouvé
      */
     public Optional<SexeDTO> findSexeById(Integer id) {
         return sexeRepository.findById(id)
-                .map(sexes -> {
-                    SexeDTO dto = new SexeDTO();
-                    dto.setId(sexes.getId());
-                    dto.setSexe(sexes.getSexe());
-                    dto.setNbPokemon(sexes.getNbTotal());
-                    dto.setNbShiny(sexes.getNbShiny());
-                    return dto;
-                });
+                .map(sexe -> objectMapper.convertValue(sexe, SexeDTO.class));
     }
 
     /**

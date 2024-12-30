@@ -16,4 +16,9 @@ public class NatureDTO {
     private Long nbPokemon;
 
     private Long nbShiny;
+
+    public NatureDTO(String nomNature) {
+        this.nomNature = nomNature;
+    }
+
 }

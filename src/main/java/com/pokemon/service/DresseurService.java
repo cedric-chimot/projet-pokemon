@@ -1,6 +1,7 @@
 package com.pokemon.service;
 
-import com.pokemon.dto.DresseurDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pokemon.dto.DresseurReduitDTO;
 import com.pokemon.entity.Dresseurs;
 import com.pokemon.exceptions.CustomException;
 import com.pokemon.repository.DresseurRepository;
@@ -24,11 +25,18 @@ public class DresseurService {
     private final DresseurRepository dresseurRepository;
 
     /**
+     * Sérialisation d'objet Java au format Json
+     */
+    private final ObjectMapper objectMapper;
+
+
+    /**
      * Le constructeur
      * @param dresseurRepository Injection du repository
      */
-    public DresseurService(DresseurRepository dresseurRepository) {
+    public DresseurService(DresseurRepository dresseurRepository, ObjectMapper objectMapper) {
         this.dresseurRepository = dresseurRepository;
+        this.objectMapper = objectMapper;
     }
 
     /**
@@ -44,17 +52,21 @@ public class DresseurService {
      * Méthode pour trouver tous les dresseurs
      * @return la liste de tous les dresseurs
      */
-    public List<DresseurDTO> findAllDresseurs() {
-        return dresseurRepository.findAll()
-                .stream().map(dresseurs -> {
-                    DresseurDTO dto = new DresseurDTO();
-                    dto.setId(dresseurs.getId());
-                    dto.setIdDresseur(dresseurs.getIdDresseur());
-                    dto.setNomDresseur(dresseurs.getNomDresseur());
-                    dto.setNb_pokemon(dresseurs.getNbPokemon());
-                    dto.setNb_shiny(dresseurs.getNbShiny());
-                    return dto;
-                }).collect(Collectors.toList());
+    public List<DresseurReduitDTO> findAllDresseurs() {
+        List<Dresseurs> dresseurList = dresseurRepository.findAll();
+        return dresseurList.stream()
+                .map(dresseur -> objectMapper.convertValue(dresseur, DresseurReduitDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Méthode pour trouver un dresseur par son id (retourne l'entité complète)
+     * @param id l'id du dresseur recherché
+     * @return le dresseur trouvé
+     */
+    public Dresseurs findById(Integer id) {
+        return dresseurRepository.findById(id)
+                .orElseThrow(() -> new CustomException("Dresseur", "id", id)); // Renvoie l'entité
     }
 
     /**
@@ -62,17 +74,10 @@ public class DresseurService {
      * @param id l'id du dresseur recherché
      * @return le dresseur trouvé
      */
-    public Optional<DresseurDTO> findDresseurById(Integer id) {
-        return dresseurRepository.findById(id)
-                .map(dresseurs -> {
-                    DresseurDTO dto = new DresseurDTO();
-                    dto.setId(dresseurs.getId());
-                    dto.setIdDresseur(dresseurs.getIdDresseur());
-                    dto.setNomDresseur(dresseurs.getNomDresseur());
-                    dto.setNb_pokemon(dresseurs.getNbPokemon());
-                    dto.setNb_shiny(dresseurs.getNbShiny());
-                    return dto;
-                });
+    public DresseurReduitDTO findDresseurById(Integer id) {
+        Dresseurs dresseur = dresseurRepository.findById(id)
+                .orElseThrow(() -> new CustomException("Dresseur", "id", id)); // Gère l'absence de dresseur
+        return objectMapper.convertValue(dresseur, DresseurReduitDTO.class); // Convertit l'entité en DTO
     }
 
     /**

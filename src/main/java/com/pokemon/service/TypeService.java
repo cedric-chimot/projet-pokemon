@@ -1,5 +1,6 @@
 package com.pokemon.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pokemon.dto.TypeDTO;
 import com.pokemon.entity.Types;
 import com.pokemon.exceptions.CustomException;
@@ -24,17 +25,23 @@ public class TypeService {
     private final TypeRepository typeRepository;
 
     /**
+     * Sérialisation d'objet Java au format Json
+     */
+    private final ObjectMapper objectMapper;
+
+    /**
      * Le constructeur
      * @param typeRepository Injection du repository
      */
-    public TypeService(TypeRepository typeRepository) {
+    public TypeService(TypeRepository typeRepository, ObjectMapper objectMapper) {
         this.typeRepository = typeRepository;
+        this.objectMapper = objectMapper;
     }
 
     /**
      * Méthode pour créer un nouveau type
      * @param type le type à créer
-     * @return le type nouvellement créée
+     * @return le type nouvellement créé
      */
     public Types save(Types type) {
         return typeRepository.save(type);
@@ -44,15 +51,12 @@ public class TypeService {
      * Méthode pour trouver tous les types
      * @return la liste de tous les types
      */
+
     public List<TypeDTO> findAllTypes() {
-        return typeRepository.findAll()
-                .stream().map(types -> {
-                    TypeDTO dto = new TypeDTO();
-                    dto.setId(types.getId());
-                    dto.setNomType(types.getNomType());
-                    dto.setNbShiny(types.getNbShiny());
-                    return dto;
-                }).collect(Collectors.toList());
+        List<Types> typeList = typeRepository.findAll();
+        return typeList.stream()
+                .map(type -> objectMapper.convertValue(type, TypeDTO.class))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -62,13 +66,7 @@ public class TypeService {
      */
     public Optional<TypeDTO> findTypeById(Integer id) {
         return typeRepository.findById(id)
-                .map(types -> {
-                    TypeDTO dto = new TypeDTO();
-                    dto.setId(types.getId());
-                    dto.setNomType(types.getNomType());
-                    dto.setNbShiny(types.getNbShiny());
-                    return dto;
-                });
+                .map(type-> objectMapper.convertValue(type, TypeDTO.class));
     }
 
     /**

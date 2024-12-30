@@ -1,6 +1,8 @@
 package com.pokemon.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pokemon.dto.PokeballDTO;
+import com.pokemon.dto.PokeballReduitDTO;
 import com.pokemon.entity.Pokeballs;
 import com.pokemon.exceptions.CustomException;
 import com.pokemon.repository.PokeballRepository;
@@ -24,11 +26,17 @@ public class PokeballService {
     private final PokeballRepository pokeballRepository;
 
     /**
+     * Sérialisation d'objet Java au format Json
+     */
+    private final ObjectMapper objectMapper;
+
+    /**
      * Le constructeur
      * @param pokeballRepository Injection du repository
      */
-    public PokeballService(PokeballRepository pokeballRepository) {
+    public PokeballService(PokeballRepository pokeballRepository, ObjectMapper objectMapper) {
         this.pokeballRepository = pokeballRepository;
+        this.objectMapper = objectMapper;
     }
 
     /**
@@ -45,15 +53,20 @@ public class PokeballService {
      * @return la liste de toutes les pokeballs
      */
     public List<PokeballDTO> findAllPokeballs() {
-        return pokeballRepository.findAll()
-                .stream().map(pokeballs -> {
-                    PokeballDTO dto = new PokeballDTO();
-                    dto.setId(pokeballs.getId());
-                    dto.setNomPokeball(pokeballs.getNomPokeball());
-                    dto.setNbPokemon(pokeballs.getNbPokemon());
-                    dto.setNbShiny(pokeballs.getNbShiny());
-                    return dto;
-                }).collect(Collectors.toList());
+        List<Pokeballs> PokeballList = pokeballRepository.findAll();
+        return PokeballList.stream()
+                .map(Pokeball -> objectMapper.convertValue(Pokeball, PokeballDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Méthode pour trouver une pokeball par son id (retourne l'entité complète)
+     * @param id l'id de la pokeball recherchée
+     * @return la pokeball trouvée
+     */
+    public Pokeballs findById(Integer id) {
+        return pokeballRepository.findById(id)
+                .orElseThrow(() -> new CustomException("Pokeball", "id", id)); // Renvoie l'entité
     }
 
     /**
@@ -61,16 +74,9 @@ public class PokeballService {
      * @param id l'id de la pokeball recherchée
      * @return la pokeball trouvée
      */
-    public Optional<PokeballDTO> findPokeballById(Integer id) {
-        return pokeballRepository.findById(id)
-                .map(pokeballs -> {
-                    PokeballDTO dto = new PokeballDTO();
-                    dto.setId(pokeballs.getId());
-                    dto.setNomPokeball(pokeballs.getNomPokeball());
-                    dto.setNbPokemon(pokeballs.getNbPokemon());
-                    dto.setNbShiny(pokeballs.getNbShiny());
-                    return dto;
-                });
+    public PokeballReduitDTO findPokeballById(Integer id) {
+        Optional<Pokeballs> pokeball = pokeballRepository.findById(id);
+        return objectMapper.convertValue(pokeball, PokeballReduitDTO.class);
     }
 
     /**

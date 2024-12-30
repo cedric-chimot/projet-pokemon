@@ -5,11 +5,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class NatureShinyDTO {
+public class NatureReduitDTO {
 
     private String nomNature;
 
-    public NatureShinyDTO(String nomNature) {
+    public NatureReduitDTO(String nomNature) {
         this.nomNature = nomNature;
     }
 

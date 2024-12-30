@@ -20,12 +20,12 @@ public interface BoitesRepository extends JpaRepository<Boites, Integer> {
     @Query("SELECT " +
             "CASE WHEN d.nomDresseur = 'event' THEN 'event' ELSE d.nomDresseur END AS dresseur, " +
             "SUM(bd.nbPokemon) AS nbPokemon, " +
-            "CASE WHEN d.nomDresseur = 'event' THEN NULL ELSE d.idDresseur END AS idDresseur " +
+            "CASE WHEN d.nomDresseur = 'event' THEN NULL ELSE d.numDresseur END AS numDresseur " +
             "FROM BoiteDresseur bd " +
             "JOIN bd.dresseur d " +
             "GROUP BY CASE WHEN d.nomDresseur = 'event' THEN 'event' ELSE d.nomDresseur END, " +
-            "CASE WHEN d.nomDresseur = 'event' THEN NULL ELSE d.idDresseur END " +
-            "ORDER BY CASE WHEN d.nomDresseur = 'event' THEN 1 ELSE 0 END, d.id")
+            "CASE WHEN d.nomDresseur = 'event' THEN NULL ELSE d.numDresseur END " +
+            "ORDER BY CASE WHEN d.nomDresseur = 'event' THEN 1 ELSE 0 END, d.numDresseur")
     List<Object[]> allStatsByDresseur();
 
     // Stats globales par Sexe
@@ -50,7 +50,7 @@ public interface BoitesRepository extends JpaRepository<Boites, Integer> {
             "WHERE bp.boite.id = :boiteId")
     List<Object[]> statsByBoitePokeball(@Param("boiteId") Integer boiteId);
 
-    @Query("SELECT d.idDresseur AS idDresseur, d.nomDresseur AS dresseur, bd.nbPokemon " +
+    @Query("SELECT d.numDresseur AS numDresseur, d.nomDresseur AS dresseur, bd.nbPokemon " +
             "FROM BoiteDresseur bd " +
             "JOIN bd.dresseur d " +
             "WHERE bd.boite.id = :boiteId ")

@@ -1,5 +1,6 @@
 package com.pokemon.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pokemon.dto.NatureDTO;
 import com.pokemon.entity.Natures;
 import com.pokemon.exceptions.CustomException;
@@ -24,11 +25,17 @@ public class NatureService {
     private final NatureRepository natureRepository;
 
     /**
+     * Sérialisation d'objet Java au format Json
+     */
+    private final ObjectMapper objectMapper;
+
+    /**
      * Le constructeur
      * @param natureRepository Injection du repository
      */
-    public NatureService(NatureRepository natureRepository) {
+    public NatureService(NatureRepository natureRepository, ObjectMapper objectMapper) {
         this.natureRepository = natureRepository;
+        this.objectMapper = objectMapper;
     }
 
     /**
@@ -45,15 +52,20 @@ public class NatureService {
      * @return la liste de toutes les natures
      */
     public List<NatureDTO> findAllNatures() {
-        return natureRepository.findAll()
-                .stream().map(natures -> {
-                    NatureDTO dto = new NatureDTO();
-                    dto.setId(natures.getId());
-                    dto.setNomNature(natures.getNomNature());
-                    dto.setNbPokemon(natures.getNbPokemon());
-                    dto.setNbShiny(natures.getNbShiny());
-                    return dto;
-                }).collect(Collectors.toList());
+        List<Natures> natureList = natureRepository.findAll();
+        return natureList.stream()
+                .map(nature -> objectMapper.convertValue(nature, NatureDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Méthode pour trouver une nature par son id (retourne l'entité complète)
+     * @param id l'id de la nature recherchée
+     * @return la nature trouvée
+     */
+    public Natures findById(Integer id) {
+        return natureRepository.findById(id)
+                .orElseThrow(() -> new CustomException("Nature", "id", id)); // Renvoie l'entité
     }
 
     /**
@@ -61,16 +73,9 @@ public class NatureService {
      * @param id l'id de la nature recherchée
      * @return la nature trouvée
      */
-    public Optional<NatureDTO> findNatureById(Integer id) {
-        return natureRepository.findById(id)
-                .map(natures -> {
-                    NatureDTO dto = new NatureDTO();
-                    dto.setId(natures.getId());
-                    dto.setNomNature(natures.getNomNature());
-                    dto.setNbPokemon(natures.getNbPokemon());
-                    dto.setNbShiny(natures.getNbShiny());
-                    return dto;
-                });
+    public NatureDTO findNatureById(Integer id) {
+        Optional<Natures> nature = natureRepository.findById(id);
+        return objectMapper.convertValue(nature, NatureDTO.class);
     }
 
     /**

@@ -35,6 +35,10 @@ public class Natures {
     @OneToMany(mappedBy = "nature")
     private List<PokemonShiny> shinyList;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "naturePokedex")
+    private List<PokedexNational> pokemonList;
+
     public Natures(String nomNature, Long nbPokemon, Long nbShiny) {
         this.nomNature = nomNature;
         this.nbPokemon = nbPokemon;

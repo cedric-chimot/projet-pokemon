@@ -5,18 +5,18 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class DresseurShinyDTO {
+public class DresseurReduitDTO {
 
-    private String idDresseur;
+    private String numDresseur;
 
     private String nomDresseur;
 
-    public DresseurShinyDTO(String nomDresseur) {
+    public DresseurReduitDTO(String nomDresseur) {
         this.nomDresseur = nomDresseur;
     }
 
-    public DresseurShinyDTO(String idDresseur, String nomDresseur) {
-        this.idDresseur = idDresseur;
+    public DresseurReduitDTO(String numDresseur, String nomDresseur) {
+        this.numDresseur = numDresseur;
         this.nomDresseur = nomDresseur;
     }
 

@@ -1,12 +1,11 @@
 package com.pokemon.controller;
 
-import com.pokemon.dto.DresseurDTO;
+import com.pokemon.dto.DresseurReduitDTO;
 import com.pokemon.entity.Dresseurs;
 import com.pokemon.service.DresseurService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Le controller d'un dresseur
@@ -41,20 +40,31 @@ public class DresseurController {
 
     /**
      * Afficher la liste de tous les dresseurs
+     *
      * @return la liste
      */
     @GetMapping
-    public List<DresseurDTO> findAll() {
+    public List<DresseurReduitDTO> findAll() {
         return dresseurService.findAllDresseurs();
     }
 
     /**
-     * Trouver un dresseur par son id
+     * Trouver un dresseur par son id (dresseur complet)
+     * @param id l'id du dresseur
+     * @return le dresseur recherché
+     */
+    @GetMapping("/find/{id}")
+    public Dresseurs findById(@PathVariable Integer id) {
+        return dresseurService.findById(id);
+    }
+
+    /**
+     * Trouver un dresseur par son id (avec le DTO)
      * @param id l'id du dresseur
      * @return le dresseur recherché
      */
     @GetMapping("/{id}")
-    public Optional<DresseurDTO> getById(@PathVariable Integer id) {
+    public DresseurReduitDTO getById(@PathVariable Integer id) {
         return dresseurService.findDresseurById(id);
     }
 

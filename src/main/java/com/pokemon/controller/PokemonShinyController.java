@@ -1,7 +1,7 @@
 package com.pokemon.controller;
 
+import com.pokemon.dto.PokemonReduitDTO;
 import com.pokemon.dto.PokemonDTO;
-import com.pokemon.dto.PokemonShinyDTO;
 import com.pokemon.dto.StatIvManquantDTO;
 import com.pokemon.entity.PokemonShiny;
 import com.pokemon.service.PokemonShinyService;
@@ -47,7 +47,7 @@ public class PokemonShinyController {
      * @return la liste de tous les shinies
      */
     @GetMapping("/all")
-    public List<PokemonShinyDTO> findAll() {
+    public List<PokemonDTO> findAll() {
         return shinyService.findAllShinies();
     }
 
@@ -57,7 +57,7 @@ public class PokemonShinyController {
      * @return le shiny et toutes ses données
      */
     @GetMapping("/{id}")
-    public Optional<PokemonShinyDTO> getById(@PathVariable Integer id) {
+    public Optional<PokemonDTO> getById(@PathVariable Integer id) {
         return shinyService.findById(id);
     }
 
@@ -68,7 +68,7 @@ public class PokemonShinyController {
      */
     @GetMapping("/findByNumDex/{numDex}")
     public ResponseEntity<?> findAllByNumDex(@PathVariable String numDex) {
-        List<PokemonDTO> shinies = shinyService.findByNumDex(numDex);
+        List<PokemonReduitDTO> shinies = shinyService.findByNumDex(numDex);
 
         if (shinies.isEmpty()) {
             return ResponseEntity.status(404).body("Aucun shiny ne correspond à ce numéro de pokedex");
@@ -83,12 +83,12 @@ public class PokemonShinyController {
      * @return la liste des shinies de la boite
      */
     @GetMapping("/boites")
-    public ResponseEntity<List<PokemonShinyDTO>> getPokemonsByBoite(@RequestParam("boite") String boite) {
+    public ResponseEntity<List<PokemonDTO>> getPokemonsByBoite(@RequestParam("boite") String boite) {
         if (boite == null || boite.isEmpty()) {
             return ResponseEntity.badRequest().body(null);
         }
         System.out.println("Boite reçue: " + boite); // Pour le débogage
-        List<PokemonShinyDTO> pokemons = shinyService.findByBoite(boite);
+        List<PokemonDTO> pokemons = shinyService.findByBoite(boite);
         return ResponseEntity.ok(pokemons);
     }
 

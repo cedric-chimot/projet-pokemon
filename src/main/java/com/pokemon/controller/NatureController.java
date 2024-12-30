@@ -6,7 +6,6 @@ import com.pokemon.service.NatureService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/natures")
@@ -38,9 +37,19 @@ public class NatureController {
      * Afficher la liste de toutes les natures
      * @return la liste
      */
-    @GetMapping
+    @GetMapping("/all")
     public List<NatureDTO> findAll() {
         return natureService.findAllNatures();
+    }
+
+    /**
+     * Trouver une nature par son id (boitePokedex complet)
+     * @param id l'id de la nature
+     * @return la nature recherchée
+     */
+    @GetMapping("/find/{id}")
+    public Natures findById(@PathVariable Integer id) {
+        return natureService.findById(id);
     }
 
     /**
@@ -49,7 +58,7 @@ public class NatureController {
      * @return la nature recherchée
      */
     @GetMapping("/{id}")
-    public Optional<NatureDTO> getById(@PathVariable Integer id) {
+    public NatureDTO getById(@PathVariable Integer id) {
         return natureService.findNatureById(id);
     }
 

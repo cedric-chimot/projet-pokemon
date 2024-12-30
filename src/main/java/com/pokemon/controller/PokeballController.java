@@ -1,12 +1,12 @@
 package com.pokemon.controller;
 
 import com.pokemon.dto.PokeballDTO;
+import com.pokemon.dto.PokeballReduitDTO;
 import com.pokemon.entity.Pokeballs;
 import com.pokemon.service.PokeballService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/pokeballs")
@@ -44,12 +44,22 @@ public class PokeballController {
     }
 
     /**
+     * Trouver une pokeball par son id (pokeballs complet)
+     * @param id l'id de la pokeball
+     * @return la pokeball recherchée
+     */
+    @GetMapping("/find/{id}")
+    public Pokeballs findById(@PathVariable Integer id) {
+        return pokeballService.findById(id);
+    }
+
+    /**
      * Trouver une pokeball par son id
      * @param id l'id de la pokeball
      * @return la pokeball recherchée
      */
     @GetMapping("/{id}")
-    public Optional<PokeballDTO> getById(@PathVariable Integer id) {
+    public PokeballReduitDTO getById(@PathVariable Integer id) {
         return pokeballService.findPokeballById(id);
     }
 

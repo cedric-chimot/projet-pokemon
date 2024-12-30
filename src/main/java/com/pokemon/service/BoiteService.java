@@ -110,7 +110,7 @@ public class BoiteService {
                         // Gérer le cas de `idDresseur` qui peut être NULL
                         Object idDresseur = result[2] == null ? "Aucun ID" : result[2];
                         return Map.of(
-                                "idDresseur", idDresseur,
+                                "numDresseur", idDresseur,
                                 "dresseur", result[0],
                                 "nbShiny", result[1]
                         );
@@ -137,7 +137,7 @@ public class BoiteService {
                 .map(result -> {
                     if ("dresseurs".equals(type) && result.length == 3) {
                         return Map.of(
-                                "idDresseur", result[0],
+                                "numDresseur", result[0],
                                 "dresseur", result[1],
                                 "nbPokemon", result[2]
                         );

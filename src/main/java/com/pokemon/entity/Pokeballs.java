@@ -22,7 +22,7 @@ public class Pokeballs {
     @Column(name = "id_pokeball")
     private Integer id;
 
-    @Column(name = "nom_pokeball")
+    @Column(name = "nom_pokeball", nullable = false)
     private String nomPokeball;
 
     @Column(name = "nb_pokemon")
@@ -34,6 +34,10 @@ public class Pokeballs {
     @JsonIgnore
     @OneToMany(mappedBy = "pokeball")
     private List<PokemonShiny> shinyList;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "pokeballPokedex")
+    private List<PokedexNational> pokemonList;
 
     public Pokeballs(String nomPokeball, Long nbPokemon, Long nbShiny) {
         this.nomPokeball = nomPokeball;

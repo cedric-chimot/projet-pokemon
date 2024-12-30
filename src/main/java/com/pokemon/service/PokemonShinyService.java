@@ -1,8 +1,8 @@
 package com.pokemon.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pokemon.dto.PokemonReduitDTO;
 import com.pokemon.dto.PokemonDTO;
-import com.pokemon.dto.PokemonShinyDTO;
 import com.pokemon.dto.StatIvManquantDTO;
 import com.pokemon.entity.PokemonShiny;
 import com.pokemon.exceptions.CustomException;
@@ -54,10 +54,10 @@ public class PokemonShinyService {
      * Méthode pour afficher la liste de tous les shinies
      * @return La liste de shinies
      */
-    public List<PokemonShinyDTO> findAllShinies() {
+    public List<PokemonDTO> findAllShinies() {
         List<PokemonShiny> shinyList = shinyRepository.findAll();
         return shinyList.stream()
-                .map(shiny -> objectMapper.convertValue(shiny, PokemonShinyDTO.class))
+                .map(shiny -> objectMapper.convertValue(shiny, PokemonDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -66,9 +66,9 @@ public class PokemonShinyService {
      * @param id L'id du pokemon recherché
      * @return le pokemon trouvé et toutes ses informations
      */
-    public Optional<PokemonShinyDTO> findById(Integer id) {
+    public Optional<PokemonDTO> findById(Integer id) {
         return shinyRepository.findById(id)
-                .map(shiny -> objectMapper.convertValue(shiny, PokemonShinyDTO.class));
+                .map(shiny -> objectMapper.convertValue(shiny, PokemonDTO.class));
     }
 
     /**
@@ -76,10 +76,10 @@ public class PokemonShinyService {
      * @param numDex Le numéro de pokédex recherché
      * @return Les données du pokémon trouvé
      */
-    public List<PokemonDTO> findByNumDex(String numDex) {
-        List<PokemonDTO> shinies = shinyRepository.findByNumDex(numDex);
+    public List<PokemonReduitDTO> findByNumDex(String numDex) {
+        List<PokemonReduitDTO> shinies = shinyRepository.findByNumDex(numDex);
         return shinies.stream()
-                .map(shiny -> new PokemonDTO(shiny.getId(), shiny.getNumDex(), shiny.getNomPokemon()))
+                .map(shiny -> new PokemonReduitDTO(shiny.getId(), shiny.getNumDex(), shiny.getNomPokemon()))
                 .collect(Collectors.toList());
     }
 
@@ -88,10 +88,10 @@ public class PokemonShinyService {
      * @param boite La boite recherchée
      * @return La liste des shinies de la boite
      */
-    public List<PokemonShinyDTO> findByBoite(String boite) {
+    public List<PokemonDTO> findByBoite(String boite) {
         List<PokemonShiny> shinyList = shinyRepository.findByBoitePosition(boite);
         return shinyList.stream()
-                .map(shiny -> objectMapper.convertValue(shiny, PokemonShinyDTO.class))
+                .map(shiny -> objectMapper.convertValue(shiny, PokemonDTO.class))
                 .collect(Collectors.toList());
     }
 
