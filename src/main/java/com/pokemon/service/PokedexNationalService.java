@@ -1,7 +1,6 @@
 package com.pokemon.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pokemon.dto.*;
+import com.pokemon.dto.PokedexDTO;
 import com.pokemon.entity.*;
 import com.pokemon.exceptions.CustomException;
 import com.pokemon.repository.PokedexNationalRepository;
@@ -33,22 +32,17 @@ public class PokedexNationalService {
     private final BoitePokedexNationalService boitePokedexService;
 
     /**
-     * Sérialisation d'objet Java au format Json
-     */
-    private final ObjectMapper objectMapper;
-
-    /**
      * Le constructeur du service
      * @param pokedexRepository Injection du repository Shiny
      * @param boitePokedexService etc... Injection des services
      */
-    public PokedexNationalService(PokedexNationalRepository pokedexRepository, NatureService natureService, DresseurService dresseurService, PokeballService pokeballService, BoitePokedexNationalService boitePokedexService, ObjectMapper objectMapper) {
+    public PokedexNationalService(PokedexNationalRepository pokedexRepository, NatureService natureService, DresseurService dresseurService,
+                                  PokeballService pokeballService, BoitePokedexNationalService boitePokedexService) {
         this.pokedexRepository = pokedexRepository;
         this.natureService = natureService;
         this.dresseurService = dresseurService;
         this.pokeballService = pokeballService;
         this.boitePokedexService = boitePokedexService;
-        this.objectMapper = objectMapper;
     }
 
     /**

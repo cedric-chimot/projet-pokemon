@@ -30,7 +30,6 @@ public class BoitePokedexNationalService {
      */
     private final ObjectMapper objectMapper;
 
-
     /**
      * Le constructeur
      * @param boitePokedexRepository Injection du repository

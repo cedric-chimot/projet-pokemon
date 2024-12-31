@@ -30,8 +30,7 @@ public class PokedexNationalController {
     }
 
     /**
-     * Afficher toutes les pokedexNationals
-     *
+     * Afficher tous les pokemon du pokedex national
      * @return la liste des pokedexNationals
      */
     @GetMapping("/all")
@@ -40,10 +39,9 @@ public class PokedexNationalController {
     }
 
     /**
-     * Rechercher une pokedexNational par son id
-     *
-     * @param id l'id de la pokedexNational
-     * @return la pokedexNational trouvée
+     * Rechercher un pokemon du pokedex national par son id
+     * @param id l'id du pokemon recherché
+     * @return le pokemon trouvé
      */
     @GetMapping("/{id}")
     public PokedexDTO findPokemonFromPokedexById(@PathVariable Long id) {
@@ -51,8 +49,8 @@ public class PokedexNationalController {
     }
 
     /**
-     * Crée un nouvel objet PokedexNational avec les relations associées.
-     * @return l'objet PokedexNational créé
+     * Crée un nouveau pokemon du Pokedex National avec les relations associées.
+     * @return le pokemon ajouté au Pokedex National
      */
     @PostMapping("/save")
     public ResponseEntity<PokedexNational> savePokedex(@RequestBody PokedexRequeteDTO pokedexRequeteDTO) {
@@ -69,9 +67,9 @@ public class PokedexNationalController {
         return ResponseEntity.ok(pokedexSaved);
     }
     /**
-     * Mettre à jour une pokedexNational
-     * @param pokedexNational la pokedexNational à mettre à jour
-     * @return la pokedexNational mise à jour
+     * Mettre à jour un pokemon du pokedex national
+     * @param pokedexNational le pokemon à mettre à jour
+     * @return le pokemon mis à jour
      */
     @PatchMapping("/update")
     public PokedexNational updatepokedexNational(@RequestBody PokedexNational pokedexNational) {
@@ -79,9 +77,9 @@ public class PokedexNationalController {
     }
 
     /**
-     * Supprimer une pokedexNational par son id
-     * @param id l'id d'une pokedexNational à supprimer
-     * @return la pokedexNational supprimée
+     * Supprimer un pokemon du pokedex national par son id
+     * @param id l'id du pokemon à supprimer
+     * @return le pokemon supprimée
      */
     @DeleteMapping("/delete/{id}")
     public PokedexNational deletePokedexNationalById(@PathVariable Long id) {
@@ -89,7 +87,7 @@ public class PokedexNationalController {
     }
 
     /**
-     * Supprimer toutes les pokedexNationals
+     * Supprimer tous les pokemon du pokedex national
      */
     @DeleteMapping("/delete/all")
     public void deleteAllShinies() {
