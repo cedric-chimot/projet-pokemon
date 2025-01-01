@@ -49,7 +49,16 @@ public class DresseurService {
     }
 
     /**
-     * Méthode pour trouver tous les dresseurs
+     * Méthode pour retourner tous les dresseurs
+     * en excluant ceux dont l'id est compris entre 119 et 141
+     * @return la liste des dresseurs
+     */
+    public List<Dresseurs> findAllDresseursExceptSpecificRange() {
+        return dresseurRepository.findAllDresseursExceptRange();
+    }
+
+    /**
+     * Méthode pour trouver tous les dresseurs, numDresseur et nomDresseur
      * @return la liste de tous les dresseurs
      */
     public List<DresseurReduitDTO> findAllDresseurs() {

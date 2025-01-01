@@ -39,12 +39,21 @@ public class DresseurController {
     }
 
     /**
-     * Afficher la liste de tous les dresseurs
-     *
-     * @return la liste
+     * Afficher la liste de tous les dresseurs (complets)
+     * en excluant ceux dont l'id est compris entre 119 et 141
+     * @return la liste des dresseurs
      */
-    @GetMapping
-    public List<DresseurReduitDTO> findAll() {
+    @GetMapping("/find/all")
+    public List<Dresseurs> findAllDresseursFiltered() {
+        return dresseurService.findAllDresseursExceptSpecificRange();
+    }
+
+    /**
+     * Afficher la liste de tous les dresseurs, numDresseur et nomDresseur
+     * @return la liste des dresseurs
+     */
+    @GetMapping("/all")
+    public List<DresseurReduitDTO> findAllDresseursReduits() {
         return dresseurService.findAllDresseurs();
     }
 

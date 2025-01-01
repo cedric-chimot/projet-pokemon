@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/pokeballs")
+@CrossOrigin
 public class PokeballController {
     /**
      * Le service des pokeballs
@@ -35,12 +36,21 @@ public class PokeballController {
     }
 
     /**
-     * Afficher la liste de toutes les pokeballs
-     * @return la liste
+     * Afficher la liste de toutes les pokeballs (retourne toutes les données)
+     * @return la liste des pokeballs
      */
-    @GetMapping
+    @GetMapping("/find/all")
     public List<PokeballDTO> findAll() {
         return pokeballService.findAllPokeballs();
+    }
+
+    /**
+     * Afficher la liste des pokeballs (retourne le nom de la pokeball)
+     * @return la liste des pokeballs
+     */
+    @GetMapping("/all")
+    public List<PokeballReduitDTO> findAllByNom() {
+        return pokeballService.findAllPokeballsByNom();
     }
 
     /**
@@ -54,9 +64,9 @@ public class PokeballController {
     }
 
     /**
-     * Trouver une pokeball par son id
+     * Trouver une pokeball par son id et retourner son nom
      * @param id l'id de la pokeball
-     * @return la pokeball recherchée
+     * @return le nom de la pokeball recherchée
      */
     @GetMapping("/{id}")
     public PokeballReduitDTO getById(@PathVariable Integer id) {
