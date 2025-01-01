@@ -93,7 +93,7 @@ public class PokedexNationalService {
      * @param id L'id du pokemon recherché
      * @return le pokemon trouvé et toutes ses informations
      */
-    public PokedexDTO findById(Long id) {
+    public PokedexDTO findPokemonById(Long id) {
         return pokedexRepository.findById(id)
                 .map(pokedexNational -> new PokedexDTO(
                         pokedexNational.getNumDex(),
@@ -108,26 +108,39 @@ public class PokedexNationalService {
     }
 
     /**
-     * Mettre à jour un pokedex
-     * @param pokedex L'objet à mettre à jour
-     * @return L'objet mis à jour
+     * Mettre à jour un pokemon du pokedex
+     * @param pokemon L'objet pokemon à mettre à jour
+     * @return L'objet pokemon mis à jour
      */
-    public PokedexNational update(PokedexNational pokedex) {
-        return pokedexRepository.save(pokedex);
+    public PokedexNational updatePokemonInPokedex(PokedexNational pokemon) {
+        Optional<PokedexNational> existingInPokedex= pokedexRepository.findById(pokemon.getId());
+
+        if (existingInPokedex.isPresent()) {
+            PokedexNational existingPokemon = existingInPokedex.get();
+
+            existingPokemon.setNomPokemon(pokemon.getNomPokemon());
+            existingPokemon.setNaturePokedex(pokemon.getNaturePokedex());
+            existingPokemon.setDresseurPokedex(pokemon.getDresseurPokedex());
+            existingPokemon.setPokeballPokedex(pokemon.getPokeballPokedex());
+            existingPokemon.setBoitePokedex(pokemon.getBoitePokedex());
+            return pokedexRepository.save(existingPokemon);
+        } else {
+            throw new CustomException("Le pokemon n'est pas présent dans le pokedex", "id", pokemon.getId());
+        }
     }
 
     /**
-     * Méthode pour supprimer un pokedex par son Id
-     * @param id L'identifiant du pokedex à supprimer
+     * Méthode pour supprimer un pokemon du pokedex par son Id
+     * @param id L'identifiant du pokemon à supprimer
      * @return L'objet supprimé
      */
     public PokedexNational deleteById(Long id) {
         // Récupérer l'objet dans un Optional
-        Optional<PokedexNational> optionalShiny = pokedexRepository.findById(id);
+        Optional<PokedexNational> optionalPokemon = pokedexRepository.findById(id);
 
         // Vérifier si l'objet existe
-        if (optionalShiny.isPresent()) {
-            PokedexNational pokedex = optionalShiny.get();
+        if (optionalPokemon.isPresent()) {
+            PokedexNational pokedex = optionalPokemon.get();
             pokedexRepository.delete(pokedex); // Supprimer l'objet
             return pokedex; // Retourner l'objet supprimé
         } else {
@@ -136,7 +149,7 @@ public class PokedexNationalService {
     }
 
     /**
-     * Supprimer tous les pokedex
+     * Supprimer tous les pokemon du pokedex
      */
     public void deleteAll() {
         pokedexRepository.deleteAll();

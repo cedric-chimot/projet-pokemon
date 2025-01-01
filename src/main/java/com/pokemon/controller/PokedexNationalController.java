@@ -45,7 +45,7 @@ public class PokedexNationalController {
      */
     @GetMapping("/{id}")
     public PokedexDTO findPokemonFromPokedexById(@PathVariable Long id) {
-        return pokedexNationalService.findById(id);
+        return pokedexNationalService.findPokemonById(id);
     }
 
     /**
@@ -68,12 +68,12 @@ public class PokedexNationalController {
     }
     /**
      * Mettre à jour un pokemon du pokedex national
-     * @param pokedexNational le pokemon à mettre à jour
+     * @param pokemonInPokedex le pokemon à mettre à jour
      * @return le pokemon mis à jour
      */
     @PatchMapping("/update")
-    public PokedexNational updatepokedexNational(@RequestBody PokedexNational pokedexNational) {
-        return pokedexNationalService.update(pokedexNational);
+    public PokedexNational updatePokedexNational(@RequestBody PokedexNational pokemonInPokedex) {
+        return pokedexNationalService.updatePokemonInPokedex(pokemonInPokedex);
     }
 
     /**
@@ -82,7 +82,7 @@ public class PokedexNationalController {
      * @return le pokemon supprimée
      */
     @DeleteMapping("/delete/{id}")
-    public PokedexNational deletePokedexNationalById(@PathVariable Long id) {
+    public PokedexNational deletePokemonInPokedexById(@PathVariable Long id) {
         return pokedexNationalService.deleteById(id);
     }
 
@@ -90,7 +90,7 @@ public class PokedexNationalController {
      * Supprimer tous les pokemon du pokedex national
      */
     @DeleteMapping("/delete/all")
-    public void deleteAllShinies() {
+    public void deleteAllPokemonsInPokedex() {
         pokedexNationalService.deleteAll();
     }
 
