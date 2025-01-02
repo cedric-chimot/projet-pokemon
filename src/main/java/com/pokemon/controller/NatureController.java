@@ -1,6 +1,7 @@
 package com.pokemon.controller;
 
 import com.pokemon.dto.NatureDTO;
+import com.pokemon.dto.NatureReduitDTO;
 import com.pokemon.entity.Natures;
 import com.pokemon.service.NatureService;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/natures")
+@CrossOrigin
 public class NatureController {
     /**
      * Le service des natures
@@ -34,12 +36,21 @@ public class NatureController {
     }
 
     /**
-     * Afficher la liste de toutes les natures
-     * @return la liste
+     * Afficher la liste de toutes les natures (retourne toutes les données)
+     * @return la liste des natures
      */
-    @GetMapping("/all")
+    @GetMapping("/find/all")
     public List<NatureDTO> findAll() {
         return natureService.findAllNatures();
+    }
+
+    /**
+     * Afficher la liste de toutes les natures (retourne le nom de la nature)
+     * @return la liste des natures
+     */
+    @GetMapping("/all")
+    public List<NatureReduitDTO> findAllByNom() {
+        return natureService.findAllNaturesByNom();
     }
 
     /**
@@ -54,11 +65,12 @@ public class NatureController {
 
     /**
      * Trouver une nature par son id
+     *
      * @param id l'id de la nature
      * @return la nature recherchée
      */
     @GetMapping("/{id}")
-    public NatureDTO getById(@PathVariable Integer id) {
+    public NatureReduitDTO getById(@PathVariable Integer id) {
         return natureService.findNatureById(id);
     }
 

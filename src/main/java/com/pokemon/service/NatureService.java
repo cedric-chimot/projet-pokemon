@@ -2,6 +2,7 @@ package com.pokemon.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pokemon.dto.NatureDTO;
+import com.pokemon.dto.NatureReduitDTO;
 import com.pokemon.entity.Natures;
 import com.pokemon.exceptions.CustomException;
 import com.pokemon.repository.NatureRepository;
@@ -48,13 +49,24 @@ public class NatureService {
     }
 
     /**
-     * Méthode pour trouver toutes les natures
+     * Méthode pour trouver toutes les natures (complet)
      * @return la liste de toutes les natures
      */
     public List<NatureDTO> findAllNatures() {
         List<Natures> natureList = natureRepository.findAll();
         return natureList.stream()
                 .map(nature -> objectMapper.convertValue(nature, NatureDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Méthode pour trouver toutes les natures (retourne le nom)
+     * @return la liste des natures
+     */
+    public List<NatureReduitDTO> findAllNaturesByNom() {
+        List<Natures> natureList = natureRepository.findAll();
+        return natureList.stream()
+                .map(pokeball -> objectMapper.convertValue(pokeball, NatureReduitDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -73,9 +85,9 @@ public class NatureService {
      * @param id l'id de la nature recherchée
      * @return la nature trouvée
      */
-    public NatureDTO findNatureById(Integer id) {
+    public NatureReduitDTO findNatureById(Integer id) {
         Optional<Natures> nature = natureRepository.findById(id);
-        return objectMapper.convertValue(nature, NatureDTO.class);
+        return objectMapper.convertValue(nature, NatureReduitDTO.class);
     }
 
     /**

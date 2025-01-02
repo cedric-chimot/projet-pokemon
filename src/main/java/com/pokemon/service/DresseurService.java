@@ -49,6 +49,17 @@ public class DresseurService {
     }
 
     /**
+     * Méthode pour trouver tous les dresseurs, numDresseur et nomDresseur
+     * @return la liste de tous les dresseurs
+     */
+    public List<DresseurReduitDTO> findAllDresseurs() {
+        List<Dresseurs> dresseurList = dresseurRepository.findAll();
+        return dresseurList.stream()
+                .map(dresseur -> objectMapper.convertValue(dresseur, DresseurReduitDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Méthode pour afficher les listes de dresseurs compris entre deux ids distincts
      * @return les listes de dresseurs
      */
@@ -64,17 +75,6 @@ public class DresseurService {
     public List<Dresseurs> findAllDresseursGeneration2() {
         // Sélectionner les dresseurs dont l'ID est entre 82 et 118
         return dresseurRepository.findAllDresseursByGeneration2();
-    }
-
-    /**
-     * Méthode pour trouver tous les dresseurs, numDresseur et nomDresseur
-     * @return la liste de tous les dresseurs
-     */
-    public List<DresseurReduitDTO> findAllDresseurs() {
-        List<Dresseurs> dresseurList = dresseurRepository.findAll();
-        return dresseurList.stream()
-                .map(dresseur -> objectMapper.convertValue(dresseur, DresseurReduitDTO.class))
-                .collect(Collectors.toList());
     }
 
     /**
