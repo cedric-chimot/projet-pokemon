@@ -40,12 +40,21 @@ public class DresseurController {
 
     /**
      * Afficher la liste de tous les dresseurs (complets)
-     * en excluant ceux dont l'id est compris entre 119 et 141
+     * dont l'id est compris entre 1 et 81
      * @return la liste des dresseurs
      */
-    @GetMapping("/find/all")
-    public List<Dresseurs> findAllDresseursFiltered() {
-        return dresseurService.findAllDresseursExceptSpecificRange();
+    @GetMapping("/find/all-gen1")
+    public List<Dresseurs> findAllDresseursFiltered1() {
+        return dresseurService.findAllDresseursGeneration1();
+    }
+    /**
+     * Afficher la liste de tous les dresseurs (complets)
+     * dont l'id est compris entre 82 et 118 et excluant les ids 119 à 141
+     * @return la liste des dresseurs
+     */
+    @GetMapping("/find/all-gen2")
+    public List<Dresseurs> findAllDresseursFiltered2() {
+        return dresseurService.findAllDresseursGeneration2();
     }
 
     /**

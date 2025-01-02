@@ -49,12 +49,21 @@ public class DresseurService {
     }
 
     /**
-     * Méthode pour retourner tous les dresseurs
-     * en excluant ceux dont l'id est compris entre 119 et 141
-     * @return la liste des dresseurs
+     * Méthode pour afficher les listes de dresseurs compris entre deux ids distincts
+     * @return les listes de dresseurs
      */
-    public List<Dresseurs> findAllDresseursExceptSpecificRange() {
-        return dresseurRepository.findAllDresseursExceptRange();
+    public List<Dresseurs> findAllDresseursGeneration1() {
+        // Sélectionner les dresseurs dont l'ID est entre 1 et 81
+        return dresseurRepository.findAllDresseursByGeneration1();
+    }
+
+    /**
+     * Méthode pour afficher les listes de dresseurs compris entre deux ids distincts
+     * @return les listes de dresseurs
+     */
+    public List<Dresseurs> findAllDresseursGeneration2() {
+        // Sélectionner les dresseurs dont l'ID est entre 82 et 118
+        return dresseurRepository.findAllDresseursByGeneration2();
     }
 
     /**
