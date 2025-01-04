@@ -41,13 +41,18 @@ public class PokedexNational {
     @JoinColumn(name = "id_boite", nullable = false)
     private BoitePokedexNational boitePokedex;
 
-    public PokedexNational(String numDex, String nomPokemon, Natures naturePokedex, Dresseurs dresseurPokedex, Pokeballs pokeballPokedex, BoitePokedexNational boitePokedex) {
+    @Column(name = "region")
+    private String region;
+
+    public PokedexNational(String numDex, String nomPokemon, Natures naturePokedex, Dresseurs dresseurPokedex, Pokeballs pokeballPokedex,
+                           BoitePokedexNational boitePokedex, String region) {
         this.numDex = numDex;
         this.nomPokemon = nomPokemon;
         this.naturePokedex = naturePokedex;
         this.dresseurPokedex = dresseurPokedex;
         this.pokeballPokedex = pokeballPokedex;
         this.boitePokedex = boitePokedex;
+        this.region = region;
     }
 
     @Override

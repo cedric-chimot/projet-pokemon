@@ -56,7 +56,7 @@ public class PokedexNationalService {
      * @return le pokemon ajouté
      */
     public PokedexNational pokedexSave(String numDex, String nomPokemon, Integer idNature, Integer idDresseur,
-                                       Integer idPokeball, Long idBoite) {
+                                       Integer idPokeball, Long idBoite, String region) {
         // Récupérer les entités associées à partir des ID
         Natures nature = natureService.findById(idNature);
         Dresseurs dresseur = dresseurService.findById(idDresseur);
@@ -64,12 +64,16 @@ public class PokedexNationalService {
         BoitePokedexNational boitePokedex = boitePokedexService.findById(idBoite);
 
         // Créer l'entité PokedexNational à partir des données
-        PokedexNational pokedexNational = new PokedexNational(numDex, nomPokemon, nature, dresseur, pokeball, boitePokedex);
+        PokedexNational pokedexNational = new PokedexNational(numDex, nomPokemon, nature, dresseur, pokeball, boitePokedex, region);
 
         // Sauvegarder l'entité PokedexNational
         return pokedexRepository.save(pokedexNational);
     }
 
+    /**
+     * Trouver tous les pokemons sans restrictions
+     * @return La liste de tous les pokemons du pokedex
+     */
     public List<PokedexNational> findAllPokemons() {
         return pokedexRepository.findAll();
     }
@@ -90,6 +94,33 @@ public class PokedexNationalService {
                         new PokeballReduitDTO(pokedexNational.getPokeballPokedex().getNomPokeball()),  // Projection de la pokeball
                         new BoitePokedexReduitDTO(pokedexNational.getBoitePokedex().getNomBoite()),  // Projection de la boite
                         new DresseurReduitDTO(pokedexNational.getDresseurPokedex().getNumDresseur(), pokedexNational.getDresseurPokedex().getNomDresseur()) // Projection du dresseur
+                ))
+                .collect(Collectors.toList());
+    }
+
+    public List<PokedexDTO> findPokemonsByRegion(String region) {
+        List<PokedexNational> pokemons = switch (region.toLowerCase()) {
+            case "kanto" -> pokedexRepository.findByKanto();
+            case "johto" -> pokedexRepository.findByJohto();
+            case "hoenn" -> pokedexRepository.findByHoenn();
+            case "sinnoh" -> pokedexRepository.findBySinnoh();
+            case "unys" -> pokedexRepository.findByUnys();
+            case "kalos" -> pokedexRepository.findByKalos();
+            case "alola" -> pokedexRepository.findByAlola();
+            case "galar" -> pokedexRepository.findByGalar();
+            case "hisui" -> pokedexRepository.findByHisui();
+            case "paldea" -> pokedexRepository.findByPaldea();
+            default -> throw new IllegalArgumentException("Région non valide");
+        };
+
+        return pokemons.stream()
+                .map(pokedexNational -> new PokedexDTO(
+                        pokedexNational.getNumDex(),
+                        pokedexNational.getNomPokemon(),
+                        new NatureReduitDTO(pokedexNational.getNaturePokedex().getNomNature()),
+                        new PokeballReduitDTO(pokedexNational.getPokeballPokedex().getNomPokeball()),
+                        new BoitePokedexReduitDTO(pokedexNational.getBoitePokedex().getNomBoite()),
+                        new DresseurReduitDTO(pokedexNational.getDresseurPokedex().getNumDresseur(), pokedexNational.getDresseurPokedex().getNomDresseur())
                 ))
                 .collect(Collectors.toList());
     }
@@ -160,5 +191,4 @@ public class PokedexNationalService {
     public void deleteAll() {
         pokedexRepository.deleteAll();
     }
-
 }

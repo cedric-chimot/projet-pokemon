@@ -44,6 +44,16 @@ public class PokedexNationalController {
     }
 
     /**
+     * Trouver la liste des pokemon d'une région donnée
+     * @param region la région recherchée
+     * @return la liste des pokemons de la région
+     */
+    @GetMapping("/find/{region}")
+    public List<PokedexDTO> getPokemonsByRegion(@PathVariable String region) {
+        return pokedexNationalService.findPokemonsByRegion(region);
+    }
+
+    /**
      * Rechercher un pokemon du pokedex national par son id
      * @param id l'id du pokemon recherché
      * @return le pokemon trouvé
@@ -66,11 +76,13 @@ public class PokedexNationalController {
                 pokedexRequeteDTO.getIdNature(),
                 pokedexRequeteDTO.getIdDresseur(),
                 pokedexRequeteDTO.getIdPokeball(),
-                pokedexRequeteDTO.getIdBoite()
+                pokedexRequeteDTO.getIdBoite(),
+                pokedexRequeteDTO.getRegion()
         );
 
         return ResponseEntity.ok(pokedexSaved);
     }
+
     /**
      * Mettre à jour un pokemon du pokedex national
      * @param pokemonInPokedex le pokemon à mettre à jour
