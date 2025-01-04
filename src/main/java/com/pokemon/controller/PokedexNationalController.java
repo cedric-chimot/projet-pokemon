@@ -29,9 +29,14 @@ public class PokedexNationalController {
         this.pokedexNationalService = pokedexNationalService;
     }
 
+    @GetMapping("/find/all")
+    public List<PokedexNational> getAllPokemons() {
+        return pokedexNationalService.findAllPokemons();
+    }
+
     /**
-     * Afficher tous les pokemon du pokedex national
-     * @return la liste des pokedexNationals
+     * Afficher tous les pokemon du pokedex national (réduit)
+     * @return la liste des pokemons du pokedex national (uniquement les infos pour l'affichage)
      */
     @GetMapping("/all")
     public List<PokedexDTO> getAllPokemonsFromPokedex() {

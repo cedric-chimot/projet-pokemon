@@ -1,6 +1,6 @@
 package com.pokemon.service;
 
-import com.pokemon.dto.PokedexDTO;
+import com.pokemon.dto.*;
 import com.pokemon.entity.*;
 import com.pokemon.exceptions.CustomException;
 import com.pokemon.repository.PokedexNationalRepository;
@@ -70,20 +70,26 @@ public class PokedexNationalService {
         return pokedexRepository.save(pokedexNational);
     }
 
+    public List<PokedexNational> findAllPokemons() {
+        return pokedexRepository.findAll();
+    }
+
     /**
      * Méthode pour afficher la liste de tous les pokemon du pokedex
      * @return La liste des pokemon
      */
     public List<PokedexDTO> findAllPokemonsFromPokedex() {
-        return pokedexRepository.findAll().stream()
+        // Utiliser une projection ou une requête personnalisée pour récupérer uniquement les champs nécessaires.
+        List<PokedexNational> pokemons = pokedexRepository.findAllPokemonsWithRelations();
+
+        return pokemons.stream()
                 .map(pokedexNational -> new PokedexDTO(
                         pokedexNational.getNumDex(),
                         pokedexNational.getNomPokemon(),
-                        pokedexNational.getNaturePokedex().getNomNature(),
-                        pokedexNational.getPokeballPokedex().getNomPokeball(),
-                        pokedexNational.getBoitePokedex().getNomBoite(),
-                        pokedexNational.getDresseurPokedex().getNumDresseur(),
-                        pokedexNational.getDresseurPokedex().getNomDresseur()
+                        new NatureReduitDTO(pokedexNational.getNaturePokedex().getNomNature()),  // Projection de la nature
+                        new PokeballReduitDTO(pokedexNational.getPokeballPokedex().getNomPokeball()),  // Projection de la pokeball
+                        new BoitePokedexReduitDTO(pokedexNational.getBoitePokedex().getNomBoite()),  // Projection de la boite
+                        new DresseurReduitDTO(pokedexNational.getDresseurPokedex().getNumDresseur(), pokedexNational.getDresseurPokedex().getNomDresseur()) // Projection du dresseur
                 ))
                 .collect(Collectors.toList());
     }
@@ -94,15 +100,15 @@ public class PokedexNationalService {
      * @return le pokemon trouvé et toutes ses informations
      */
     public PokedexDTO findPokemonById(Long id) {
+        // Utiliser une requête personnalisée pour récupérer uniquement les champs nécessaires.
         return pokedexRepository.findById(id)
                 .map(pokedexNational -> new PokedexDTO(
                         pokedexNational.getNumDex(),
                         pokedexNational.getNomPokemon(),
-                        pokedexNational.getNaturePokedex().getNomNature(),
-                        pokedexNational.getPokeballPokedex().getNomPokeball(),
-                        pokedexNational.getBoitePokedex().getNomBoite(),
-                        pokedexNational.getDresseurPokedex().getNumDresseur(),
-                        pokedexNational.getDresseurPokedex().getNomDresseur()
+                        new NatureReduitDTO(pokedexNational.getNaturePokedex().getNomNature()),  // Projection de la nature
+                        new PokeballReduitDTO(pokedexNational.getPokeballPokedex().getNomPokeball()),  // Projection de la pokeball
+                        new BoitePokedexReduitDTO(pokedexNational.getBoitePokedex().getNomBoite()),  // Projection de la boite
+                        new DresseurReduitDTO(pokedexNational.getDresseurPokedex().getNumDresseur(), pokedexNational.getDresseurPokedex().getNomDresseur()) // Projection du dresseur
                 ))
                 .orElseThrow(() -> new CustomException("Aucun pokemon dans le pokedex", "id", id));
     }

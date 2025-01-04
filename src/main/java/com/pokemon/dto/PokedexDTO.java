@@ -13,14 +13,12 @@ public class PokedexDTO {
 
     private String nomPokemon;
 
-    private String nomNature;
+    private NatureReduitDTO nomNature;
 
-    private String nomPokeball;
+    private PokeballReduitDTO nomPokeball;
 
-    private String nomBoite;
+    private BoitePokedexReduitDTO nomBoite;
 
-    private String numDresseur;
-
-    private String nomDresseur;
+    private DresseurReduitDTO dresseur;
 
 }
