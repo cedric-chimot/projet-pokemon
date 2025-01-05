@@ -93,34 +93,82 @@ public class PokedexNationalService {
                         new NatureReduitDTO(pokedexNational.getNaturePokedex().getNomNature()),  // Projection de la nature
                         new PokeballReduitDTO(pokedexNational.getPokeballPokedex().getNomPokeball()),  // Projection de la pokeball
                         new BoitePokedexReduitDTO(pokedexNational.getBoitePokedex().getNomBoite()),  // Projection de la boite
-                        new DresseurReduitDTO(pokedexNational.getDresseurPokedex().getNumDresseur(), pokedexNational.getDresseurPokedex().getNomDresseur()) // Projection du dresseur
+                        new DresseurReduitDTO(pokedexNational.getDresseurPokedex().getNumDresseur(), pokedexNational.getDresseurPokedex().getNomDresseur()), // Projection du dresseur
+                        pokedexNational.getRegion()
                 ))
                 .collect(Collectors.toList());
     }
 
-    public List<PokedexDTO> findPokemonsByRegion(String region) {
-        List<PokedexNational> pokemons = switch (region.toLowerCase()) {
-            case "kanto" -> pokedexRepository.findByKanto();
-            case "johto" -> pokedexRepository.findByJohto();
-            case "hoenn" -> pokedexRepository.findByHoenn();
-            case "sinnoh" -> pokedexRepository.findBySinnoh();
-            case "unys" -> pokedexRepository.findByUnys();
-            case "kalos" -> pokedexRepository.findByKalos();
-            case "alola" -> pokedexRepository.findByAlola();
-            case "galar" -> pokedexRepository.findByGalar();
-            case "hisui" -> pokedexRepository.findByHisui();
-            case "paldea" -> pokedexRepository.findByPaldea();
-            default -> throw new IllegalArgumentException("Région non valide");
-        };
+    public List<PokedexDTO> findPokemonsByKanto() {
+        // Sélectionner les pokémons de la région Kanto
+        List<PokedexNational> pokemons = pokedexRepository.findByKanto();
+        return mapToDTO(pokemons); // Transformer les résultats en DTO
+    }
 
+    public List<PokedexDTO> findPokemonsByJohto() {
+        // Sélectionner les pokémons de la région Johto
+        List<PokedexNational> pokemons = pokedexRepository.findByJohto();
+        return mapToDTO(pokemons); // Transformer les résultats en DTO
+    }
+
+    public List<PokedexDTO> findPokemonsByHoenn() {
+        // Sélectionner les pokémons de la région Hoenn
+        List<PokedexNational> pokemons = pokedexRepository.findByHoenn();
+        return mapToDTO(pokemons); // Transformer les résultats en DTO
+    }
+
+    public List<PokedexDTO> findPokemonsBySinnoh() {
+        // Sélectionner les pokémons de la région Sinnoh
+        List<PokedexNational> pokemons = pokedexRepository.findBySinnoh();
+        return mapToDTO(pokemons); // Transformer les résultats en DTO
+    }
+
+    public List<PokedexDTO> findPokemonsByUnys() {
+        // Sélectionner les pokémons de la région Unys
+        List<PokedexNational> pokemons = pokedexRepository.findByUnys();
+        return mapToDTO(pokemons); // Transformer les résultats en DTO
+    }
+
+    public List<PokedexDTO> findPokemonsByKalos() {
+        // Sélectionner les pokémons de la région Kalos
+        List<PokedexNational> pokemons = pokedexRepository.findByKalos();
+        return mapToDTO(pokemons); // Transformer les résultats en DTO
+    }
+
+    public List<PokedexDTO> findPokemonsByAlola() {
+        // Sélectionner les pokémons de la région Alola
+        List<PokedexNational> pokemons = pokedexRepository.findByAlola();
+        return mapToDTO(pokemons); // Transformer les résultats en DTO
+    }
+
+    public List<PokedexDTO> findPokemonsByGalar() {
+        // Sélectionner les pokémons de la région Galar
+        List<PokedexNational> pokemons = pokedexRepository.findByGalar();
+        return mapToDTO(pokemons); // Transformer les résultats en DTO
+    }
+
+    public List<PokedexDTO> findPokemonsByHisui() {
+        // Sélectionner les pokémons de la région Hisui
+        List<PokedexNational> pokemons = pokedexRepository.findByHisui();
+        return mapToDTO(pokemons); // Transformer les résultats en DTO
+    }
+
+    public List<PokedexDTO> findPokemonsByPaldea() {
+        // Sélectionner les pokémons de la région Paldea
+        List<PokedexNational> pokemons = pokedexRepository.findByPaldea();
+        return mapToDTO(pokemons); // Transformer les résultats en DTO
+    }
+
+    private List<PokedexDTO> mapToDTO(List<PokedexNational> pokemons) {
         return pokemons.stream()
-                .map(pokedexNational -> new PokedexDTO(
-                        pokedexNational.getNumDex(),
-                        pokedexNational.getNomPokemon(),
-                        new NatureReduitDTO(pokedexNational.getNaturePokedex().getNomNature()),
-                        new PokeballReduitDTO(pokedexNational.getPokeballPokedex().getNomPokeball()),
-                        new BoitePokedexReduitDTO(pokedexNational.getBoitePokedex().getNomBoite()),
-                        new DresseurReduitDTO(pokedexNational.getDresseurPokedex().getNumDresseur(), pokedexNational.getDresseurPokedex().getNomDresseur())
+                .map(pokemon -> new PokedexDTO(
+                        pokemon.getNumDex(),
+                        pokemon.getNomPokemon(),
+                        new NatureReduitDTO(pokemon.getNaturePokedex().getNomNature()),
+                        new PokeballReduitDTO(pokemon.getPokeballPokedex().getNomPokeball()),
+                        new BoitePokedexReduitDTO(pokemon.getBoitePokedex().getNomBoite()),
+                        new DresseurReduitDTO(pokemon.getDresseurPokedex().getNumDresseur(), pokemon.getDresseurPokedex().getNomDresseur()),
+                        pokemon.getRegion()
                 ))
                 .collect(Collectors.toList());
     }
@@ -139,7 +187,8 @@ public class PokedexNationalService {
                         new NatureReduitDTO(pokedexNational.getNaturePokedex().getNomNature()),  // Projection de la nature
                         new PokeballReduitDTO(pokedexNational.getPokeballPokedex().getNomPokeball()),  // Projection de la pokeball
                         new BoitePokedexReduitDTO(pokedexNational.getBoitePokedex().getNomBoite()),  // Projection de la boite
-                        new DresseurReduitDTO(pokedexNational.getDresseurPokedex().getNumDresseur(), pokedexNational.getDresseurPokedex().getNomDresseur()) // Projection du dresseur
+                        new DresseurReduitDTO(pokedexNational.getDresseurPokedex().getNumDresseur(), pokedexNational.getDresseurPokedex().getNomDresseur()), // Projection du dresseur
+                        pokedexNational.getRegion()
                 ))
                 .orElseThrow(() -> new CustomException("Aucun pokemon dans le pokedex", "id", id));
     }

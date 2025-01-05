@@ -21,4 +21,6 @@ public class PokedexDTO {
 
     private DresseurReduitDTO dresseur;
 
+    private String region;
+
 }

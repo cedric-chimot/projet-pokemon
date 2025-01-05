@@ -43,16 +43,55 @@ public class PokedexNationalController {
         return pokedexNationalService.findAllPokemonsFromPokedex();
     }
 
-    /**
-     * Trouver la liste des pokemon d'une région donnée
-     * @param region la région recherchée
-     * @return la liste des pokemons de la région
-     */
-    @GetMapping("/find/{region}")
-    public List<PokedexDTO> getPokemonsByRegion(@PathVariable String region) {
-        return pokedexNationalService.findPokemonsByRegion(region);
+    @GetMapping("/kanto")
+    public List<PokedexDTO> getPokemonsByKanto() {
+        return pokedexNationalService.findPokemonsByKanto();
     }
 
+    @GetMapping("/johto")
+    public List<PokedexDTO> getPokemonsByJohto() {
+        return pokedexNationalService.findPokemonsByJohto();
+    }
+
+    @GetMapping("/hoenn")
+    public List<PokedexDTO> getPokemonsByHoenn() {
+        return pokedexNationalService.findPokemonsByHoenn();
+    }
+
+    @GetMapping("/sinnoh")
+    public List<PokedexDTO> getPokemonsBySinnoh() {
+        return pokedexNationalService.findPokemonsBySinnoh();
+    }
+
+    @GetMapping("/unys")
+    public List<PokedexDTO> getPokemonsByUnys() {
+        return pokedexNationalService.findPokemonsByUnys();
+    }
+
+    @GetMapping("/kalos")
+    public List<PokedexDTO> getPokemonsByKalos() {
+        return pokedexNationalService.findPokemonsByKalos();
+    }
+
+    @GetMapping("/alola")
+    public List<PokedexDTO> getPokemonsByAlola() {
+        return pokedexNationalService.findPokemonsByAlola();
+    }
+
+    @GetMapping("/galar")
+    public List<PokedexDTO> getPokemonsByGalar() {
+        return pokedexNationalService.findPokemonsByGalar();
+    }
+
+    @GetMapping("/hisui")
+    public List<PokedexDTO> getPokemonsByHisui() {
+        return pokedexNationalService.findPokemonsByHisui();
+    }
+
+    @GetMapping("/paldea")
+    public List<PokedexDTO> getPokemonsByPaldea() {
+        return pokedexNationalService.findPokemonsByPaldea();
+    }
     /**
      * Rechercher un pokemon du pokedex national par son id
      * @param id l'id du pokemon recherché
