@@ -21,6 +21,6 @@ public class PokedexRequeteDTO {
 
     private Long idBoite;
 
-    private String region;
+    private Long idRegion;
 
 }

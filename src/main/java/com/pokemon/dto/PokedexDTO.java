@@ -1,5 +1,6 @@
 package com.pokemon.dto;
 
+import com.pokemon.entity.Regions;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,6 @@ public class PokedexDTO {
 
     private DresseurReduitDTO dresseur;
 
-    private String region;
+    private Regions region;
 
 }

@@ -30,6 +30,7 @@ public class PokedexNationalService {
     private final DresseurService dresseurService;
     private final PokeballService pokeballService;
     private final BoitePokedexNationalService boitePokedexService;
+    private final RegionsService regionsService;
 
     /**
      * Le constructeur du service
@@ -37,12 +38,13 @@ public class PokedexNationalService {
      * @param boitePokedexService etc... Injection des services
      */
     public PokedexNationalService(PokedexNationalRepository pokedexRepository, NatureService natureService, DresseurService dresseurService,
-                                  PokeballService pokeballService, BoitePokedexNationalService boitePokedexService) {
+                                  PokeballService pokeballService, BoitePokedexNationalService boitePokedexService, RegionsService regionsService) {
         this.pokedexRepository = pokedexRepository;
         this.natureService = natureService;
         this.dresseurService = dresseurService;
         this.pokeballService = pokeballService;
         this.boitePokedexService = boitePokedexService;
+        this.regionsService = regionsService;
     }
 
     /**
@@ -53,15 +55,17 @@ public class PokedexNationalService {
      * @param idDresseur le dresseur d'origine
      * @param idPokeball la pokeball de capture
      * @param idBoite la boite de pokedex à laquelle il appartient
+     * @param idRegion la région à laquelle il appartient
      * @return le pokemon ajouté
      */
     public PokedexNational pokedexSave(String numDex, String nomPokemon, Integer idNature, Integer idDresseur,
-                                       Integer idPokeball, Long idBoite, String region) {
+                                       Integer idPokeball, Long idBoite, Long idRegion) {
         // Récupérer les entités associées à partir des ID
         Natures nature = natureService.findById(idNature);
         Dresseurs dresseur = dresseurService.findById(idDresseur);
         Pokeballs pokeball = pokeballService.findById(idPokeball);
         BoitePokedexNational boitePokedex = boitePokedexService.findById(idBoite);
+        Regions region = regionsService.findById(idRegion);
 
         // Créer l'entité PokedexNational à partir des données
         PokedexNational pokedexNational = new PokedexNational(numDex, nomPokemon, nature, dresseur, pokeball, boitePokedex, region);
@@ -99,64 +103,11 @@ public class PokedexNationalService {
                 .collect(Collectors.toList());
     }
 
-    public List<PokedexDTO> findPokemonsByKanto() {
-        // Sélectionner les pokémons de la région Kanto
-        List<PokedexNational> pokemons = pokedexRepository.findByKanto();
-        return mapToDTO(pokemons); // Transformer les résultats en DTO
-    }
-
-    public List<PokedexDTO> findPokemonsByJohto() {
-        // Sélectionner les pokémons de la région Johto
-        List<PokedexNational> pokemons = pokedexRepository.findByJohto();
-        return mapToDTO(pokemons); // Transformer les résultats en DTO
-    }
-
-    public List<PokedexDTO> findPokemonsByHoenn() {
-        // Sélectionner les pokémons de la région Hoenn
-        List<PokedexNational> pokemons = pokedexRepository.findByHoenn();
-        return mapToDTO(pokemons); // Transformer les résultats en DTO
-    }
-
-    public List<PokedexDTO> findPokemonsBySinnoh() {
-        // Sélectionner les pokémons de la région Sinnoh
-        List<PokedexNational> pokemons = pokedexRepository.findBySinnoh();
-        return mapToDTO(pokemons); // Transformer les résultats en DTO
-    }
-
-    public List<PokedexDTO> findPokemonsByUnys() {
-        // Sélectionner les pokémons de la région Unys
-        List<PokedexNational> pokemons = pokedexRepository.findByUnys();
-        return mapToDTO(pokemons); // Transformer les résultats en DTO
-    }
-
-    public List<PokedexDTO> findPokemonsByKalos() {
-        // Sélectionner les pokémons de la région Kalos
-        List<PokedexNational> pokemons = pokedexRepository.findByKalos();
-        return mapToDTO(pokemons); // Transformer les résultats en DTO
-    }
-
-    public List<PokedexDTO> findPokemonsByAlola() {
-        // Sélectionner les pokémons de la région Alola
-        List<PokedexNational> pokemons = pokedexRepository.findByAlola();
-        return mapToDTO(pokemons); // Transformer les résultats en DTO
-    }
-
-    public List<PokedexDTO> findPokemonsByGalar() {
-        // Sélectionner les pokémons de la région Galar
-        List<PokedexNational> pokemons = pokedexRepository.findByGalar();
-        return mapToDTO(pokemons); // Transformer les résultats en DTO
-    }
-
-    public List<PokedexDTO> findPokemonsByHisui() {
-        // Sélectionner les pokémons de la région Hisui
-        List<PokedexNational> pokemons = pokedexRepository.findByHisui();
-        return mapToDTO(pokemons); // Transformer les résultats en DTO
-    }
-
-    public List<PokedexDTO> findPokemonsByPaldea() {
-        // Sélectionner les pokémons de la région Paldea
-        List<PokedexNational> pokemons = pokedexRepository.findByPaldea();
-        return mapToDTO(pokemons); // Transformer les résultats en DTO
+    public List<PokedexDTO> findPokemonsByRegion(Long regionId) {
+        // Récupérer les pokémons pour la région spécifiée par ID
+        List<PokedexNational> pokemons = pokedexRepository.findByRegion(regionId);
+        // Transformer les résultats en DTO et les retourner
+        return mapToDTO(pokemons);
     }
 
     private List<PokedexDTO> mapToDTO(List<PokedexNational> pokemons) {

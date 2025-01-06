@@ -41,11 +41,12 @@ public class PokedexNational {
     @JoinColumn(name = "id_boite", nullable = false)
     private BoitePokedexNational boitePokedex;
 
-    @Column(name = "region")
-    private String region;
+    @ManyToOne
+    @JoinColumn(name = "id_region", nullable = false)
+    private Regions region;
 
     public PokedexNational(String numDex, String nomPokemon, Natures naturePokedex, Dresseurs dresseurPokedex, Pokeballs pokeballPokedex,
-                           BoitePokedexNational boitePokedex, String region) {
+                           BoitePokedexNational boitePokedex, Regions region) {
         this.numDex = numDex;
         this.nomPokemon = nomPokemon;
         this.naturePokedex = naturePokedex;
@@ -65,6 +66,7 @@ public class PokedexNational {
                 ", dresseurPokedex=" + dresseurPokedex +
                 ", pokeballPokedex=" + pokeballPokedex +
                 ", boitePokedex=" + boitePokedex +
+                ", region=" + region +
                 '}';
     }
 

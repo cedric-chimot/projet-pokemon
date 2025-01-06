@@ -1,6 +1,7 @@
 package com.pokemon.controller;
 
-import com.pokemon.dto.*;
+import com.pokemon.dto.PokedexDTO;
+import com.pokemon.dto.PokedexRequeteDTO;
 import com.pokemon.entity.PokedexNational;
 import com.pokemon.service.PokedexNationalService;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/pokedexNational")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 public class PokedexNationalController {
 
     /**
@@ -43,55 +44,12 @@ public class PokedexNationalController {
         return pokedexNationalService.findAllPokemonsFromPokedex();
     }
 
-    @GetMapping("/kanto")
-    public List<PokedexDTO> getPokemonsByKanto() {
-        return pokedexNationalService.findPokemonsByKanto();
+    @GetMapping("/region/{regionId}")
+    public ResponseEntity<List<PokedexDTO>> getPokemonsByRegion(@PathVariable Long regionId) {
+        List<PokedexDTO> pokemons = pokedexNationalService.findPokemonsByRegion(regionId);
+        return ResponseEntity.ok(pokemons);
     }
 
-    @GetMapping("/johto")
-    public List<PokedexDTO> getPokemonsByJohto() {
-        return pokedexNationalService.findPokemonsByJohto();
-    }
-
-    @GetMapping("/hoenn")
-    public List<PokedexDTO> getPokemonsByHoenn() {
-        return pokedexNationalService.findPokemonsByHoenn();
-    }
-
-    @GetMapping("/sinnoh")
-    public List<PokedexDTO> getPokemonsBySinnoh() {
-        return pokedexNationalService.findPokemonsBySinnoh();
-    }
-
-    @GetMapping("/unys")
-    public List<PokedexDTO> getPokemonsByUnys() {
-        return pokedexNationalService.findPokemonsByUnys();
-    }
-
-    @GetMapping("/kalos")
-    public List<PokedexDTO> getPokemonsByKalos() {
-        return pokedexNationalService.findPokemonsByKalos();
-    }
-
-    @GetMapping("/alola")
-    public List<PokedexDTO> getPokemonsByAlola() {
-        return pokedexNationalService.findPokemonsByAlola();
-    }
-
-    @GetMapping("/galar")
-    public List<PokedexDTO> getPokemonsByGalar() {
-        return pokedexNationalService.findPokemonsByGalar();
-    }
-
-    @GetMapping("/hisui")
-    public List<PokedexDTO> getPokemonsByHisui() {
-        return pokedexNationalService.findPokemonsByHisui();
-    }
-
-    @GetMapping("/paldea")
-    public List<PokedexDTO> getPokemonsByPaldea() {
-        return pokedexNationalService.findPokemonsByPaldea();
-    }
     /**
      * Rechercher un pokemon du pokedex national par son id
      * @param id l'id du pokemon recherché
@@ -116,7 +74,7 @@ public class PokedexNationalController {
                 pokedexRequeteDTO.getIdDresseur(),
                 pokedexRequeteDTO.getIdPokeball(),
                 pokedexRequeteDTO.getIdBoite(),
-                pokedexRequeteDTO.getRegion()
+                pokedexRequeteDTO.getIdRegion()
         );
 
         return ResponseEntity.ok(pokedexSaved);

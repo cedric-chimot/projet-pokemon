@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/types")
+@CrossOrigin
 public class TypeController {
     /**
      * Le service des types
