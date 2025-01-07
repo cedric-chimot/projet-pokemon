@@ -19,4 +19,5 @@ public interface PokedexNationalRepository extends JpaRepository<PokedexNational
     // Requête qui retourne les pokémons d'une région spécifique en utilisant l'ID de la région
     @Query("SELECT p FROM PokedexNational p WHERE p.region.id = :regionId")
     List<PokedexNational> findByRegion(@Param("regionId") Long regionId);
+
 }
