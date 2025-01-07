@@ -2,12 +2,12 @@
 
 # _Le MCD_
 
-![pokemon-mcd](https://github.com/user-attachments/assets/01a49f99-05cb-4080-a12f-ed759cab8a00)
+![pokemon-mcd](https://github.com/user-attachments/assets/2f9f0974-dd87-4a74-bb35-f2ad002f4dc8)
 
 
 # _Le MLD_
 
-![pokemon-mld](https://github.com/user-attachments/assets/c99246a4-7dd0-4db2-b084-c2829970f911)
+![pokemon-mld](https://github.com/user-attachments/assets/cb0491ba-bd53-4617-a3d2-a574401bea9c)
 
 
 # _Le rendu sur Workbench_
