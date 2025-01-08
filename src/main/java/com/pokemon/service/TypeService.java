@@ -60,7 +60,17 @@ public class TypeService {
     }
 
     /**
-     * Méthode pour trouver un type par son id
+     * Méthode pour trouver un type par son id (Générique)
+     * @param id l'id du type recherché
+     * @return le type trouvé
+     */
+    public Types findById(Integer id) {
+        return typeRepository.findById(id)
+                .orElseThrow(() -> new CustomException("Dresseur", "id", id));
+    }
+
+    /**
+     * Méthode pour trouver un type par son id (DTO)
      * @param id l'id du type recherché
      * @return le type trouvé
      */

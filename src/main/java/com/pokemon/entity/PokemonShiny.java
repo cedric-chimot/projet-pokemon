@@ -70,8 +70,13 @@ public class PokemonShiny {
     @Column(name = "position", nullable = false)
     private Integer position;
 
+    @ManyToOne
+    @JoinColumn(name = "id_region")
+    private Regions regionShiny;
+
     public PokemonShiny(String numDex, String nomPokemon, Natures nature, Dresseurs dresseur, Pokeballs pokeball, String ivManquant, Types type1,
-                        Types type2, Sexe sexe, String attaque1, String attaque2, String attaque3, String attaque4, String boite, Integer position) {
+                        Types type2, Sexe sexe, String attaque1, String attaque2, String attaque3, String attaque4, String boite, Integer position,
+                        Regions regions) {
         this.numDex = numDex;
         this.nomPokemon = nomPokemon;
         this.nature = nature;
@@ -87,6 +92,7 @@ public class PokemonShiny {
         this.attaque4 = attaque4;
         this.boite = boite;
         this.position = position;
+        this.regionShiny = regions;
     }
 
     @Override
@@ -107,7 +113,8 @@ public class PokemonShiny {
                 ", attaque3='" + attaque3 + '\'' +
                 ", attaque4='" + attaque4 + '\'' +
                 ", boite='" + boite + '\'' +
-                ", position=" + position +
+                ", position=" + position + '\'' +
+                ", region='" + regionShiny +
                 '}';
     }
 }

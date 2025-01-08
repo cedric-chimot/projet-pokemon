@@ -27,6 +27,10 @@ public class Regions {
     @OneToMany(mappedBy = "region")
     private List<PokedexNational> pokemonList;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "regionShiny")
+    private List<PokemonShiny> shinyList;
+
     public Regions(Long id, String nomRegion) {
         this.id = id;
         this.nomRegion = nomRegion;

@@ -1,10 +1,11 @@
 package com.pokemon.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pokemon.dto.PokemonReduitDTO;
 import com.pokemon.dto.PokemonDTO;
+import com.pokemon.dto.PokemonReduitDTO;
+import com.pokemon.dto.PokemonRequeteDTO;
 import com.pokemon.dto.StatIvManquantDTO;
-import com.pokemon.entity.PokemonShiny;
+import com.pokemon.entity.*;
 import com.pokemon.exceptions.CustomException;
 import com.pokemon.repository.PokemonShinyRepository;
 import jakarta.transaction.Transactional;
@@ -27,6 +28,17 @@ public class PokemonShinyService {
     private final PokemonShinyRepository shinyRepository;
 
     /**
+     * Appel des services des classes associées
+     */
+    private final NatureService natureService;
+    private final DresseurService dresseurService;
+    private final PokeballService pokeballService;
+    private final TypeService typeService;
+    private final SexeService sexeService;
+    private final RegionsService regionsService;
+
+
+    /**
      * Sérialisation d'objet Java au format Json
      */
     private final ObjectMapper objectMapper;
@@ -34,20 +46,58 @@ public class PokemonShinyService {
     /**
      * Le constructeur du service
      * @param shinyRepository Injection du repository Shiny
+     * @param dresseurService et autres : pour injecter les services nécessaires
      * @param objectMapper Injection de l'ObjectMapper
      */
-    public PokemonShinyService(PokemonShinyRepository shinyRepository, ObjectMapper objectMapper) {
+    public PokemonShinyService(PokemonShinyRepository shinyRepository, NatureService natureService, DresseurService dresseurService,
+                               PokeballService pokeballService, TypeService typeService, SexeService sexeService, RegionsService regionsService,
+                               ObjectMapper objectMapper) {
         this.shinyRepository = shinyRepository;
+        this.natureService = natureService;
+        this.dresseurService = dresseurService;
+        this.pokeballService = pokeballService;
+        this.typeService = typeService;
+        this.sexeService = sexeService;
+        this.regionsService = regionsService;
         this.objectMapper = objectMapper;
     }
 
     /**
-     * Méthode pour ajouter un shiny
-     * @param shiny Le shiny à ajouter
-     * @return Le shiny ajouté
+     * Ajouter un shiny avec toutes les relations associées
+     * @param pokemonRequeteDTO pour trouver les informations nécessaires à ajouter
+     * @return le pokemon shiny nouvellement ajouté
      */
-    public PokemonShiny shinySave(PokemonShiny shiny) {
-        return shinyRepository.save(shiny);
+    public PokemonShiny shinySave(PokemonRequeteDTO pokemonRequeteDTO) {
+        // Récupérer les entités associées via leurs services
+        Natures nature = natureService.findById(pokemonRequeteDTO.getIdNature());
+        Dresseurs dresseur = dresseurService.findById(pokemonRequeteDTO.getIdDresseur());
+        Pokeballs pokeball = pokeballService.findById(pokemonRequeteDTO.getIdPokeball());
+        Types type1 = typeService.findById(pokemonRequeteDTO.getType1());
+        Types type2 = typeService.findById(pokemonRequeteDTO.getType2());
+        Sexe sexe = sexeService.findById(pokemonRequeteDTO.getIdSexe());
+        Regions region = regionsService.findById(pokemonRequeteDTO.getIdRegion());
+
+        // Créer et sauvegarder le shiny
+        PokemonShiny pokemonShiny = new PokemonShiny(
+                pokemonRequeteDTO.getNumDex(),
+                pokemonRequeteDTO.getNomPokemon(),
+                nature,
+                dresseur,
+                pokeball,
+                pokemonRequeteDTO.getIvManquant(),
+                type1,
+                type2,
+                sexe,
+                pokemonRequeteDTO.getAttaque1(),
+                pokemonRequeteDTO.getAttaque2(),
+                pokemonRequeteDTO.getAttaque3(),
+                pokemonRequeteDTO.getAttaque4(),
+                pokemonRequeteDTO.getBoite(),
+                pokemonRequeteDTO.getPosition(),
+                region
+        );
+
+        return shinyRepository.save(pokemonShiny);
     }
 
     /**
@@ -108,12 +158,45 @@ public class PokemonShinyService {
     }
 
     /**
+     * Trouver la liste des pokemon shiny selon une région donnée
+     * @param regionId l'id de la région demandée
+     * @return le pokemon recherché
+     */
+    public List<PokemonShiny> getPokemonByRegion(Long regionId) {
+        return shinyRepository.findByRegion(regionId);
+    }
+
+    /**
      * Mettre à jour un shiny
      * @param shiny L'objet à mettre à jour
      * @return L'objet mis à jour
      */
-    public PokemonShiny update(PokemonShiny shiny) {
-        return shinyRepository.save(shiny);
+    public PokemonShiny updatePokemonShiny(PokemonShiny shiny) {
+        Optional<PokemonShiny> existingInPokedex= shinyRepository.findById(shiny.getId());
+
+        if (existingInPokedex.isPresent()) {
+            PokemonShiny existingPokemon = existingInPokedex.get();
+
+            existingPokemon.setNumDex(shiny.getNumDex());
+            existingPokemon.setNomPokemon(shiny.getNomPokemon());
+            existingPokemon.setNature(shiny.getNature());
+            existingPokemon.setDresseur(shiny.getDresseur());
+            existingPokemon.setPokeball(shiny.getPokeball());
+            existingPokemon.setIvManquant(shiny.getIvManquant());
+            existingPokemon.setType1(shiny.getType1());
+            existingPokemon.setType2(shiny.getType2());
+            existingPokemon.setSexe(shiny.getSexe());
+            existingPokemon.setAttaque1(shiny.getAttaque1());
+            existingPokemon.setAttaque2(shiny.getAttaque2());
+            existingPokemon.setAttaque3(shiny.getAttaque3());
+            existingPokemon.setAttaque4(shiny.getAttaque4());
+            existingPokemon.setBoite(shiny.getBoite());
+            existingPokemon.setPosition(shiny.getPosition());
+            existingPokemon.setRegionShiny(shiny.getRegionShiny());
+            return shinyRepository.save(existingPokemon);
+        } else {
+            throw new CustomException("Le pokemon n'est pas présent dans le pokedex", "id", shiny.getId());
+        }
     }
 
     /**

@@ -31,6 +31,17 @@ public class BoitesController {
     }
 
     /**
+     * Créer une nouvelle boite
+     * @param boite la boite à créer
+     * @return la nouvelle boite
+     */
+    @PostMapping("/create")
+    public ResponseEntity<Boites> createBoite(@RequestBody Boites boite) {
+        Boites savedBoite = boiteService.save(boite);
+        return ResponseEntity.ok(savedBoite);
+    }
+
+    /**
      * Afficher toutes les boites
      * @return la liste des boites
      */
@@ -51,9 +62,9 @@ public class BoitesController {
     }
 
     /**
-     * Récupérer les stats par boite
+     * Récupérer les stats par boite et par type
      * @param boiteId l'id de la boite
-     * @param type le type pour lequel on récupère les données
+     * @param type le type pour lequel on récupère les données (par exemple 'pokeballs', 'dresseurs', etc.)
      * @return les stats par boite pour chaque type
      */
     @GetMapping("/{boiteId}/{type}")
@@ -69,9 +80,9 @@ public class BoitesController {
     }
 
     /**
-     * Récupérer les stats globales pour chaque type
-     * @param type le type pour lequel on récupère les données
-     * @return toutes les stats pour chaque type
+     * Récupère les statistiques globales pour un type donné.
+     * @param type Le type de statistique (par exemple 'pokeballs', 'dresseurs', etc.)
+     * @return La liste globale des données d'un type
      */
     @GetMapping("/global/{type}")
     public ResponseEntity<List<Map<String, Object>>> getStatsGlobales(@PathVariable String type) {
@@ -81,17 +92,6 @@ public class BoitesController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
         }
-    }
-
-    /**
-     * Créer une nouvelle boite
-     * @param boite la boite à créer
-     * @return la nouvelle boite
-     */
-    @PostMapping("/create")
-    public ResponseEntity<Boites> createBoite(@RequestBody Boites boite) {
-        Boites savedBoite = boiteService.save(boite);
-        return ResponseEntity.ok(savedBoite);
     }
 
     /**

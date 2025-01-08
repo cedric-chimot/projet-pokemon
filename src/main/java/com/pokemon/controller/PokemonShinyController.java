@@ -1,10 +1,12 @@
 package com.pokemon.controller;
 
-import com.pokemon.dto.PokemonReduitDTO;
 import com.pokemon.dto.PokemonDTO;
+import com.pokemon.dto.PokemonReduitDTO;
+import com.pokemon.dto.PokemonRequeteDTO;
 import com.pokemon.dto.StatIvManquantDTO;
 import com.pokemon.entity.PokemonShiny;
 import com.pokemon.service.PokemonShinyService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,12 +36,18 @@ public class PokemonShinyController {
 
     /**
      * Ajouter un shiny
-     * @param shiny Le shiny à ajouter
      * @return Le shiny nouvellement ajouté
      */
-    @PostMapping("/create")
-    public PokemonShiny addShiny(@RequestBody PokemonShiny shiny) {
-        return shinyService.shinySave(shiny);
+    @PostMapping("/save")
+    public ResponseEntity<PokemonShiny> saveShinyPokemon(@RequestBody PokemonRequeteDTO pokemonRequeteDTO) {
+        try {
+            // Appeler la méthode shinySave du service
+            PokemonShiny pokemonShiny = shinyService.shinySave(pokemonRequeteDTO);
+            return new ResponseEntity<>(pokemonShiny, HttpStatus.CREATED);
+        } catch (Exception e) {
+            // En cas d'erreur, retourner un statut 400 avec un message
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**
@@ -102,13 +110,24 @@ public class PokemonShinyController {
     }
 
     /**
+     * Trouver tous les pokemons d'une région
+     * @param regionId l'id de la région
+     * @return la liste des pokemons d'une région
+     */
+    @GetMapping("/region/{regionId}")
+    public ResponseEntity<List<PokemonShiny>> getPokemonByRegion(@PathVariable Long regionId) {
+        List<PokemonShiny> shinyList = shinyService.getPokemonByRegion(regionId);
+        return ResponseEntity.ok(shinyList);
+    }
+
+    /**
      * Mettre à jour un shiny
      * @param shiny le shiny à mettre à jour
      * @return le shiny mis à jour
      */
     @PatchMapping("/update")
     public PokemonShiny updateShiny(@RequestBody PokemonShiny shiny) {
-        return shinyService.update(shiny);
+        return shinyService.updatePokemonShiny(shiny);
     }
 
     /**

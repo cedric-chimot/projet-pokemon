@@ -59,7 +59,17 @@ public class SexeService {
     }
 
     /**
-     * Méthode pour trouver un sexe par son id
+     * Méthode pour trouver un sexe par son id (générique)
+     * @param id l'id de la  sexe recherché
+     * @return le sexe trouvé
+     */
+    public Sexe findById(Integer id) {
+        return sexeRepository.findById(id)
+                .orElseThrow(() -> new CustomException("Dresseur", "id", id));
+    }
+
+    /**
+     * Méthode pour trouver un sexe par son id (DTO)
      * @param id l'id de la  sexe recherché
      * @return le sexe trouvé
      */

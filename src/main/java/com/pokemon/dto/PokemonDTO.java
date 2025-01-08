@@ -1,5 +1,6 @@
 package com.pokemon.dto;
 
+import com.pokemon.entity.Regions;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,10 +42,12 @@ public class PokemonDTO {
 
     private Integer position;
 
+    private Regions region;
+
     public PokemonDTO(Integer id, String numDex, String nomPokemon, String nomNature, String numDresseur,
                       String nomDresseur, String pokeball, String ivManquant, TypeShinyDTO type1, TypeShinyDTO type2,
                       SexeShinyDTO sexe, String attaque1, String attaque2, String attaque3, String attaque4,
-                      String boite, Integer position) {
+                      String boite, Integer position, Regions region) {
         this.id = id;
         this.numDex = numDex;
         this.nomPokemon = nomPokemon;
@@ -61,6 +64,7 @@ public class PokemonDTO {
         this.attaque4 = attaque4;
         this.boite = boite;
         this.position = position;
+        this.region = region;
     }
 
 }
