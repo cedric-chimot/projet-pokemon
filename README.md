@@ -2,7 +2,7 @@
 
 # _Le MCD_
 
-![pokemon-mcd](https://github.com/user-attachments/assets/6b275b32-e5c8-442e-8acf-162dd3b5a095)
+![pokemon-mcd](https://github.com/user-attachments/assets/a7f33ee9-d91d-4da2-80bb-b5d00a1b7154)
 
 
 # _Le MLD_
