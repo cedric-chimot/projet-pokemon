@@ -1,0 +1,117 @@
+package com.cch.pokemon.controller;
+
+import com.cch.pokemon.dto.DresseurReduitDTO;
+import com.cch.pokemon.entity.Dresseurs;
+import com.cch.pokemon.service.DresseurService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+/**
+ * Le controller d'un dresseur
+ */
+@RestController
+@RequestMapping("/api/dresseurs")
+@CrossOrigin
+public class DresseurController {
+
+    /**
+     * Le service des dresseurs
+     */
+    private final DresseurService dresseurService;
+
+    /**
+     * Le constructeur
+     * @param dresseurService Injection du service
+     */
+    public DresseurController(DresseurService dresseurService) {
+        this.dresseurService = dresseurService;
+    }
+
+    /**
+     * Ajouter un nouveau dresseur
+     * @param dresseur le dresseur à ajouter
+     * @return le dresseur nouvellement ajouté
+     */
+    @PostMapping("/create")
+    public Dresseurs addDresseur(@RequestBody Dresseurs dresseur) {
+        return dresseurService.save(dresseur);
+    }
+
+    /**
+     * Afficher la liste de tous les dresseurs (complets)
+     * dont l'id est compris entre 1 et 81
+     * @return la liste des dresseurs
+     */
+    @GetMapping("/find/all-gen1")
+    public List<Dresseurs> findAllDresseursFiltered1() {
+        return dresseurService.findAllDresseursGeneration1();
+    }
+    /**
+     * Afficher la liste de tous les dresseurs (complets)
+     * dont l'id est compris entre 82 et 118 et excluant les ids 119 à 141
+     * @return la liste des dresseurs
+     */
+    @GetMapping("/find/all-gen2")
+    public List<Dresseurs> findAllDresseursFiltered2() {
+        return dresseurService.findAllDresseursGeneration2();
+    }
+
+    /**
+     * Afficher la liste de tous les dresseurs, numDresseur et nomDresseur
+     * @return la liste des dresseurs
+     */
+    @GetMapping("/all")
+    public List<DresseurReduitDTO> findAllDresseursReduits() {
+        return dresseurService.findAllDresseurs();
+    }
+
+    /**
+     * Trouver un dresseur par son id (dresseur complet)
+     * @param id l'id du dresseur
+     * @return le dresseur recherché
+     */
+    @GetMapping("/find/{id}")
+    public Dresseurs findById(@PathVariable Integer id) {
+        return dresseurService.findById(id);
+    }
+
+    /**
+     * Trouver un dresseur par son id (avec le DTO)
+     * @param id l'id du dresseur
+     * @return le dresseur recherché
+     */
+    @GetMapping("/{id}")
+    public DresseurReduitDTO getById(@PathVariable Integer id) {
+        return dresseurService.findDresseurById(id);
+    }
+
+    /**
+     * Mettre à jour un dresseur
+     * @param dresseur le dresseur à mettre à jour
+     * @return le dresseur mis à jour
+     */
+    @PatchMapping("/update")
+    public Dresseurs updateDresseur(@RequestBody Dresseurs dresseur) {
+        return dresseurService.update(dresseur);
+    }
+
+    /**
+     * Supprimer un dresseur par son id
+     * @param id l'id du dresseur à supprimer
+     * @return le dresseur supprimé
+     */
+    @DeleteMapping("/delete/{id}")
+    public Dresseurs deleteDresseurById(@PathVariable Integer id) {
+        return dresseurService.deleteById(id);
+    }
+
+    /**
+     * Supprimer tous les dresseurs
+     */
+    @DeleteMapping("/delete/all")
+    public void deleteAllDresseurs() {
+        dresseurService.deleteAll();
+    }
+
+}
