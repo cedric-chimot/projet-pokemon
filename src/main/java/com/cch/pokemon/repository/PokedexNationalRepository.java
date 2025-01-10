@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface PokedexNationalRepository extends JpaRepository<PokedexNational, Long> {
 
+    // Requête de relation entre le pokedex et les entités liées
     @Query("SELECT p FROM PokedexNational p " +
             "JOIN FETCH p.naturePokedex " +
             "JOIN FETCH p.pokeballPokedex " +

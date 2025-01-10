@@ -103,6 +103,11 @@ public class PokedexNationalService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Méthode pour trouver la liste des pokemons du pokedex d'une région
+     * @param regionId l'id de la région
+     * @return la liste des pokemons
+     */
     public List<PokedexDTO> findPokemonsByRegion(Long regionId) {
         // Récupérer les pokémons pour la région spécifiée par ID
         List<PokedexNational> pokemons = pokedexRepository.findByRegion(regionId);
@@ -110,6 +115,11 @@ public class PokedexNationalService {
         return mapToDTO(pokemons);
     }
 
+    /**
+     * Mapping des données pour afficher une liste de pokemons avec certaines de leurs informations
+     * @param pokemons La liste des pokemon à mapper
+     * @return la liste des pokemons mappés et leurs informations
+     */
     private List<PokedexDTO> mapToDTO(List<PokedexNational> pokemons) {
         return pokemons.stream()
                 .map(pokemon -> new PokedexDTO(
