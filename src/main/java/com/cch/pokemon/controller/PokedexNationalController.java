@@ -30,6 +30,26 @@ public class PokedexNationalController {
         this.pokedexNationalService = pokedexNationalService;
     }
 
+    /**
+     * Crée un nouveau pokemon du Pokedex National avec les relations associées.
+     * @return le pokemon ajouté au Pokedex National
+     */
+    @PostMapping("/save")
+    public ResponseEntity<PokedexNational> savePokedex(@RequestBody PokedexRequeteDTO pokedexRequeteDTO) {
+        // Appeler le service en utilisant les données envoyées dans le corps de la requête
+        PokedexNational pokedexSaved = pokedexNationalService.pokedexSave(
+                pokedexRequeteDTO.getNumDex(),
+                pokedexRequeteDTO.getNomPokemon(),
+                pokedexRequeteDTO.getIdNature(),
+                pokedexRequeteDTO.getIdDresseur(),
+                pokedexRequeteDTO.getIdPokeball(),
+                pokedexRequeteDTO.getIdBoite(),
+                pokedexRequeteDTO.getIdRegion()
+        );
+
+        return ResponseEntity.ok(pokedexSaved);
+    }
+
     @GetMapping("/find/all")
     public List<PokedexNational> getAllPokemons() {
         return pokedexNationalService.findAllPokemons();
@@ -58,26 +78,6 @@ public class PokedexNationalController {
     @GetMapping("/{id}")
     public PokedexDTO findPokemonFromPokedexById(@PathVariable Long id) {
         return pokedexNationalService.findPokemonById(id);
-    }
-
-    /**
-     * Crée un nouveau pokemon du Pokedex National avec les relations associées.
-     * @return le pokemon ajouté au Pokedex National
-     */
-    @PostMapping("/save")
-    public ResponseEntity<PokedexNational> savePokedex(@RequestBody PokedexRequeteDTO pokedexRequeteDTO) {
-        // Appeler le service en utilisant les données envoyées dans le corps de la requête
-        PokedexNational pokedexSaved = pokedexNationalService.pokedexSave(
-                pokedexRequeteDTO.getNumDex(),
-                pokedexRequeteDTO.getNomPokemon(),
-                pokedexRequeteDTO.getIdNature(),
-                pokedexRequeteDTO.getIdDresseur(),
-                pokedexRequeteDTO.getIdPokeball(),
-                pokedexRequeteDTO.getIdBoite(),
-                pokedexRequeteDTO.getIdRegion()
-        );
-
-        return ResponseEntity.ok(pokedexSaved);
     }
 
     /**
