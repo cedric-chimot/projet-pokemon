@@ -9,14 +9,33 @@ import java.util.List;
 public interface DresseurRepository extends JpaRepository<Dresseurs, Integer> {
 
     /**
-     * Requêtes pour afficher des listes de dresseurs
-     * dont l'id est compris entre deux ids distincts
-     * @return les listes de dresseurs correspondantes
+     * Afficher les dresseurs au nombre de pokémon > 0
+     * @return la liste des dresseurs
      */
-    @Query("SELECT d FROM Dresseurs d WHERE d.id BETWEEN 1 AND 81 AND d.nbPokemon > 0")
-    List<Dresseurs> findAllDresseursByGeneration1();
+    @Query("SELECT d FROM Dresseurs d WHERE d.nbPokemon > 0 AND d.nomDresseur != 'Event'")
+    List<Dresseurs> findAllDresseursReduit();
 
-    @Query("SELECT d FROM Dresseurs d WHERE (d.id BETWEEN 82 AND 118 OR d.id > 141) AND d.nbPokemon > 0")
-    List<Dresseurs> findAllDresseursByGeneration2();
+    /**
+     * Requêtes pour afficher des listes de dresseurs
+     * de la région 1, divisée en deux groupes
+     */
+    @Query("SELECT d FROM Dresseurs d WHERE d.regionDresseur.idRegionDresseur = 1 AND d.id BETWEEN 1 AND 40 AND d.nbPokemon > 0")
+    List<Dresseurs> findAllDresseursByRegion1Part1();
+
+    @Query("SELECT d FROM Dresseurs d WHERE d.regionDresseur.idRegionDresseur = 1 AND d.id BETWEEN 41 AND 81 AND d.nbPokemon > 0")
+    List<Dresseurs> findAllDresseursByRegion1Part2();
+
+    /**
+     * Requête pour afficher les dresseurs de la region 2
+     */
+    @Query("SELECT d FROM Dresseurs d WHERE d.regionDresseur.idRegionDresseur = 2 AND d.regionDresseur IS NOT NULL AND d.nbPokemon > 0")
+    List<Dresseurs> findAllDresseursRegion2();
+
+    /**
+     * Requête pour afficher les dresseurs de la region 3
+     */
+    @Query("SELECT d FROM Dresseurs d WHERE d.regionDresseur.idRegionDresseur = 3 AND d.regionDresseur IS NOT NULL AND d.nbPokemon > 0")
+    List<Dresseurs> findAllDresseursRegion3();
+
 
 }

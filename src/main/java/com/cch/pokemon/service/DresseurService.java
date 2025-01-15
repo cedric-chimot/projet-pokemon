@@ -53,28 +53,44 @@ public class DresseurService {
      * @return la liste de tous les dresseurs
      */
     public List<DresseurReduitDTO> findAllDresseurs() {
-        List<Dresseurs> dresseurList = dresseurRepository.findAll();
+        List<Dresseurs> dresseurList = dresseurRepository.findAllDresseursReduit();
         return dresseurList.stream()
                 .map(dresseur -> objectMapper.convertValue(dresseur, DresseurReduitDTO.class))
                 .collect(Collectors.toList());
     }
 
     /**
-     * Méthode pour afficher les listes de dresseurs compris entre deux ids distincts
-     * @return les listes de dresseurs
+     * Méthode pour afficher les listes de dresseurs
+     * dont l'id de la région est 1 et l'id dresseur est compris entre 1 et 40
+     * @return la liste des dresseurs
      */
-    public List<Dresseurs> findAllDresseursGeneration1() {
-        // Sélectionner les dresseurs dont l'ID est entre 1 et 81
-        return dresseurRepository.findAllDresseursByGeneration1();
+    public List<Dresseurs> findAllDresseursRegion1Part1() {
+        return dresseurRepository.findAllDresseursByRegion1Part1();
     }
 
     /**
-     * Méthode pour afficher les listes de dresseurs compris entre deux ids distincts
-     * @return les listes de dresseurs
+     * Méthode pour afficher les listes de dresseurs
+     * dont l'id de la région est 1 et l'id dresseur est compris entre 41 et 81
+     * @return la liste des dresseurs
      */
-    public List<Dresseurs> findAllDresseursGeneration2() {
-        // Sélectionner les dresseurs dont l'ID est entre 82 et 118
-        return dresseurRepository.findAllDresseursByGeneration2();
+    public List<Dresseurs> findAllDresseursRegionPart2() {
+        return dresseurRepository.findAllDresseursByRegion1Part2();
+    }
+
+    /**
+     * Méthode pour afficher les listes de dresseurs de la région 2
+     * @return la liste des dresseurs
+     */
+    public List<Dresseurs> findAllDresseursRegions2() {
+        return dresseurRepository.findAllDresseursRegion2();
+    }
+
+    /**
+     * Méthode pour afficher les listes de dresseurs de la région 3
+     * @return la liste des dresseurs
+     */
+    public List<Dresseurs> findAllDresseursRegions3() {
+        return dresseurRepository.findAllDresseursRegion3();
     }
 
     /**

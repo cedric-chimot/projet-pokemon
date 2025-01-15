@@ -34,6 +34,10 @@ public class Dresseurs {
     @Column(name = "nb_shiny")
     private Long nbShiny;
 
+    @ManyToOne
+    @JoinColumn(name = "id_region_dresseur")
+    private RegionDresseur regionDresseur;
+
     @JsonIgnore
     @OneToMany(mappedBy = "dresseur")
     private List<PokemonShiny> shinyList;
