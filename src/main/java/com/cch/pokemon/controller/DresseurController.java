@@ -3,6 +3,7 @@ package com.cch.pokemon.controller;
 import com.cch.pokemon.dto.DresseurReduitDTO;
 import com.cch.pokemon.entity.Dresseurs;
 import com.cch.pokemon.service.DresseurService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,8 +35,35 @@ public class DresseurController {
      * @return le dresseur nouvellement ajouté
      */
     @PostMapping("/create")
-    public Dresseurs addDresseur(@RequestBody Dresseurs dresseur) {
-        return dresseurService.save(dresseur);
+    public ResponseEntity<Dresseurs> saveDresseur(@RequestBody Dresseurs dresseur) {
+        // Appeler le service en utilisant les données envoyées dans le corps de la requête
+        Dresseurs dresseurSave = dresseurService.save(
+                dresseur.getNumDresseur(),
+                dresseur.getNomDresseur(),
+                dresseur.getNbPokemon(),
+                dresseur.getNbShiny(),
+                dresseur.getRegionDresseur().getIdRegionDresseur()
+        );
+
+        return ResponseEntity.ok(dresseurSave);
+    }
+
+    /**
+     * Afficher la liste de tous les dresseurs (complets)
+     * @return la liste des dresseurs
+     */
+    @GetMapping("/find/all")
+    public List<Dresseurs> findAllDresseurs() {
+        return dresseurService.findAll();
+    }
+
+    /**
+     * Afficher la liste de tous les dresseurs, numDresseur et nomDresseur
+     * @return la liste des dresseurs
+     */
+    @GetMapping("/all")
+    public List<DresseurReduitDTO> findAllDresseursReduits() {
+        return dresseurService.findAllDresseurs();
     }
 
     /**
@@ -79,15 +107,6 @@ public class DresseurController {
     }
 
     /**
-     * Afficher la liste de tous les dresseurs, numDresseur et nomDresseur
-     * @return la liste des dresseurs
-     */
-    @GetMapping("/all")
-    public List<DresseurReduitDTO> findAllDresseursReduits() {
-        return dresseurService.findAllDresseurs();
-    }
-
-    /**
      * Trouver un dresseur par son id (dresseur complet)
      * @param id l'id du dresseur
      * @return le dresseur recherché
@@ -114,7 +133,7 @@ public class DresseurController {
      */
     @PatchMapping("/update")
     public Dresseurs updateDresseur(@RequestBody Dresseurs dresseur) {
-        return dresseurService.update(dresseur);
+        return dresseurService.updateDresseur(dresseur);
     }
 
     /**

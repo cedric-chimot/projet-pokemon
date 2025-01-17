@@ -46,11 +46,12 @@ public class Dresseurs {
     @OneToMany(mappedBy = "dresseurPokedex")
     private List<PokedexNational> pokemonList;
 
-    public Dresseurs(String numDresseur, String nomDresseur, Long nbPokemon, Long nbShiny) {
+    public Dresseurs(String numDresseur, String nomDresseur, Long nbPokemon, Long nbShiny, RegionDresseur regionDresseur) {
         this.numDresseur = numDresseur;
         this.nomDresseur = nomDresseur;
         this.nbPokemon = nbPokemon;
         this.nbShiny = nbShiny;
+        this.regionDresseur = regionDresseur;
     }
 
     @Override

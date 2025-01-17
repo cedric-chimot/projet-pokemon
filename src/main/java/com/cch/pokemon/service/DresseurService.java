@@ -1,10 +1,11 @@
 package com.cch.pokemon.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.cch.pokemon.dto.DresseurReduitDTO;
 import com.cch.pokemon.entity.Dresseurs;
+import com.cch.pokemon.entity.RegionDresseur;
 import com.cch.pokemon.exceptions.CustomException;
 import com.cch.pokemon.repository.DresseurRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -25,27 +26,49 @@ public class DresseurService {
     private final DresseurRepository dresseurRepository;
 
     /**
+     * Le service des regionDresseur
+     */
+    private final RegionDresseurService regionDresseurService;
+
+    /**
      * Sérialisation d'objet Java au format Json
      */
     private final ObjectMapper objectMapper;
-
 
     /**
      * Le constructeur
      * @param dresseurRepository Injection du repository
      */
-    public DresseurService(DresseurRepository dresseurRepository, ObjectMapper objectMapper) {
+    public DresseurService(DresseurRepository dresseurRepository, RegionDresseurService regionDresseurService, ObjectMapper objectMapper) {
         this.dresseurRepository = dresseurRepository;
+        this.regionDresseurService = regionDresseurService;
         this.objectMapper = objectMapper;
     }
 
     /**
      * Méthode pour créer un nouveau dresseur
-     * @param dresseur le dresseur à créer
+     * @param numDresseur le numéro de dresseur
+     * @param nomDresseur le nom de du dresseur
+     * @param nbPokemon le nombre de pokemon du dresseur
+     * @param nbShiny le nombre de pokemon shiny du dresseur
+     * @param idRegionDresseur l'id de la région dresseur
      * @return le dresseur nouvellement créé
      */
-    public Dresseurs save(Dresseurs dresseur) {
+    public Dresseurs save(String numDresseur, String nomDresseur, Long nbPokemon, Long nbShiny,
+                          Long idRegionDresseur) {
+        RegionDresseur regionDresseur = regionDresseurService.findById(idRegionDresseur);
+
+        Dresseurs dresseur = new Dresseurs(numDresseur, nomDresseur, nbPokemon, nbShiny, regionDresseur);
+
         return dresseurRepository.save(dresseur);
+    }
+
+    /**
+     * Méthode pour trouver tous les dresseurs (complets)
+     * @return la liste des dresseurs
+     */
+    public List<Dresseurs> findAll() {
+        return dresseurRepository.findAll();
     }
 
     /**
@@ -104,7 +127,7 @@ public class DresseurService {
     }
 
     /**
-     * Méthode pour trouver un dresseur par son id
+     * Méthode pour trouver un dresseur par son id (dresseur réduit)
      * @param id l'id du dresseur recherché
      * @return le dresseur trouvé
      */
@@ -116,11 +139,24 @@ public class DresseurService {
 
     /**
      * Mettre à jour un dresseur
-     * @param shiny L'objet à mettre à jour
+     * @param dresseur L'objet à mettre à jour
      * @return L'objet mis à jour
      */
-    public Dresseurs update(Dresseurs shiny) {
-        return dresseurRepository.save(shiny);
+    public Dresseurs updateDresseur(Dresseurs dresseur) {
+        Optional<Dresseurs> isDresseurExist= dresseurRepository.findById(dresseur.getId());
+
+        if (isDresseurExist.isPresent()) {
+            Dresseurs existingDresseur = isDresseurExist.get();
+
+            existingDresseur.setNumDresseur(dresseur.getNumDresseur());
+            existingDresseur.setNomDresseur(dresseur.getNomDresseur());
+            existingDresseur.setNbPokemon(dresseur.getNbPokemon());
+            existingDresseur.setNbShiny(dresseur.getNbShiny());
+            existingDresseur.setRegionDresseur(dresseur.getRegionDresseur());
+            return dresseurRepository.save(existingDresseur);
+        } else {
+            throw new CustomException("Le dresseur n'existe pas", "id", dresseur.getId());
+        }
     }
 
     /**
