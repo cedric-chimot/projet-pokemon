@@ -127,6 +127,15 @@ public class DresseurController {
     }
 
     /**
+     * Compter le nombre de dresseurs
+     * @return le nombre de dresseurs
+     */
+    @GetMapping("/count")
+    public Long getCountDresseurs() {
+        return dresseurService.findDresseursCount();
+    }
+
+    /**
      * Mettre à jour un dresseur
      * @param dresseur le dresseur à mettre à jour
      * @return le dresseur mis à jour

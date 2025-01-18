@@ -64,12 +64,6 @@ public class PokedexNationalController {
         return pokedexNationalService.findAllPokemonsFromPokedex();
     }
 
-    @GetMapping("/region/{regionId}")
-    public ResponseEntity<List<PokedexDTO>> getPokemonsByRegion(@PathVariable Long regionId) {
-        List<PokedexDTO> pokemons = pokedexNationalService.findPokemonsByRegion(regionId);
-        return ResponseEntity.ok(pokemons);
-    }
-
     /**
      * Rechercher un pokemon du pokedex national par son id
      * @param id l'id du pokemon recherché
@@ -78,6 +72,26 @@ public class PokedexNationalController {
     @GetMapping("/{id}")
     public PokedexDTO findPokemonFromPokedexById(@PathVariable Long id) {
         return pokedexNationalService.findPokemonById(id);
+    }
+
+    /**
+     * Afficher la liste des pokemons pour une région donnée
+     * @param regionId l'identifiant de la région
+     * @return la liste des pokemons
+     */
+    @GetMapping("/region/{regionId}")
+    public ResponseEntity<List<PokedexDTO>> getPokemonsByRegion(@PathVariable Long regionId) {
+        List<PokedexDTO> pokemons = pokedexNationalService.findPokemonsByRegion(regionId);
+        return ResponseEntity.ok(pokemons);
+    }
+
+    /**
+     * Compter le nombre de pokemons du pokedex
+     * @return le nombre de pokemons
+     */
+    @GetMapping("/count")
+    public Long getCountPokemonsInPokedex() {
+        return pokedexNationalService.findPokemonsCount();
     }
 
     /**

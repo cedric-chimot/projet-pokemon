@@ -21,4 +21,11 @@ public interface PokedexNationalRepository extends JpaRepository<PokedexNational
     @Query("SELECT p FROM PokedexNational p WHERE p.region.id = :regionId")
     List<PokedexNational> findByRegion(@Param("regionId") Long regionId);
 
+    /**
+     * Requête pour compter le nombre total de pokemons dans le pokedex
+     * @return le nombre de pokemons
+     */
+    @Query("SELECT COUNT(p) FROM PokedexNational p")
+    Long countPokemonsInPokedex();
+
 }

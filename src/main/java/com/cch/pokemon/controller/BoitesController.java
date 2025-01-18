@@ -95,6 +95,15 @@ public class BoitesController {
     }
 
     /**
+     * Compter le nombre de boites shiny
+     * @return le nombre de boites
+     */
+    @GetMapping("/count")
+    public Long getCountBoitesShiny() {
+        return boiteService.findBoitesCount();
+    }
+
+    /**
      * Mettre à jour une boite
      * @param boite la boite à mettre à jour
      * @return la boite mise à jour

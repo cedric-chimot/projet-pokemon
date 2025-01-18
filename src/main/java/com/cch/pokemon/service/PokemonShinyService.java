@@ -167,6 +167,14 @@ public class PokemonShinyService {
     }
 
     /**
+     * Méthode pour retrouver le nombre total de pokemons shiny
+     * @return le nombre de shiny
+     */
+    public Long findShiniesCount() {
+        return shinyRepository.countPokemonsShiny();
+    }
+
+    /**
      * Mettre à jour un shiny
      * @param shiny L'objet à mettre à jour
      * @return L'objet mis à jour

@@ -42,4 +42,11 @@ public interface PokemonShinyRepository extends JpaRepository<PokemonShiny, Inte
     @Query("SELECT p FROM PokemonShiny p WHERE p.regionShiny.id = :idRegion")
     List<PokemonShiny> findByRegion(@Param("idRegion") Long idRegion);
 
+    /**
+     * Requête pour compter le nombre total de pokemons shiny
+     * @return le nombre de pokemons
+     */
+    @Query("SELECT COUNT(p) FROM PokemonShiny p")
+    Long countPokemonsShiny();
+
 }

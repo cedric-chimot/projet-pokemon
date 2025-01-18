@@ -121,6 +121,15 @@ public class PokemonShinyController {
     }
 
     /**
+     * Compter le nombre de pokemons shiny
+     * @return le nombre de shiny
+     */
+    @GetMapping("/count")
+    public Long getCountShiny() {
+        return shinyService.findShiniesCount();
+    }
+
+    /**
      * Mettre à jour un shiny
      * @param shiny le shiny à mettre à jour
      * @return le shiny mis à jour

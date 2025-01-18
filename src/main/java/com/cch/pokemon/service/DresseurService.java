@@ -138,6 +138,14 @@ public class DresseurService {
     }
 
     /**
+     * Méthode pour retrouver le nombre total de dresseurs
+     * @return le nombre de dresseurs
+     */
+    public Long findDresseursCount() {
+        return dresseurRepository.countDresseurs();
+    }
+
+    /**
      * Mettre à jour un dresseur
      * @param dresseur L'objet à mettre à jour
      * @return L'objet mis à jour

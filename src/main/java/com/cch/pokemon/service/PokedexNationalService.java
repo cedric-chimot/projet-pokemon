@@ -155,6 +155,14 @@ public class PokedexNationalService {
     }
 
     /**
+     * Méthode pour retrouver le nombre total de pokemons dans le pokedex
+     * @return le nombre de pokemons
+     */
+    public Long findPokemonsCount() {
+        return pokedexRepository.countPokemonsInPokedex();
+    }
+
+    /**
      * Mettre à jour un pokemon du pokedex
      * @param pokemon L'objet pokemon à mettre à jour
      * @return L'objet pokemon mis à jour

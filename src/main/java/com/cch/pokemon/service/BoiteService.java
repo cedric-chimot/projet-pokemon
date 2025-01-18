@@ -169,6 +169,14 @@ public class BoiteService {
     }
 
     /**
+     * Méthode pour retrouver le nombre total de boites shiny
+     * @return le nombre de boites
+     */
+    public Long findBoitesCount() {
+        return boitesRepository.countBoitesShiny();
+    }
+
+    /**
      * Mettre à jour une boite
      * @param boite L'objet à mettre à jour
      * @return L'objet mis à jour

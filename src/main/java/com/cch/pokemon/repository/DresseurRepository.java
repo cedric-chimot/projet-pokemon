@@ -37,5 +37,11 @@ public interface DresseurRepository extends JpaRepository<Dresseurs, Integer> {
     @Query("SELECT d FROM Dresseurs d WHERE d.regionDresseur.idRegionDresseur = 3 AND d.regionDresseur IS NOT NULL AND d.nbPokemon > 0")
     List<Dresseurs> findAllDresseursRegion3();
 
+    /**
+     * Requête pour compter le nombre total de dresseurs, en excluant certains Ids et ceux sans pokemon
+      * @return le nombre de dresseurs
+     */
+    @Query("SELECT COUNT(d) FROM Dresseurs d WHERE (d.id < 119 OR d.id > 140) AND d.nbPokemon > 0")
+    Long countDresseurs();
 
 }

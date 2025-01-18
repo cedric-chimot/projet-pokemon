@@ -74,4 +74,11 @@ public interface BoitesRepository extends JpaRepository<Boites, Integer> {
             "WHERE bt.boite.id = :boiteId")
     List<Object[]> statsByBoiteType(@Param("boiteId") Integer boiteId);
 
+    /**
+     * Requête pour compter le nombre total de boites shiny
+     * @return le nombre de boites
+     */
+    @Query("SELECT COUNT(b) FROM Boites b")
+    Long countBoitesShiny();
+
 }
