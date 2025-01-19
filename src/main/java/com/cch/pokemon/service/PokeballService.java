@@ -92,11 +92,21 @@ public class PokeballService {
 
     /**
      * Mettre à jour une pokeball
-     * @param shiny L'objet à mettre à jour
+     * @param pokeball L'objet à mettre à jour
      * @return L'objet mis à jour
      */
-    public Pokeballs update(Pokeballs shiny) {
-        return pokeballRepository.save(shiny);
+    public Pokeballs update(Pokeballs pokeball) {
+        Optional<Pokeballs> isPokeballExist = pokeballRepository.findById(pokeball.getId());
+
+        if (isPokeballExist.isPresent()) {
+            Pokeballs existingPokeball = isPokeballExist.get();
+
+            existingPokeball.setNbPokemon(pokeball.getNbPokemon());
+            existingPokeball.setNbShiny(pokeball.getNbShiny());
+            return pokeballRepository.save(existingPokeball);
+        } else {
+            throw new CustomException("La pokeball est inconnue", "id", pokeball.getId());
+        }
     }
 
     /**

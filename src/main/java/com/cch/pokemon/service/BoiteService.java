@@ -181,8 +181,17 @@ public class BoiteService {
      * @param boite L'objet à mettre à jour
      * @return L'objet mis à jour
      */
-    public Boites update(Boites boite) {
-        return boitesRepository.save(boite);
+    public Boites updateBoite(Boites boite) {
+        Optional<Boites> existingBoiteShiny= boitesRepository.findById(boite.getId());
+
+        if (existingBoiteShiny.isPresent()) {
+            Boites existingBoite = existingBoiteShiny.get();
+
+            existingBoite.setNom(boite.getNom());
+            return boitesRepository.save(existingBoite);
+        } else {
+            throw new CustomException("La boite est inconnue", "id", boite.getId());
+        }
     }
 
     /**

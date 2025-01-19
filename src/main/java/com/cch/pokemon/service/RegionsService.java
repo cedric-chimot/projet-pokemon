@@ -1,9 +1,9 @@
 package com.cch.pokemon.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.cch.pokemon.entity.Regions;
 import com.cch.pokemon.exceptions.CustomException;
 import com.cch.pokemon.repository.RegionRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -68,8 +68,18 @@ public class RegionsService {
      * @param region L'objet à mettre à jour
      * @return L'objet mis à jour
      */
+
     public Regions update(Regions region) {
-        return regionRepository.save(region);
+        Optional<Regions> isRegionExist = regionRepository.findById(region.getId());
+
+        if (isRegionExist.isPresent()) {
+            Regions existingRegion = isRegionExist.get();
+
+            existingRegion.setNomRegion(region.getNomRegion());
+            return regionRepository.save(existingRegion);
+        } else {
+            throw new CustomException("La région est inconnue", "id", region.getId());
+        }
     }
 
     /**

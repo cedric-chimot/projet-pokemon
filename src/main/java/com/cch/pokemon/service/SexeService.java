@@ -1,10 +1,10 @@
 package com.cch.pokemon.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.cch.pokemon.dto.SexeDTO;
 import com.cch.pokemon.entity.Sexe;
 import com.cch.pokemon.exceptions.CustomException;
 import com.cch.pokemon.repository.SexeRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -80,11 +80,21 @@ public class SexeService {
 
     /**
      * Mettre à jour un sexe
-     * @param shiny L'objet à mettre à jour
+     * @param sexe L'objet à mettre à jour
      * @return L'objet mis à jour
      */
-    public Sexe update(Sexe shiny) {
-        return sexeRepository.save(shiny);
+    public Sexe update(Sexe sexe) {
+        Optional<Sexe> isSexeExist = sexeRepository.findById(sexe.getId());
+
+        if (isSexeExist.isPresent()) {
+            Sexe existingSexe = isSexeExist.get();
+
+            existingSexe.setNbTotal(sexe.getNbTotal());
+            existingSexe.setNbShiny(sexe.getNbShiny());
+            return sexeRepository.save(existingSexe);
+        } else {
+            throw new CustomException("Le sexe est inconnu", "id", sexe.getId());
+        }
     }
 
     /**

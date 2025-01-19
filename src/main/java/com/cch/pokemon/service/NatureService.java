@@ -92,11 +92,21 @@ public class NatureService {
 
     /**
      * Mettre à jour une nature
-     * @param shiny L'objet à mettre à jour
+     * @param nature L'objet à mettre à jour
      * @return L'objet mis à jour
      */
-    public Natures update(Natures shiny) {
-        return natureRepository.save(shiny);
+    public Natures update(Natures nature) {
+        Optional<Natures> isNatureExist = natureRepository.findById(nature.getId());
+
+        if (isNatureExist.isPresent()) {
+            Natures existingNature = isNatureExist.get();
+
+            existingNature.setNbPokemon(nature.getNbPokemon());
+            existingNature.setNbShiny(nature.getNbShiny());
+            return natureRepository.save(existingNature);
+        } else {
+            throw new CustomException("La nature est inconnue", "id", nature.getId());
+        }
     }
 
     /**

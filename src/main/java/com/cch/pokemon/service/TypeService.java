@@ -1,10 +1,10 @@
 package com.cch.pokemon.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.cch.pokemon.dto.TypeDTO;
 import com.cch.pokemon.entity.Types;
 import com.cch.pokemon.exceptions.CustomException;
 import com.cch.pokemon.repository.TypeRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -81,11 +81,20 @@ public class TypeService {
 
     /**
      * Mettre à jour un type
-     * @param shiny L'objet à mettre à jour
+     * @param type L'objet à mettre à jour
      * @return L'objet mis à jour
      */
-    public Types update(Types shiny) {
-        return typeRepository.save(shiny);
+    public Types update(Types type) {
+        Optional<Types> isTypeExist = typeRepository.findById(type.getId());
+
+        if (isTypeExist.isPresent()) {
+            Types existingType = isTypeExist.get();
+
+            existingType.setNbShiny(type.getNbShiny());
+            return typeRepository.save(existingType);
+        } else {
+            throw new CustomException("Le sexe est inconnu", "id", type.getId());
+        }
     }
 
     /**

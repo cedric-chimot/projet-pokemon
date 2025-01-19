@@ -110,7 +110,7 @@ public class BoitesController {
      */
     @PatchMapping("/update")
     public Boites updateboite(@RequestBody Boites boite) {
-        return boiteService.update(boite);
+        return boiteService.updateBoite(boite);
     }
 
     /**
