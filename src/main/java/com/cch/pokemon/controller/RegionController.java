@@ -41,7 +41,7 @@ public class RegionController {
      * Afficher la liste de tous les regions
      * @return la liste
      */
-    @GetMapping
+    @GetMapping("/all")
     public List<Regions> findAll() {
         return regionService.findAllRegions();
     }
@@ -54,6 +54,15 @@ public class RegionController {
     @GetMapping("/{id}")
     public Regions getById(@PathVariable Long id) {
         return regionService.findById(id);
+    }
+
+    /**
+     * Compter le nombre de régions
+     * @return le nombre de régions
+     */
+    @GetMapping("/count")
+    public Long getCountRegions() {
+        return regionService.findRegionCount();
     }
 
     /**

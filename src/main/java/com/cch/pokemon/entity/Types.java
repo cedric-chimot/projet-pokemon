@@ -36,6 +36,10 @@ public class Types {
     @OneToMany(mappedBy = "type2")
     private List<PokemonShiny> shinyListType2;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "typeAttaque")
+    private List<Attaques> attaquesList;
+
     public Types(String nomType, Integer nbShiny) {
         this.nomType = nomType;
         this.nbShiny = nbShiny;

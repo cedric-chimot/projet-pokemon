@@ -64,6 +64,14 @@ public class RegionsService {
     }
 
     /**
+     * Méthode pour retrouver le nombre total de régions
+     * @return le nombre de régions
+     */
+    public Long findRegionCount() {
+        return regionRepository.countRegions();
+    }
+
+    /**
      * Mettre à jour une region
      * @param region L'objet à mettre à jour
      * @return L'objet mis à jour
