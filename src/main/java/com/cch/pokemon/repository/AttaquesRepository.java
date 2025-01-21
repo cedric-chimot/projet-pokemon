@@ -23,4 +23,14 @@ public interface AttaquesRepository extends JpaRepository<Attaques, Long> {
      */
     @Query("SELECT a FROM Attaques a WHERE a.typeAttaque.id = :typeId")
     List<Attaques> findByType(@Param("typeId") Integer typeId);
+
+    /**
+     * Requête pour afficher le nombre d'attaques par types
+     * @return le nombre d'attaques triées par types
+     */
+    @Query("SELECT t.nomType, COUNT(a) " +
+            "FROM Attaques a JOIN a.typeAttaque t " +
+            "GROUP BY t.nomType")
+    List<Object[]> countAttaquesByType();
+
 }

@@ -163,6 +163,14 @@ public class PokedexNationalService {
     }
 
     /**
+     * Méthode pour afficher le nombre de pokemons par régions
+     * @return la liste des pokemons par région
+     */
+    public List<Object[]> findNbPokemonsByRegion() {
+        return pokedexRepository.countPokemonsByRegion();
+    }
+
+    /**
      * Mettre à jour un pokemon du pokedex
      * @param pokemon L'objet pokemon à mettre à jour
      * @return L'objet pokemon mis à jour

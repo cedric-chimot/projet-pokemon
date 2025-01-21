@@ -82,6 +82,14 @@ public class AttaquesService {
     }
 
     /**
+     * Méthode pour afficher le nombre d'attaques par types
+     * @return la liste des attaques
+     */
+    public List<Object[]> findNbAttaquesByType() {
+        return attaqueRepository.countAttaquesByType();
+    }
+
+    /**
      * Mettre à jour une attaque
      * @param attaque L'objet à mettre à jour
      * @return L'objet mis à jour
@@ -93,7 +101,6 @@ public class AttaquesService {
             Attaques existingAttaque = isAttaqueExist.get();
 
             existingAttaque.setNomAttaque(attaque.getNomAttaque());
-            existingAttaque.setTypeAttaque(attaque.getTypeAttaque());
             return attaqueRepository.save(existingAttaque);
         } else {
             throw new CustomException("L'attaque n'existe pas", "id", attaque.getId());

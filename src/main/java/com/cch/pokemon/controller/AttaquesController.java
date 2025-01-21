@@ -12,7 +12,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/attaques")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 public class AttaquesController {
 
     /**
@@ -82,12 +82,21 @@ public class AttaquesController {
     }
 
     /**
+     * Compter le nombre d'attaques par types
+     * @return le nombre d'attaques par types
+     */
+    @GetMapping("/count-by-type")
+    public List<Object[]> getAttaquesByType() {
+        return attaqueService.findNbAttaquesByType();
+    }
+
+    /**
      * Mettre à jour une attaque
      * @param attaque l'attaque à mettre à jour
      * @return l'attaque mise à jour
      */
-    @PatchMapping("/update")
-    public Attaques updateDresseur(@RequestBody Attaques attaque) {
+    @PutMapping("/update")
+    public Attaques updateAttaque(@RequestBody Attaques attaque) {
         return attaqueService.updateAttaque(attaque);
     }
 
@@ -97,7 +106,7 @@ public class AttaquesController {
      * @return l'attaque supprimée
      */
     @DeleteMapping("/delete/{id}")
-    public Attaques deleteDresseurById(@PathVariable Long id) {
+    public Attaques deleteAttaqueById(@PathVariable Long id) {
         return attaqueService.deleteById(id);
     }
 

@@ -39,7 +39,7 @@ public class TypeController {
      * Afficher la liste de tous les types
      * @return la liste
      */
-    @GetMapping
+    @GetMapping("/all")
     public List<TypeDTO> findAll() {
         return typeService.findAllTypes();
     }

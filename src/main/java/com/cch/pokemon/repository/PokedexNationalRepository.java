@@ -28,4 +28,13 @@ public interface PokedexNationalRepository extends JpaRepository<PokedexNational
     @Query("SELECT COUNT(p) FROM PokedexNational p")
     Long countPokemonsInPokedex();
 
+    /**
+     * Requête pour afficher le nombre de Pokémon par région dans le Pokedex
+     * @return le nombre de Pokémon triés par région
+     */
+    @Query("SELECT r.nomRegion, COUNT(p) " +
+            "FROM PokedexNational p JOIN p.region r " +
+            "GROUP BY r.nomRegion")
+    List<Object[]> countPokemonsByRegion();
+
 }

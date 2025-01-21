@@ -95,6 +95,15 @@ public class PokedexNationalController {
     }
 
     /**
+     * Compter le nombre de pokémons par régions
+     * @return le nombre de pokémons par régions
+     */
+    @GetMapping("/count-by-region")
+    public List<Object[]> getPokemonsByRegions() {
+        return pokedexNationalService.findNbPokemonsByRegion();
+    }
+
+    /**
      * Mettre à jour un pokemon du pokedex national
      * @param pokemonInPokedex le pokemon à mettre à jour
      * @return le pokemon mis à jour
