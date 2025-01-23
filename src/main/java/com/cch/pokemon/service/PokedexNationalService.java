@@ -92,6 +92,7 @@ public class PokedexNationalService {
 
         return pokemons.stream()
                 .map(pokedexNational -> new PokedexDTO(
+                        pokedexNational.getId(),
                         pokedexNational.getNumDex(),
                         pokedexNational.getNomPokemon(),
                         new NatureReduitDTO(pokedexNational.getNaturePokedex().getNomNature()),  // Projection de la nature
@@ -104,7 +105,7 @@ public class PokedexNationalService {
     }
 
     /**
-     * Méthode pour trouver la liste des pokemons du pokedex d'une région
+     * Méthode pour trouver la liste des pokemons du pokedex d'une région (pokedex)
      * @param regionId l'id de la région
      * @return la liste des pokemons
      */
@@ -116,22 +117,32 @@ public class PokedexNationalService {
     }
 
     /**
+     * Méthode pour trouver la liste des pokemons du pokedex d'une région (admin)
+     * @param regionId l'id de la région
+     * @return la liste des pokemons
+     */
+    public List<PokedexNational> findPokemonsByRegionForAdmin(Long regionId) {
+        return pokedexRepository.findPokemonsByRegionForAdmin(regionId);
+    }
+
+    /**
      * Mapping des données pour afficher une liste de pokemons avec certaines de leurs informations
      * @param pokemons La liste des pokemon à mapper
      * @return la liste des pokemons mappés et leurs informations
      */
     private List<PokedexDTO> mapToDTO(List<PokedexNational> pokemons) {
         return pokemons.stream()
-                .map(pokemon -> new PokedexDTO(
-                        pokemon.getNumDex(),
-                        pokemon.getNomPokemon(),
-                        new NatureReduitDTO(pokemon.getNaturePokedex().getNomNature()),
-                        new PokeballReduitDTO(pokemon.getPokeballPokedex().getNomPokeball()),
-                        new BoitePokedexReduitDTO(pokemon.getBoitePokedex().getNomBoite()),
-                        new DresseurReduitDTO(pokemon.getDresseurPokedex().getNumDresseur(), pokemon.getDresseurPokedex().getNomDresseur()),
-                        pokemon.getRegion()
-                ))
-                .collect(Collectors.toList());
+            .map(pokemon -> new PokedexDTO(
+                    pokemon.getId(),
+                    pokemon.getNumDex(),
+                    pokemon.getNomPokemon(),
+                    new NatureReduitDTO(pokemon.getNaturePokedex().getNomNature()),
+                    new PokeballReduitDTO(pokemon.getPokeballPokedex().getNomPokeball()),
+                    new BoitePokedexReduitDTO(pokemon.getBoitePokedex().getNomBoite()),
+                    new DresseurReduitDTO(pokemon.getDresseurPokedex().getNumDresseur(), pokemon.getDresseurPokedex().getNomDresseur()),
+                    pokemon.getRegion()
+            ))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -140,18 +151,32 @@ public class PokedexNationalService {
      * @return le pokemon trouvé et toutes ses informations
      */
     public PokedexDTO findPokemonById(Long id) {
-        // Utiliser une requête personnalisée pour récupérer uniquement les champs nécessaires.
         return pokedexRepository.findById(id)
                 .map(pokedexNational -> new PokedexDTO(
+                        pokedexNational.getId(),
                         pokedexNational.getNumDex(),
                         pokedexNational.getNomPokemon(),
-                        new NatureReduitDTO(pokedexNational.getNaturePokedex().getNomNature()),  // Projection de la nature
-                        new PokeballReduitDTO(pokedexNational.getPokeballPokedex().getNomPokeball()),  // Projection de la pokeball
-                        new BoitePokedexReduitDTO(pokedexNational.getBoitePokedex().getNomBoite()),  // Projection de la boite
-                        new DresseurReduitDTO(pokedexNational.getDresseurPokedex().getNumDresseur(), pokedexNational.getDresseurPokedex().getNomDresseur()), // Projection du dresseur
+                        new NatureReduitDTO(pokedexNational.getNaturePokedex().getId(), pokedexNational.getNaturePokedex().getNomNature()),  // Projection de l'ID et du nom de la nature
+                        new PokeballReduitDTO(pokedexNational.getPokeballPokedex().getId(), pokedexNational.getPokeballPokedex().getNomPokeball()),  // Projection de l'ID et du nom de la pokeball
+                        new BoitePokedexReduitDTO(pokedexNational.getBoitePokedex().getId(), pokedexNational.getBoitePokedex().getNomBoite()),  // Projection de l'ID et du nom de la boite
+                        new DresseurReduitDTO(pokedexNational.getDresseurPokedex().getId(), pokedexNational.getDresseurPokedex().getNumDresseur(), pokedexNational.getDresseurPokedex().getNomDresseur()), // Projection de l'ID et du nom du dresseur
                         pokedexNational.getRegion()
                 ))
                 .orElseThrow(() -> new CustomException("Aucun pokemon dans le pokedex", "id", id));
+    }
+
+    public PokedexNational findPokemonByIdForAdmin(Long id) {
+        return pokedexRepository.findById(id)
+                .map(pokedexNational -> new PokedexNational(
+                        pokedexNational.getId(),
+                        pokedexNational.getNumDex(),
+                        pokedexNational.getNomPokemon(),
+                        pokedexNational.getNaturePokedex(),
+                        pokedexNational.getPokeballPokedex(),
+                        pokedexNational.getDresseurPokedex(),
+                        pokedexNational.getRegion()
+                ))
+                .orElseThrow(() -> new CustomException("Aucun pokemon trouvé avec cet ID", "id", id));
     }
 
     /**
@@ -176,20 +201,51 @@ public class PokedexNationalService {
      * @return L'objet pokemon mis à jour
      */
     public PokedexNational updatePokemonInPokedex(PokedexNational pokemon) {
-        Optional<PokedexNational> existingInPokedex= pokedexRepository.findById(pokemon.getId());
+        // Utiliser la méthode findPokemonById pour récupérer le Pokémon existant sous forme d'entité
+        PokedexNational existingPokemon = pokedexRepository.findById(pokemon.getId())
+                .orElseThrow(() -> new RuntimeException("Pokemon non trouvé"));
 
-        if (existingInPokedex.isPresent()) {
-            PokedexNational existingPokemon = existingInPokedex.get();
+        System.out.println(existingPokemon);
 
-            existingPokemon.setNomPokemon(pokemon.getNomPokemon());
-            existingPokemon.setNaturePokedex(pokemon.getNaturePokedex());
-            existingPokemon.setDresseurPokedex(pokemon.getDresseurPokedex());
-            existingPokemon.setPokeballPokedex(pokemon.getPokeballPokedex());
-            existingPokemon.setBoitePokedex(pokemon.getBoitePokedex());
-            return pokedexRepository.save(existingPokemon);
+        // Mettre à jour les informations de l'entité existante avec les données fournies
+        existingPokemon.setNomPokemon(pokemon.getNomPokemon() != null ? pokemon.getNomPokemon() : existingPokemon.getNomPokemon());
+        existingPokemon.setNumDex(pokemon.getNumDex() != null ? pokemon.getNumDex() : existingPokemon.getNumDex());
+        existingPokemon.setRegion(pokemon.getRegion() != null ? pokemon.getRegion() : existingPokemon.getRegion());
+
+        System.out.println("Avant récupération de la nature, Nature: " + pokemon.getNaturePokedex());
+        if (pokemon.getNaturePokedex() != null) {
+            Natures nature = natureService.findById(pokemon.getNaturePokedex().getId());
+            if (nature != null) {
+                System.out.println("Nature récupérée: " + nature.getNomNature());
+                existingPokemon.setNaturePokedex(nature);
+            } else {
+                throw new RuntimeException("Nature non trouvée avec l'ID: " + pokemon.getNaturePokedex().getId());
+            }
         } else {
-            throw new CustomException("Le pokemon n'est pas présent dans le pokedex", "id", pokemon.getId());
+            System.out.println("La nature du Pokémon est null.");
         }
+
+        System.out.println("Après mise à jour, Nature du Pokémon: " + existingPokemon.getNaturePokedex());
+
+        // Mettre à jour les entités liées à partir des données du DTO ou de l'entrée
+        if (pokemon.getDresseurPokedex() != null) {
+            Dresseurs dresseur = dresseurService.findById(pokemon.getDresseurPokedex().getId());
+            existingPokemon.setDresseurPokedex(dresseur);
+        }
+
+
+        if (pokemon.getPokeballPokedex() != null) {
+            Pokeballs pokeball = pokeballService.findById(pokemon.getPokeballPokedex().getId());
+            existingPokemon.setPokeballPokedex(pokeball);
+        }
+
+        if (pokemon.getBoitePokedex() != null) {
+            BoitePokedexNational boite = boitePokedexService.findById(pokemon.getBoitePokedex().getId());
+            existingPokemon.setBoitePokedex(boite);
+        }
+
+        // Sauvegarder et retourner le Pokémon mis à jour
+        return pokedexRepository.save(existingPokemon);
     }
 
     /**

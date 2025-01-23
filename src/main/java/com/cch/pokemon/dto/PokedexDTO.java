@@ -10,15 +10,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PokedexDTO {
 
+    private Long id;
+
     private String numDex;
 
     private String nomPokemon;
 
-    private NatureReduitDTO nomNature;
+    private NatureReduitDTO nature;
 
-    private PokeballReduitDTO nomPokeball;
+    private PokeballReduitDTO pokeball;
 
-    private BoitePokedexReduitDTO nomBoite;
+    private BoitePokedexReduitDTO boite;
 
     private DresseurReduitDTO dresseur;
 

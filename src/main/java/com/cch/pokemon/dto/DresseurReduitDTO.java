@@ -1,11 +1,15 @@
 package com.cch.pokemon.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class DresseurReduitDTO {
+
+    private Integer id;
 
     private String numDresseur;
 

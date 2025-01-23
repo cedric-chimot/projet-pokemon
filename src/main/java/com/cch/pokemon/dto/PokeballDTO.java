@@ -17,6 +17,11 @@ public class PokeballDTO {
 
     private Long nbShiny;
 
+    public PokeballDTO(Integer id, String nomPokeball) {
+        this.id = id;
+        this.nomPokeball = nomPokeball;
+    }
+
     public PokeballDTO(String nomPokeball) {
         this.nomPokeball = nomPokeball;
     }

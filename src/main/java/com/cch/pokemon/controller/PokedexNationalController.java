@@ -74,6 +74,11 @@ public class PokedexNationalController {
         return pokedexNationalService.findPokemonById(id);
     }
 
+    @GetMapping("/find/{id}")
+    public PokedexNational getPokemonByIdForAdmin(@PathVariable Long id) {
+        return pokedexNationalService.findPokemonByIdForAdmin(id);
+    }
+
     /**
      * Afficher la liste des pokemons pour une région donnée
      * @param regionId l'identifiant de la région
@@ -82,6 +87,20 @@ public class PokedexNationalController {
     @GetMapping("/region/{regionId}")
     public ResponseEntity<List<PokedexDTO>> getPokemonsByRegion(@PathVariable Long regionId) {
         List<PokedexDTO> pokemons = pokedexNationalService.findPokemonsByRegion(regionId);
+        return ResponseEntity.ok(pokemons);
+    }
+
+    /**
+     * Afficher la liste des pokemons pour une région donnée
+     * @param regionId l'identifiant de la région
+     * @return la liste des pokemons
+     */
+    @GetMapping("/region-admin/{regionId}")
+    public ResponseEntity<List<PokedexNational>> getPokemonsByRegionForAdmin(@PathVariable Long regionId) {
+        // Appel du service pour récupérer la liste complète des pokemons (entité complète)
+        List<PokedexNational> pokemons = pokedexNationalService.findPokemonsByRegionForAdmin(regionId);
+
+        // Retourner directement les objets PokedexNational dans la réponse
         return ResponseEntity.ok(pokemons);
     }
 

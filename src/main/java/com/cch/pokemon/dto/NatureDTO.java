@@ -17,6 +17,11 @@ public class NatureDTO {
 
     private Long nbShiny;
 
+    public NatureDTO(Integer id, String nomNature) {
+        this.id = id;
+        this.nomNature = nomNature;
+    }
+
     public NatureDTO(String nomNature) {
         this.nomNature = nomNature;
     }

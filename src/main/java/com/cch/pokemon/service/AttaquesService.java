@@ -37,7 +37,12 @@ public class AttaquesService {
         this.typeService = typeService;
     }
 
-
+    /**
+     * Méthode pour ajouter une attaque
+     * @param nomAttaque le nom de l'attaque
+     * @param idType son type
+     * @return la nouvelle attaque ajoutée
+     */
     public Attaques save(String nomAttaque, Integer idType) {
         Types type = typeService.findById(idType);
 
@@ -101,6 +106,7 @@ public class AttaquesService {
             Attaques existingAttaque = isAttaqueExist.get();
 
             existingAttaque.setNomAttaque(attaque.getNomAttaque());
+            existingAttaque.setTypeAttaque(attaque.getTypeAttaque());
             return attaqueRepository.save(existingAttaque);
         } else {
             throw new CustomException("L'attaque n'existe pas", "id", attaque.getId());

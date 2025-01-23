@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BoitePokedexReduitDTO {
 
+    private Long id;
+
     private String nomBoite;
 
+    public BoitePokedexReduitDTO(String nomBoite) {
+    }
 }
