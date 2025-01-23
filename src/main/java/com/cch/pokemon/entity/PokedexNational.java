@@ -19,30 +19,30 @@ public class PokedexNational {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "num_dex")
+    @Column(name = "num_dex", nullable = false)
     private String numDex;
 
-    @Column(name = "nom_pokemon")
+    @Column(name = "nom_pokemon", nullable = false)
     private String nomPokemon;
 
-    @ManyToOne
-    @JoinColumn(name = "id_nature")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_nature", nullable = false)
     private Natures naturePokedex;
 
     @ManyToOne
-    @JoinColumn(name = "dresseur_id")
+    @JoinColumn(name = "dresseur_id", nullable = false)
     private Dresseurs dresseurPokedex;
 
     @ManyToOne
-    @JoinColumn(name = "id_pokeball")
+    @JoinColumn(name = "id_pokeball", nullable = false)
     private Pokeballs pokeballPokedex;
 
     @ManyToOne
-    @JoinColumn(name = "id_boite")
+    @JoinColumn(name = "id_boite", nullable = false)
     private BoitePokedexNational boitePokedex;
 
     @ManyToOne
-    @JoinColumn(name = "id_region")
+    @JoinColumn(name = "id_region", nullable = false)
     private Regions region;
 
     public PokedexNational(String numDex, String nomPokemon, Natures naturePokedex, Dresseurs dresseurPokedex, Pokeballs pokeballPokedex, BoitePokedexNational boitePokedex, Regions region) {
@@ -53,9 +53,6 @@ public class PokedexNational {
         this.pokeballPokedex = pokeballPokedex;
         this.boitePokedex = boitePokedex;
         this.region = region;
-    }
-
-    public PokedexNational(Long id, String numDex, String nomPokemon, Natures naturePokedex, Pokeballs pokeballPokedex, Dresseurs dresseurPokedex, Regions region) {
     }
 
     @Override

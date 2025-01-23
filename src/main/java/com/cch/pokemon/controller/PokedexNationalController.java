@@ -64,6 +64,11 @@ public class PokedexNationalController {
         return pokedexNationalService.findAllPokemonsFromPokedex();
     }
 
+    @GetMapping("/id/{id}")
+    public PokedexNational getById(Long id) {
+        return pokedexNationalService.findById(id);
+    }
+
     /**
      * Rechercher un pokemon du pokedex national par son id
      * @param id l'id du pokemon recherché
@@ -72,11 +77,6 @@ public class PokedexNationalController {
     @GetMapping("/{id}")
     public PokedexDTO findPokemonFromPokedexById(@PathVariable Long id) {
         return pokedexNationalService.findPokemonById(id);
-    }
-
-    @GetMapping("/find/{id}")
-    public PokedexNational getPokemonByIdForAdmin(@PathVariable Long id) {
-        return pokedexNationalService.findPokemonByIdForAdmin(id);
     }
 
     /**

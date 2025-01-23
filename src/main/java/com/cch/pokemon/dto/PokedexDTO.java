@@ -16,9 +16,9 @@ public class PokedexDTO {
 
     private String nomPokemon;
 
-    private NatureReduitDTO nature;
+    private NatureReduitDTO nomNature;
 
-    private PokeballReduitDTO pokeball;
+    private PokeballReduitDTO nomPokeball;
 
     private BoitePokedexReduitDTO boite;
 
