@@ -20,19 +20,19 @@ public class BoitePokedexNational {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "nom_boite", nullable = false)
+    @Column(name = "nom_boite")
     private String nomBoite;
 
-    @Column(name = "nb_males", nullable = false)
+    @Column(name = "nb_males")
     private Long nbMales;
 
-    @Column(name = "nb_femelles", nullable = false)
+    @Column(name = "nb_femelles")
     private Long nbFemelles;
 
-    @Column(name = "nb_assexues", nullable = false)
+    @Column(name = "nb_assexues")
     private Long nbAssexues;
 
-    @Column(name = "nb_level100", nullable = false)
+    @Column(name = "nb_level100")
     private Long nbLevel100;
 
     @JsonIgnore

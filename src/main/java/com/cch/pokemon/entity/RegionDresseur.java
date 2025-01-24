@@ -20,7 +20,7 @@ public class RegionDresseur {
     @Column(name = "idRegionDresseur")
     private Long idRegionDresseur;
 
-    @Column(name = "nom_region")
+    @Column(name = "nom_region_dresseur")
     private String nomRegionDresseur;
 
     @JsonIgnore

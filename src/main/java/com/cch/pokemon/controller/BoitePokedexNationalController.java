@@ -73,7 +73,7 @@ public class BoitePokedexNationalController {
      * @param boitePokedex la boite pokedex à mettre à jour
      * @return la boite pokedex mis à jour
      */
-    @PatchMapping("/update")
+    @PutMapping("/update")
     public BoitePokedexNational updateBoitePokedex(@RequestBody BoitePokedexNational boitePokedex) {
         return boitePokedexService.update(boitePokedex);
     }

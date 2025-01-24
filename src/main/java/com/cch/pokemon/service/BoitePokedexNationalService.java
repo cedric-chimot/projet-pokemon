@@ -91,11 +91,22 @@ public class BoitePokedexNationalService {
         if (existingBoitePokedex.isPresent()) {
             BoitePokedexNational existingBoite = existingBoitePokedex.get();
 
-            existingBoite.setNomBoite(boite.getNomBoite());
-            existingBoite.setNbMales(boite.getNbMales());
-            existingBoite.setNbFemelles(boite.getNbFemelles());
-            existingBoite.setNbAssexues(boite.getNbAssexues());
-            existingBoite.setNbLevel100(boite.getNbLevel100());
+            // Met à jour seulement les champs qui ont changé
+            if (boite.getNomBoite() != null && !boite.getNomBoite().equals(existingBoite.getNomBoite())) {
+                existingBoite.setNomBoite(boite.getNomBoite());
+            }
+            if (boite.getNbMales() != null && !boite.getNbMales().equals(existingBoite.getNbMales())) {
+                existingBoite.setNbMales(boite.getNbMales());
+            }
+            if (boite.getNbFemelles() != null && !boite.getNbFemelles().equals(existingBoite.getNbFemelles())) {
+                existingBoite.setNbFemelles(boite.getNbFemelles());
+            }
+            if (boite.getNbAssexues() != null && !boite.getNbAssexues().equals(existingBoite.getNbAssexues())) {
+                existingBoite.setNbAssexues(boite.getNbAssexues());
+            }
+            if (boite.getNbLevel100() != null && !boite.getNbLevel100().equals(existingBoite.getNbLevel100())) {
+                existingBoite.setNbLevel100(boite.getNbLevel100());
+            }
 
             return boitePokedexRepository.save(existingBoite);
         } else {
