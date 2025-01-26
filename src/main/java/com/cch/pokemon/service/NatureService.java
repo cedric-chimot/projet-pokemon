@@ -1,11 +1,10 @@
 package com.cch.pokemon.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.cch.pokemon.dto.NatureDTO;
 import com.cch.pokemon.dto.NatureReduitDTO;
 import com.cch.pokemon.entity.Natures;
 import com.cch.pokemon.exceptions.CustomException;
 import com.cch.pokemon.repository.NatureRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -52,11 +51,8 @@ public class NatureService {
      * Méthode pour trouver toutes les natures (complet)
      * @return la liste de toutes les natures
      */
-    public List<NatureDTO> findAllNatures() {
-        List<Natures> natureList = natureRepository.findAll();
-        return natureList.stream()
-                .map(nature -> objectMapper.convertValue(nature, NatureDTO.class))
-                .collect(Collectors.toList());
+    public List<Natures> findAllNatures() {
+        return natureRepository.findAll();
     }
 
     /**

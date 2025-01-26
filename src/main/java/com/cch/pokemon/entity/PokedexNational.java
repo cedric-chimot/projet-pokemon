@@ -25,7 +25,7 @@ public class PokedexNational {
     @Column(name = "nom_pokemon", nullable = false)
     private String nomPokemon;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_nature", nullable = false)
     private Natures naturePokedex;
 

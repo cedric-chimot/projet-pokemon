@@ -1,6 +1,5 @@
 package com.cch.pokemon.controller;
 
-import com.cch.pokemon.dto.NatureDTO;
 import com.cch.pokemon.dto.NatureReduitDTO;
 import com.cch.pokemon.entity.Natures;
 import com.cch.pokemon.service.NatureService;
@@ -40,7 +39,7 @@ public class NatureController {
      * @return la liste des natures
      */
     @GetMapping("/find/all")
-    public List<NatureDTO> findAll() {
+    public List<Natures> findAll() {
         return natureService.findAllNatures();
     }
 

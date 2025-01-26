@@ -195,14 +195,10 @@ public class PokedexNationalService {
         // Utiliser la méthode findPokemonById pour récupérer le Pokémon existant sous forme d'entité
         PokedexNational existingPokemon = findById(pokedexNational.getId());
 
-        System.out.println(existingPokemon);
-
         // Mettre à jour les informations de l'entité existante avec les données fournies
         existingPokemon.setNomPokemon(pokedexNational.getNomPokemon() != null ? pokedexNational.getNomPokemon() : existingPokemon.getNomPokemon());
         existingPokemon.setNumDex(pokedexNational.getNumDex() != null ? pokedexNational.getNumDex() : existingPokemon.getNumDex());
         existingPokemon.setRegion(pokedexNational.getRegion() != null ? pokedexNational.getRegion() : existingPokemon.getRegion());
-
-        System.out.println("Après mise à jour, Nature du Pokémon: " + existingPokemon.getNaturePokedex());
 
         // Mettre à jour les entités liées à partir des données du DTO ou de l'entrée
         if (pokedexNational.getDresseurPokedex() != null) {
@@ -210,14 +206,9 @@ public class PokedexNationalService {
             existingPokemon.setDresseurPokedex(dresseur);
         }
 
-        System.out.println("Avant récupération de la nature, Nature: " + pokedexNational.getNaturePokedex());
-        if (pokedexNational.getNaturePokedex() != null && pokedexNational.getNaturePokedex().getId() != null) {
+        if (pokedexNational.getNaturePokedex() != null) {
             Natures nature = natureService.findById(pokedexNational.getNaturePokedex().getId());
-            if (nature != null) {
-                existingPokemon.setNaturePokedex(nature);
-            } else {
-                throw new RuntimeException("Nature non trouvée avec l'ID: " + pokedexNational.getNaturePokedex().getId());
-            }
+            existingPokemon.setNaturePokedex(nature);
         }
 
         if (pokedexNational.getPokeballPokedex() != null) {
