@@ -49,8 +49,8 @@ public class RegionDresseurService {
 
     /**
      * Méthode pour trouver une regionDresseur par son id (retourne l'entité complète)
-     * @param id l'id du regionDresseur recherché
-     * @return le regionDresseur trouvé
+     * @param id l'id de la regionDresseur recherché
+     * @return la regionDresseur trouvée
      */
     public RegionDresseur findById(Long id) {
         return regionDresseurRepository.findById(id)
@@ -75,8 +75,8 @@ public class RegionDresseurService {
     }
 
     /**
-     * Méthode pour supprimer un regionDresseur par son Id
-     * @param id L'identifiant du regionDresseur à supprimer
+     * Méthode pour supprimer une regionDresseur par son Id
+     * @param id L'identifiant de la regionDresseur à supprimer
      * @return L'objet supprimé
      */
     public RegionDresseur deleteById(Long id) {
@@ -94,7 +94,7 @@ public class RegionDresseurService {
     }
 
     /**
-     * Supprimer tous les regionDresseurs
+     * Supprimer toutes les regionDresseurs
      */
     public void deleteAll() {
         regionDresseurRepository.deleteAll();
