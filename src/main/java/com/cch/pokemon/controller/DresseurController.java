@@ -71,6 +71,16 @@ public class DresseurController {
      * dont l'id de la région est 1 et l'id dresseur est compris entre 1 et 40
      * @return la liste des dresseurs
      */
+    @GetMapping("/all/region1")
+    public List<Dresseurs> findAllDresseursRegion1() {
+        return dresseurService.findAllDresseursRegion1();
+    }
+
+    /**
+     * Afficher la liste de tous les dresseurs (complets)
+     * dont l'id de la région est 1 et l'id dresseur est compris entre 1 et 40
+     * @return la liste des dresseurs
+     */
     @GetMapping("/all/region1Part1")
     public List<Dresseurs> findAllDresseursFiltered1() {
         return dresseurService.findAllDresseursRegion1Part1();
@@ -83,7 +93,7 @@ public class DresseurController {
      */
     @GetMapping("/all/region1Part2")
     public List<Dresseurs> findAllDresseursFiltered2() {
-        return dresseurService.findAllDresseursRegionPart2();
+        return dresseurService.findAllDresseursRegion1Part2();
     }
 
     /**
@@ -92,7 +102,7 @@ public class DresseurController {
      * @return la liste des dresseurs
      */
     @GetMapping("/all/region2")
-    public List<Dresseurs> findAllDresseursFiltered3() {
+    public List<Dresseurs> findAllDresseursRegion2() {
         return dresseurService.findAllDresseursRegions2();
     }
 
@@ -102,7 +112,7 @@ public class DresseurController {
      * @return la liste des dresseurs
      */
     @GetMapping("/all/region3")
-    public List<Dresseurs> findAllDresseursFiltered4() {
+    public List<Dresseurs> findAllDresseursRegion3() {
         return dresseurService.findAllDresseursRegions3();
     }
 

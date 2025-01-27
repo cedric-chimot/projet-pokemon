@@ -16,25 +16,46 @@ public interface DresseurRepository extends JpaRepository<Dresseurs, Integer> {
     List<Dresseurs> findAllDresseursReduit();
 
     /**
+     * Requête pour afficher tous les dresseurs de la région 1 (non découpés)
+     */
+    @Query("SELECT d FROM Dresseurs d " +
+            "WHERE d.regionDresseur.idRegionDresseur = 1 " +
+            "AND d.regionDresseur IS NOT NULL " +
+            "AND d.nbPokemon > 0")
+    List<Dresseurs> findAllDresseursByRegion1();
+
+    /**
      * Requêtes pour afficher des listes de dresseurs
      * de la région 1, divisée en deux groupes
      */
-    @Query("SELECT d FROM Dresseurs d WHERE d.regionDresseur.idRegionDresseur = 1 AND d.id BETWEEN 1 AND 40 AND d.nbPokemon > 0")
+    @Query("SELECT d FROM Dresseurs d " +
+            "WHERE d.regionDresseur.idRegionDresseur = 1 " +
+            "AND d.id BETWEEN 1 AND 40 " +
+            "AND d.nbPokemon > 0")
     List<Dresseurs> findAllDresseursByRegion1Part1();
 
-    @Query("SELECT d FROM Dresseurs d WHERE d.regionDresseur.idRegionDresseur = 1 AND d.id BETWEEN 41 AND 81 AND d.nbPokemon > 0")
+    @Query("SELECT d FROM Dresseurs d " +
+            "WHERE d.regionDresseur.idRegionDresseur = 1 " +
+            "AND d.id BETWEEN 41 AND 81 AND " +
+            "d.nbPokemon > 0")
     List<Dresseurs> findAllDresseursByRegion1Part2();
 
     /**
      * Requête pour afficher les dresseurs de la region 2
      */
-    @Query("SELECT d FROM Dresseurs d WHERE d.regionDresseur.idRegionDresseur = 2 AND d.regionDresseur IS NOT NULL AND d.nbPokemon > 0")
+    @Query("SELECT d FROM Dresseurs d " +
+            "WHERE d.regionDresseur.idRegionDresseur = 2 " +
+            "AND d.regionDresseur IS NOT NULL " +
+            "AND d.nbPokemon > 0")
     List<Dresseurs> findAllDresseursRegion2();
 
     /**
      * Requête pour afficher les dresseurs de la region 3
      */
-    @Query("SELECT d FROM Dresseurs d WHERE d.regionDresseur.idRegionDresseur = 3 AND d.regionDresseur IS NOT NULL AND d.nbPokemon > 0")
+    @Query("SELECT d FROM Dresseurs d " +
+            "WHERE d.regionDresseur.idRegionDresseur = 3 " +
+            "AND d.regionDresseur IS NOT NULL " +
+            "AND d.nbPokemon > 0")
     List<Dresseurs> findAllDresseursRegion3();
 
     /**

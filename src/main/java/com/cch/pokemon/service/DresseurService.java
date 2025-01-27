@@ -84,6 +84,15 @@ public class DresseurService {
 
     /**
      * Méthode pour afficher les listes de dresseurs
+     * dont l'id de la région est 1 (non découpés)
+     * @return la liste des dresseurs
+     */
+    public List<Dresseurs> findAllDresseursRegion1() {
+        return dresseurRepository.findAllDresseursByRegion1();
+    }
+
+    /**
+     * Méthode pour afficher les listes de dresseurs
      * dont l'id de la région est 1 et l'id dresseur est compris entre 1 et 40
      * @return la liste des dresseurs
      */
@@ -96,7 +105,7 @@ public class DresseurService {
      * dont l'id de la région est 1 et l'id dresseur est compris entre 41 et 81
      * @return la liste des dresseurs
      */
-    public List<Dresseurs> findAllDresseursRegionPart2() {
+    public List<Dresseurs> findAllDresseursRegion1Part2() {
         return dresseurRepository.findAllDresseursByRegion1Part2();
     }
 

@@ -36,12 +36,21 @@ public class PokeballController {
     }
 
     /**
-     * Afficher la liste de toutes les pokeballs (retourne toutes les données)
+     * Afficher la liste de toutes les pokeballs pour l'affichage admin (retourne toutes les données)
      * @return la liste des pokeballs
      */
-    @GetMapping("/find/all")
-    public List<PokeballDTO> findAll() {
-        return pokeballService.findAllPokeballs();
+    @GetMapping("/all/admin")
+    public List<PokeballDTO> findAllPokeballsAdmin() {
+        return pokeballService.findAllPokeballsForAdmin();
+    }
+
+    /**
+     * Afficher la liste de toutes les pokeballs pour les stats Pokedex (retourne toutes les données)
+     * @return la liste des pokeballs
+     */
+    @GetMapping("/all/pokedex")
+    public List<PokeballDTO> findAllPokeballsPokedex() {
+        return pokeballService.findAllPokeballsForPokedex();
     }
 
     /**

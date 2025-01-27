@@ -3,7 +3,6 @@ package com.cch.pokemon.service;
 import com.cch.pokemon.entity.Regions;
 import com.cch.pokemon.exceptions.CustomException;
 import com.cch.pokemon.repository.RegionRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -23,23 +22,17 @@ public class RegionsService {
     private final RegionRepository regionRepository;
 
     /**
-     * Sérialisation d'objet Java au format Json
-     */
-    private final ObjectMapper objectMapper;
-
-    /**
      * Le constructeur
      * @param regionRepository Injection du repository
      */
-    public RegionsService(RegionRepository regionRepository, ObjectMapper objectMapper) {
+    public RegionsService(RegionRepository regionRepository) {
         this.regionRepository = regionRepository;
-        this.objectMapper = objectMapper;
     }
 
     /**
      * Méthode pour créer un nouveau region
-     * @param region le region à créer
-     * @return le region nouvellement créé
+     * @param region la region à créer
+     * @return la region nouvellement créée
      */
     public Regions save(Regions region) {
         return regionRepository.save(region);
@@ -55,8 +48,8 @@ public class RegionsService {
 
     /**
      * Méthode pour trouver un region par son id
-     * @param id l'id de la region recherché
-     * @return le region trouvé
+     * @param id l'id de la region recherchée
+     * @return la region trouvée
      */
     public Regions findById(Long id) {
         return regionRepository.findById(id)
@@ -76,7 +69,6 @@ public class RegionsService {
      * @param region L'objet à mettre à jour
      * @return L'objet mis à jour
      */
-
     public Regions update(Regions region) {
         Optional<Regions> isRegionExist = regionRepository.findById(region.getId());
 
@@ -91,7 +83,7 @@ public class RegionsService {
     }
 
     /**
-     * Méthode pour supprimer un region par son Id
+     * Méthode pour supprimer une region par son Id
      * @param id L'identifiant de la region à supprimer
      * @return L'objet supprimé
      */
@@ -110,7 +102,7 @@ public class RegionsService {
     }
 
     /**
-     * Supprimer tous les regions
+     * Supprimer toutes les regions
      */
     public void deleteAll() {
         regionRepository.deleteAll();

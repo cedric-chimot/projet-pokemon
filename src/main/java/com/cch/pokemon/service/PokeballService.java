@@ -49,10 +49,21 @@ public class PokeballService {
     }
 
     /**
-     * Méthode pour trouver toutes les pokeballs (retourne toutes les données)
+     * Méthode pour trouver toutes les pokeballs pour l'affichage admin
      * @return la liste de toutes les pokeballs
      */
-    public List<PokeballDTO> findAllPokeballs() {
+    public List<PokeballDTO> findAllPokeballsForAdmin() {
+        List<Pokeballs> pokeballList = pokeballRepository.findAll();
+        return pokeballList.stream()
+                .map(pokeball -> objectMapper.convertValue(pokeball, PokeballDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Méthode pour trouver toutes les pokeballs pour l'affichage stats Pokedex (retourne toutes les données)
+     * @return la liste de toutes les pokeballs
+     */
+    public List<PokeballDTO> findAllPokeballsForPokedex() {
         List<Pokeballs> pokeballList = pokeballRepository.findAllPokeballs();
         return pokeballList.stream()
                 .map(pokeball -> objectMapper.convertValue(pokeball, PokeballDTO.class))
