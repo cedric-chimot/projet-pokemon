@@ -48,7 +48,15 @@ public class SexeService {
     }
 
     /**
-     * Méthode pour trouver tous les sexes
+     * Méthode pour trouver tous les sexes (complets)
+     * @return la liste des sexes
+     */
+    public List<Sexe> findAll() {
+        return sexeRepository.findAll();
+    }
+
+    /**
+     * Méthode pour trouver tous les sexes (DTO)
      * @return la liste de tous les sexes
      */
     public List<SexeDTO> findAllSexes() {

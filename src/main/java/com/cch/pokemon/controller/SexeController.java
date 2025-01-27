@@ -36,11 +36,20 @@ public class SexeController {
     }
 
     /**
-     * Afficher la liste de tous les sexes
+     * Afficher la liste de tous les sexes (complets)
      * @return la liste
      */
-    @GetMapping
-    public List<SexeDTO> findAll() {
+    @GetMapping("/find/all")
+    public List<Sexe> findAll() {
+        return sexeService.findAll();
+    }
+
+    /**
+     * Afficher la liste de tous les sexes (DTO)
+     * @return la liste
+     */
+    @GetMapping("/all")
+    public List<SexeDTO> findAllSexes() {
         return sexeService.findAllSexes();
     }
 
