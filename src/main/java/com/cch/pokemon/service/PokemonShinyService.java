@@ -112,6 +112,16 @@ public class PokemonShinyService {
     }
 
     /**
+     * Méthode pour trouver un shiny par son id (retourne l'entité complète)
+     * @param id l'id du shiny recherché
+     * @return le shiny trouvé
+     */
+    public PokemonShiny findShinyById(Integer id) {
+        return shinyRepository.findById(id)
+                .orElseThrow(() -> new CustomException("Shiny", "id", id)); // Renvoie l'entité
+    }
+
+    /**
      * Méthode pour trouver un pokemon par son id
      * @param id L'id du pokemon recherché
      * @return le pokemon trouvé et toutes ses informations
@@ -180,27 +190,30 @@ public class PokemonShinyService {
      * @return L'objet mis à jour
      */
     public PokemonShiny updatePokemonShiny(PokemonShiny shiny) {
-        Optional<PokemonShiny> existingInPokedex= shinyRepository.findById(shiny.getId());
+        Optional<PokemonShiny> existingInPokedex = shinyRepository.findById(shiny.getId());
 
         if (existingInPokedex.isPresent()) {
             PokemonShiny existingPokemon = existingInPokedex.get();
 
-            existingPokemon.setNumDex(shiny.getNumDex());
-            existingPokemon.setNomPokemon(shiny.getNomPokemon());
-            existingPokemon.setNature(shiny.getNature());
-            existingPokemon.setDresseur(shiny.getDresseur());
-            existingPokemon.setPokeball(shiny.getPokeball());
-            existingPokemon.setIvManquant(shiny.getIvManquant());
-            existingPokemon.setType1(shiny.getType1());
-            existingPokemon.setType2(shiny.getType2());
-            existingPokemon.setSexe(shiny.getSexe());
-            existingPokemon.setAttaque1(shiny.getAttaque1());
-            existingPokemon.setAttaque2(shiny.getAttaque2());
-            existingPokemon.setAttaque3(shiny.getAttaque3());
-            existingPokemon.setAttaque4(shiny.getAttaque4());
-            existingPokemon.setBoite(shiny.getBoite());
-            existingPokemon.setPosition(shiny.getPosition());
-            existingPokemon.setRegionShiny(shiny.getRegionShiny());
+            // Mettre à jour les informations de l'entité existante en conservant les anciennes valeurs si null
+            existingPokemon.setNumDex(shiny.getNumDex() != null ? shiny.getNumDex() : existingPokemon.getNumDex());
+            existingPokemon.setNomPokemon(shiny.getNomPokemon() != null ? shiny.getNomPokemon() : existingPokemon.getNomPokemon());
+            existingPokemon.setNature(shiny.getNature() != null ? shiny.getNature() : existingPokemon.getNature());
+            existingPokemon.setDresseur(shiny.getDresseur() != null ? shiny.getDresseur() : existingPokemon.getDresseur());
+            existingPokemon.setPokeball(shiny.getPokeball() != null ? shiny.getPokeball() : existingPokemon.getPokeball());
+            existingPokemon.setIvManquant(shiny.getIvManquant() != null ? shiny.getIvManquant() : existingPokemon.getIvManquant());
+            existingPokemon.setType1(shiny.getType1() != null ? shiny.getType1() : existingPokemon.getType1());
+            existingPokemon.setType2(shiny.getType2() != null ? shiny.getType2() : existingPokemon.getType2());
+            existingPokemon.setSexe(shiny.getSexe() != null ? shiny.getSexe() : existingPokemon.getSexe());
+            existingPokemon.setAttaque1(shiny.getAttaque1() != null ? shiny.getAttaque1() : existingPokemon.getAttaque1());
+            existingPokemon.setAttaque2(shiny.getAttaque2() != null ? shiny.getAttaque2() : existingPokemon.getAttaque2());
+            existingPokemon.setAttaque3(shiny.getAttaque3() != null ? shiny.getAttaque3() : existingPokemon.getAttaque3());
+            existingPokemon.setAttaque4(shiny.getAttaque4() != null ? shiny.getAttaque4() : existingPokemon.getAttaque4());
+            existingPokemon.setBoite(shiny.getBoite() != null ? shiny.getBoite() : existingPokemon.getBoite());
+            existingPokemon.setPosition(shiny.getPosition() != null ? shiny.getPosition() : existingPokemon.getPosition());
+            existingPokemon.setRegionShiny(shiny.getRegionShiny() != null ? shiny.getRegionShiny() : existingPokemon.getRegionShiny());
+
+            // Sauvegarder et retourner le Pokémon mis à jour
             return shinyRepository.save(existingPokemon);
         } else {
             throw new CustomException("Le pokemon n'est pas présent dans le pokedex", "id", shiny.getId());

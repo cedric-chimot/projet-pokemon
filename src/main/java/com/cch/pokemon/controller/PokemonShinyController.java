@@ -60,7 +60,17 @@ public class PokemonShinyController {
     }
 
     /**
-     * Afficher les données d'un shiny avec un id donné
+     * Afficher les données d'un shiny avec un id donné (entité complète)
+     * @param id l'identifiant recherché
+     * @return le shiny et toutes ses données
+     */
+    @GetMapping("/find/{id}")
+    public PokemonShiny getShinyById(@PathVariable Integer id) {
+        return shinyService.findShinyById(id);
+    }
+
+    /**
+     * Afficher les données d'un shiny avec un id donné (DTO)
      * @param id l'identifiant recherché
      * @return le shiny et toutes ses données
      */

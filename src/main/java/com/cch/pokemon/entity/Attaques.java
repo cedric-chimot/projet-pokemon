@@ -1,10 +1,14 @@
 package com.cch.pokemon.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,6 +29,10 @@ public class Attaques {
     @ManyToOne
     @JoinColumn(name = "id_type")
     private Types typeAttaque;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "attaques")
+    private Set<ShinyAttaques> shinyAttaques = new HashSet<>();
 
     public Attaques(String nomAttaque, Types type) {
         this.nomAttaque = nomAttaque;

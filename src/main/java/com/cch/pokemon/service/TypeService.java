@@ -108,9 +108,9 @@ public class TypeService {
 
         // Vérifier si l'objet existe
         if (optionalType.isPresent()) {
-            Types shiny = optionalType.get();
-            typeRepository.delete(shiny); // Supprimer l'objet
-            return shiny; // Retourner l'objet supprimé
+            Types type = optionalType.get();
+            typeRepository.delete(type); // Supprimer l'objet
+            return type; // Retourner l'objet supprimé
         } else {
             throw new CustomException("Type", "id",  id);
         }

@@ -1,10 +1,14 @@
 package com.cch.pokemon.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -51,6 +55,15 @@ public class PokemonShiny {
     @ManyToOne
     @JoinColumn(name = "id_sexe")
     private Sexe sexe;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "shiny_attaques",
+            joinColumns = @JoinColumn(name = "id_shiny"),
+            inverseJoinColumns = @JoinColumn(name = "id_attaque")
+    )
+    private Set<Attaques> attaques = new HashSet<>();
 
     @Column(name = "attaque1", nullable = false)
     private String attaque1;
