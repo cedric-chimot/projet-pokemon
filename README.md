@@ -2,20 +2,18 @@
 
 ## _Le MCD_
 
-![pokemon-mcd](https://github.com/user-attachments/assets/49233f85-2759-4a55-85e6-72e74162596f)
+![pokemon-mcd](https://github.com/user-attachments/assets/b44ed981-fb4d-431b-b330-ec104893f60e)
 
 
 ## _Le MLD_
 
-![pokemon-mld](https://github.com/user-attachments/assets/3dec8d79-0ecb-4147-8c37-9159036b9e19)
+![pokemon-mld](https://github.com/user-attachments/assets/bdb0630e-de0e-492d-87e7-bccb405b0cd8)
 
 
 ## _Le rendu sur Workbench_
 
 ![pokemon-workbench](https://github.com/user-attachments/assets/df83ef1e-ae43-4531-9435-5dba41b1e24a)
 
-
-_Pour le rendu projet, voir le dossier Angular_
 
 ## Liens 
 
