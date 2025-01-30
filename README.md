@@ -12,7 +12,7 @@
 
 ## _Le rendu sur Workbench_
 
-![pokemon-workbench](https://github.com/user-attachments/assets/cfa203d1-51db-46db-ba4f-2d7741a02beb)
+![pokemon-workbench](https://github.com/user-attachments/assets/df83ef1e-ae43-4531-9435-5dba41b1e24a)
 
 
 _Pour le rendu projet, voir le dossier Angular_
