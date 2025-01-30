@@ -30,9 +30,22 @@ public class Attaques {
     @JoinColumn(name = "id_type")
     private Types typeAttaque;
 
+    // Relation OneToMany pour les PokémonShiny qui possèdent cette attaque
     @JsonIgnore
-    @OneToMany(mappedBy = "attaques")
-    private Set<ShinyAttaques> shinyAttaques = new HashSet<>();
+    @OneToMany(mappedBy = "attaque1")
+    private Set<PokemonShiny> pokemonShinysAttaque1 = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "attaque2")
+    private Set<PokemonShiny> pokemonShinysAttaque2 = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "attaque3")
+    private Set<PokemonShiny> pokemonShinysAttaque3 = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "attaque4")
+    private Set<PokemonShiny> pokemonShinysAttaque4 = new HashSet<>();
 
     public Attaques(String nomAttaque, Types type) {
         this.nomAttaque = nomAttaque;
@@ -41,10 +54,10 @@ public class Attaques {
 
     @Override
     public String toString() {
-        return "attaques{" +
+        return "Attaques{" +
                 "id=" + id +
                 ", nomAttaque='" + nomAttaque + '\'' +
-                ", type=" + typeAttaque +
+                ", typeAttaque=" + typeAttaque +
                 '}';
     }
 }

@@ -35,6 +35,7 @@ public class PokemonShinyService {
     private final PokeballService pokeballService;
     private final TypeService typeService;
     private final SexeService sexeService;
+    private final AttaquesService attaquesService;
     private final RegionsService regionsService;
 
 
@@ -50,7 +51,7 @@ public class PokemonShinyService {
      * @param objectMapper Injection de l'ObjectMapper
      */
     public PokemonShinyService(PokemonShinyRepository shinyRepository, NatureService natureService, DresseurService dresseurService,
-                               PokeballService pokeballService, TypeService typeService, SexeService sexeService, RegionsService regionsService,
+                               PokeballService pokeballService, TypeService typeService, SexeService sexeService, AttaquesService attaquesService, RegionsService regionsService,
                                ObjectMapper objectMapper) {
         this.shinyRepository = shinyRepository;
         this.natureService = natureService;
@@ -58,6 +59,7 @@ public class PokemonShinyService {
         this.pokeballService = pokeballService;
         this.typeService = typeService;
         this.sexeService = sexeService;
+        this.attaquesService = attaquesService;
         this.regionsService = regionsService;
         this.objectMapper = objectMapper;
     }
@@ -75,10 +77,15 @@ public class PokemonShinyService {
         Types type1 = typeService.findById(pokemonRequeteDTO.getType1());
         Types type2 = typeService.findById(pokemonRequeteDTO.getType2());
         Sexe sexe = sexeService.findById(pokemonRequeteDTO.getIdSexe());
+        Attaques attaque1 = attaquesService.findById(pokemonRequeteDTO.getAttaque1());
+        Attaques attaque2 = attaquesService.findById(pokemonRequeteDTO.getAttaque2());
+        Attaques attaque3 = attaquesService.findById(pokemonRequeteDTO.getAttaque3());
+        Attaques attaque4 = attaquesService.findById(pokemonRequeteDTO.getAttaque4());
         Regions region = regionsService.findById(pokemonRequeteDTO.getIdRegion());
 
         // Créer et sauvegarder le shiny
         PokemonShiny pokemonShiny = new PokemonShiny(
+                pokemonRequeteDTO.getId(),
                 pokemonRequeteDTO.getNumDex(),
                 pokemonRequeteDTO.getNomPokemon(),
                 nature,
@@ -88,10 +95,10 @@ public class PokemonShinyService {
                 type1,
                 type2,
                 sexe,
-                pokemonRequeteDTO.getAttaque1(),
-                pokemonRequeteDTO.getAttaque2(),
-                pokemonRequeteDTO.getAttaque3(),
-                pokemonRequeteDTO.getAttaque4(),
+                attaque1,
+                attaque2,
+                attaque3,
+                attaque4,
                 pokemonRequeteDTO.getBoite(),
                 pokemonRequeteDTO.getPosition(),
                 region

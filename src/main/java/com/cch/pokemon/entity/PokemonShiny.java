@@ -1,14 +1,10 @@
 package com.cch.pokemon.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -56,26 +52,22 @@ public class PokemonShiny {
     @JoinColumn(name = "id_sexe")
     private Sexe sexe;
 
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "shiny_attaques",
-            joinColumns = @JoinColumn(name = "id_shiny"),
-            inverseJoinColumns = @JoinColumn(name = "id_attaque")
-    )
-    private Set<Attaques> attaques = new HashSet<>();
+    // Remplacement de la relation ManyToMany par des ManyToOne pour chaque attaque
+    @ManyToOne
+    @JoinColumn(name = "attaque1")
+    private Attaques attaque1;
 
-    @Column(name = "attaque1", nullable = false)
-    private String attaque1;
+    @ManyToOne
+    @JoinColumn(name = "attaque2")
+    private Attaques attaque2;
 
-    @Column(name = "attaque2", nullable = false)
-    private String attaque2;
+    @ManyToOne
+    @JoinColumn(name = "attaque3")
+    private Attaques attaque3;
 
-    @Column(name = "attaque3", nullable = false)
-    private String attaque3;
-
-    @Column(name = "attaque4", nullable = false)
-    private String attaque4;
+    @ManyToOne
+    @JoinColumn(name = "attaque4")
+    private Attaques attaque4;
 
     @Column(name = "boite", nullable = false)
     private String boite;
@@ -87,26 +79,7 @@ public class PokemonShiny {
     @JoinColumn(name = "id_region")
     private Regions regionShiny;
 
-    public PokemonShiny(String numDex, String nomPokemon, Natures nature, Dresseurs dresseur, Pokeballs pokeball, String ivManquant, Types type1,
-                        Types type2, Sexe sexe, String attaque1, String attaque2, String attaque3, String attaque4, String boite, Integer position,
-                        Regions regions) {
-        this.numDex = numDex;
-        this.nomPokemon = nomPokemon;
-        this.nature = nature;
-        this.dresseur = dresseur;
-        this.pokeball = pokeball;
-        this.ivManquant = ivManquant;
-        this.type1 = type1;
-        this.type2 = type2;
-        this.sexe = sexe;
-        this.attaque1 = attaque1;
-        this.attaque2 = attaque2;
-        this.attaque3 = attaque3;
-        this.attaque4 = attaque4;
-        this.boite = boite;
-        this.position = position;
-        this.regionShiny = regions;
-    }
+
 
     @Override
     public String toString() {
@@ -121,13 +94,12 @@ public class PokemonShiny {
                 ", type1=" + type1 +
                 ", type2=" + type2 +
                 ", sexe=" + sexe +
-                ", attaque1='" + attaque1 + '\'' +
-                ", attaque2='" + attaque2 + '\'' +
-                ", attaque3='" + attaque3 + '\'' +
-                ", attaque4='" + attaque4 + '\'' +
+                ", attaque1=" + attaque1 +
+                ", attaque2=" + attaque2 +
+                ", attaque3=" + attaque3 +
+                ", attaque4=" + attaque4 +
                 ", boite='" + boite + '\'' +
-                ", position=" + position + '\'' +
-                ", region='" + regionShiny +
+                ", regionShiny=" + regionShiny +
                 '}';
     }
 }

@@ -30,13 +30,13 @@ public class PokemonDTO {
 
     private SexeShinyDTO sexe;
 
-    private String attaque1;
+    private AttaquesDTO attaque1;
 
-    private String attaque2;
+    private AttaquesDTO attaque2;
 
-    private String attaque3;
+    private AttaquesDTO attaque3;
 
-    private String attaque4;
+    private AttaquesDTO attaque4;
 
     private String boite;
 
@@ -46,7 +46,7 @@ public class PokemonDTO {
 
     public PokemonDTO(Integer id, String numDex, String nomPokemon, String nomNature, String numDresseur,
                       String nomDresseur, String pokeball, String ivManquant, TypeShinyDTO type1, TypeShinyDTO type2,
-                      SexeShinyDTO sexe, String attaque1, String attaque2, String attaque3, String attaque4,
+                      SexeShinyDTO sexe, AttaquesDTO attaque1, AttaquesDTO attaque2, AttaquesDTO attaque3, AttaquesDTO attaque4,
                       String boite, Integer position, Regions region) {
         this.id = id;
         this.numDex = numDex;

@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PokemonRequeteDTO {
 
+    private Integer id;
+
     private String numDex;
 
     private String nomPokemon;
@@ -27,13 +29,13 @@ public class PokemonRequeteDTO {
 
     private Integer idSexe;
 
-    private String attaque1;
+    private Long attaque1;
 
-    private String attaque2;
+    private Long attaque2;
 
-    private String attaque3;
+    private Long attaque3;
 
-    private String attaque4;
+    private Long attaque4;
 
     private String boite;
 
