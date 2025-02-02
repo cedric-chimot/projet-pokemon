@@ -106,6 +106,17 @@ public class NatureService {
     }
 
     /**
+     * Méthode pour incrémenter le nombre de shiny d'une nature donnée lorsqu'on ajoute un nouveau shiny
+     * @param natureId L'identifiant du type
+     */
+    public void incrementerNbShiny(Integer natureId) {
+        Natures nature = natureRepository.findById(natureId)
+                .orElseThrow(() -> new CustomException("Nature non trouvée", "Id", natureId));
+        nature.setNbShiny(nature.getNbShiny() + 1);
+        natureRepository.save(nature);
+    }
+
+    /**
      * Méthode pour supprimer une nature par son Id
      * @param id L'identifiant de la nature à supprimer
      * @return L'objet supprimé

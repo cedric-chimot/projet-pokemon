@@ -177,6 +177,17 @@ public class DresseurService {
     }
 
     /**
+     * Méthode pour incrémenter le nombre de shiny d'un dresseur donné lorsqu'on ajoute un nouveau shiny
+     * @param dresseurId L'identifiant du dresseur
+     */
+    public void incrementerNbShiny(Integer dresseurId) {
+        Dresseurs dresseur = dresseurRepository.findById(dresseurId)
+                .orElseThrow(() -> new CustomException("Dresseur non trouvé", "Id", dresseurId));
+        dresseur.setNbShiny(dresseur.getNbShiny() + 1);
+        dresseurRepository.save(dresseur);
+    }
+
+    /**
      * Méthode pour supprimer un dresseur par son Id
      * @param id L'identifiant du dresseur à supprimer
      * @return L'objet supprimé

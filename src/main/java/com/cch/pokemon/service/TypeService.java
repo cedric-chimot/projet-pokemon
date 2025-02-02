@@ -98,6 +98,17 @@ public class TypeService {
     }
 
     /**
+     * Méthode pour incrémenter le nombre de shiny d'un type donné lorsqu'on ajoute un nouveau shiny
+     * @param typeId L'identifiant du type
+     */
+    public void incrementerNbShiny(Integer typeId) {
+        Types type = typeRepository.findById(typeId)
+                .orElseThrow(() -> new CustomException("Type non trouvé", "Id", typeId));
+        type.setNbShiny(type.getNbShiny() + 1);
+        typeRepository.save(type);
+    }
+
+    /**
      * Méthode pour supprimer un type par son Id
      * @param id L'identifiant du type à supprimer
      * @return L'objet supprimé

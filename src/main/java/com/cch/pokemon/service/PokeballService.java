@@ -1,11 +1,11 @@
 package com.cch.pokemon.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.cch.pokemon.dto.PokeballDTO;
 import com.cch.pokemon.dto.PokeballReduitDTO;
 import com.cch.pokemon.entity.Pokeballs;
 import com.cch.pokemon.exceptions.CustomException;
 import com.cch.pokemon.repository.PokeballRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -118,6 +118,17 @@ public class PokeballService {
         } else {
             throw new CustomException("La pokeball est inconnue", "id", pokeball.getId());
         }
+    }
+
+    /**
+     * Méthode pour incrémenter le nombre de shiny d'une pokeball donnée lorsqu'on ajoute un nouveau shiny
+     * @param pokeballId L'identifiant du type
+     */
+    public void incrementerNbShiny(Integer pokeballId) {
+        Pokeballs pokeball = pokeballRepository.findById(pokeballId)
+                .orElseThrow(() -> new CustomException("Pokeball non trouvée", "Id", pokeballId));
+        pokeball.setNbShiny(pokeball.getNbShiny() + 1);
+        pokeballRepository.save(pokeball);
     }
 
     /**

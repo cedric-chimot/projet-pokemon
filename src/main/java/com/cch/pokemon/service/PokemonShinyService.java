@@ -103,6 +103,13 @@ public class PokemonShinyService {
                 pokemonRequeteDTO.getPosition(),
                 region
         );
+        natureService.incrementerNbShiny(nature.getId());
+        dresseurService.incrementerNbShiny(dresseur.getId());
+        pokeballService.incrementerNbShiny(pokeball.getId());
+        typeService.incrementerNbShiny(type1.getId());
+        if (type2 != null) {
+            typeService.incrementerNbShiny(type2.getId());
+        }
 
         return shinyRepository.save(pokemonShiny);
     }
