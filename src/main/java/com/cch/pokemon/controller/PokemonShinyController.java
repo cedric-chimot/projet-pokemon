@@ -2,11 +2,9 @@ package com.cch.pokemon.controller;
 
 import com.cch.pokemon.dto.PokemonDTO;
 import com.cch.pokemon.dto.PokemonReduitDTO;
-import com.cch.pokemon.dto.PokemonRequeteDTO;
 import com.cch.pokemon.dto.StatIvManquantDTO;
 import com.cch.pokemon.entity.PokemonShiny;
 import com.cch.pokemon.service.PokemonShinyService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,16 +36,28 @@ public class PokemonShinyController {
      * Ajouter un shiny
      * @return Le shiny nouvellement ajouté
      */
-    @PostMapping("/save")
-    public ResponseEntity<PokemonShiny> saveShinyPokemon(@RequestBody PokemonRequeteDTO pokemonRequeteDTO) {
-        try {
-            // Appeler la méthode shinySave du service
-            PokemonShiny pokemonShiny = shinyService.shinySave(pokemonRequeteDTO);
-            return new ResponseEntity<>(pokemonShiny, HttpStatus.CREATED);
-        } catch (Exception e) {
-            // En cas d'erreur, retourner un statut 400 avec un message
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    @PostMapping("/create")
+    public ResponseEntity<PokemonShiny> saveShinyPokemon(@RequestBody PokemonShiny pokemonShiny) {
+        PokemonShiny shinySave = shinyService.save(
+                pokemonShiny.getNumDex(),
+                pokemonShiny.getNomPokemon(),
+                pokemonShiny.getNature().getId(),
+                pokemonShiny.getDresseur().getId(),
+                pokemonShiny.getPokeball().getId(),
+                pokemonShiny.getIvManquant(),
+                pokemonShiny.getType1().getId(),
+                pokemonShiny.getType2().getId(),
+                pokemonShiny.getSexe().getId(),
+                pokemonShiny.getAttaque1().getId(),
+                pokemonShiny.getAttaque2().getId(),
+                pokemonShiny.getAttaque3().getId(),
+                pokemonShiny.getAttaque4().getId(),
+                pokemonShiny.getBoite(),
+                pokemonShiny.getPosition(),
+                pokemonShiny.getRegionShiny().getId()
+        );
+
+        return ResponseEntity.ok(shinySave);
     }
 
     /**

@@ -2,13 +2,13 @@ package com.cch.pokemon.service;
 
 import com.cch.pokemon.dto.PokemonDTO;
 import com.cch.pokemon.dto.PokemonReduitDTO;
-import com.cch.pokemon.dto.PokemonRequeteDTO;
 import com.cch.pokemon.dto.StatIvManquantDTO;
 import com.cch.pokemon.entity.*;
 import com.cch.pokemon.exceptions.CustomException;
 import com.cch.pokemon.repository.PokemonShinyRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -66,60 +66,77 @@ public class PokemonShinyService {
 
     /**
      * Ajouter un shiny avec toutes les relations associées
-     * @param pokemonRequeteDTO pour trouver les informations nécessaires à ajouter
-     * @return le pokemon shiny nouvellement ajouté
+     * @param numDex le numéro de pokédex
+     * @param nomPokemon le nom du shiny
+     * @param ivManquant ses Ivs
+     * @param idNature sa nature
+     * @param idDresseur son dresseur d'origine
+     * @param idPokeball sa pokéball de capture
+     * @param type1 son type
+     * @param type2 le second type s'il en possède un
+     * @param idSexe son genre
+     * @param attaque1, attaque2, attaque3, attaque4 : la liste de ses attaques
+     * @param boite sa boite
+     * @param position sa position dans la boite
+     * @param idRegion sa région d'origine
+     * @return Le shiny nouvellement ajouté
      */
-    public PokemonShiny shinySave(PokemonRequeteDTO pokemonRequeteDTO) {
-        // Récupérer les entités associées via leurs services
-        Natures nature = natureService.findById(pokemonRequeteDTO.getIdNature());
-        Dresseurs dresseur = dresseurService.findById(pokemonRequeteDTO.getIdDresseur());
-        Pokeballs pokeball = pokeballService.findById(pokemonRequeteDTO.getIdPokeball());
-        Types type1 = typeService.findById(pokemonRequeteDTO.getType1());
-        Types type2 = typeService.findById(pokemonRequeteDTO.getType2());
-        Sexe sexe = sexeService.findById(pokemonRequeteDTO.getIdSexe());
-        Attaques attaque1 = attaquesService.findById(pokemonRequeteDTO.getAttaque1());
-        Attaques attaque2 = attaquesService.findById(pokemonRequeteDTO.getAttaque2());
-        Attaques attaque3 = attaquesService.findById(pokemonRequeteDTO.getAttaque3());
-        Attaques attaque4 = attaquesService.findById(pokemonRequeteDTO.getAttaque4());
-        Regions region = regionsService.findById(pokemonRequeteDTO.getIdRegion());
+    public PokemonShiny save(String numDex, String nomPokemon, Integer idNature,
+                             Integer idDresseur, Integer idPokeball, String ivManquant,
+                             Integer type1, Integer type2, Integer idSexe,
+                             Long attaque1, Long attaque2, Long attaque3, Long attaque4,
+                             String boite, Integer position, Long idRegion) {
 
-        // Créer et sauvegarder le shiny
+        // Récupérer les objets associés à partir des IDs
+        Natures nature = natureService.findById(idNature);
+        Dresseurs dresseur = dresseurService.findById(idDresseur);
+        Pokeballs pokeball = pokeballService.findById(idPokeball);
+        Sexe sexe = sexeService.findById(idSexe);
+        Types type1Obj = typeService.findById(type1);
+        Types type2Obj = (type2 != null) ? typeService.findById(type2) : null;
+        Attaques attaque1Obj = attaquesService.findById(attaque1);
+        Attaques attaque2Obj = attaquesService.findById(attaque2);
+        Attaques attaque3Obj = attaquesService.findById(attaque3);
+        Attaques attaque4Obj = attaquesService.findById(attaque4);
+        Regions regionShiny = regionsService.findById(idRegion);
+
+        // Créer l'objet PokemonShiny avec les entités récupérées
         PokemonShiny pokemonShiny = new PokemonShiny(
-                pokemonRequeteDTO.getId(),
-                pokemonRequeteDTO.getNumDex(),
-                pokemonRequeteDTO.getNomPokemon(),
+                numDex,
+                nomPokemon,
                 nature,
                 dresseur,
                 pokeball,
-                pokemonRequeteDTO.getIvManquant(),
-                type1,
-                type2,
+                ivManquant,
+                type1Obj,
+                type2Obj,
                 sexe,
-                attaque1,
-                attaque2,
-                attaque3,
-                attaque4,
-                pokemonRequeteDTO.getBoite(),
-                pokemonRequeteDTO.getPosition(),
-                region
+                attaque1Obj,
+                attaque2Obj,
+                attaque3Obj,
+                attaque4Obj,
+                boite,
+                position,
+                regionShiny
         );
+
         natureService.incrementerNbShiny(nature.getId());
         dresseurService.incrementerNbShiny(dresseur.getId());
         pokeballService.incrementerNbShiny(pokeball.getId());
-        typeService.incrementerNbShiny(type1.getId());
+        typeService.incrementerNbShiny(type1Obj.getId());
         if (type2 != null) {
-            typeService.incrementerNbShiny(type2.getId());
+            typeService.incrementerNbShiny(type2Obj.getId());
         }
 
         return shinyRepository.save(pokemonShiny);
     }
 
     /**
-     * Méthode pour afficher la liste de tous les shinies
-     * @return La liste de shinies
+     * Méthode pour trouver tous les shiny, ordonnés par Id puis par numDex
+     * @return la liste ordonnée de tous les shiny
      */
     public List<PokemonDTO> findAllShinies() {
-        List<PokemonShiny> shinyList = shinyRepository.findAll();
+        List<PokemonShiny> shinyList = shinyRepository.findAll(Sort.by(Sort.Order.asc("id"), Sort.Order.asc("numDex")));
         return shinyList.stream()
                 .map(shiny -> objectMapper.convertValue(shiny, PokemonDTO.class))
                 .collect(Collectors.toList());
