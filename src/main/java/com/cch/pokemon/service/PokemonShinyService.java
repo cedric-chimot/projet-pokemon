@@ -8,9 +8,9 @@ import com.cch.pokemon.exceptions.CustomException;
 import com.cch.pokemon.repository.PokemonShinyRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -93,40 +93,34 @@ public class PokemonShinyService {
         Pokeballs pokeball = pokeballService.findById(idPokeball);
         Sexe sexe = sexeService.findById(idSexe);
         Types type1Obj = typeService.findById(type1);
+
+        // On n'essaie pas de récupérer un type2 si celui-ci est null
         Types type2Obj = (type2 != null) ? typeService.findById(type2) : null;
+
+        // Pas d'exception ici si type2Obj est null, on laisse juste null si type2 est absente
         Attaques attaque1Obj = attaquesService.findById(attaque1);
         Attaques attaque2Obj = attaquesService.findById(attaque2);
         Attaques attaque3Obj = attaquesService.findById(attaque3);
         Attaques attaque4Obj = attaquesService.findById(attaque4);
         Regions regionShiny = regionsService.findById(idRegion);
 
-        // Créer l'objet PokemonShiny avec les entités récupérées
-        PokemonShiny pokemonShiny = new PokemonShiny(
-                numDex,
-                nomPokemon,
-                nature,
-                dresseur,
-                pokeball,
-                ivManquant,
-                type1Obj,
-                type2Obj,
-                sexe,
-                attaque1Obj,
-                attaque2Obj,
-                attaque3Obj,
-                attaque4Obj,
-                boite,
-                position,
-                regionShiny
-        );
+        PokemonShiny pokemonShiny;
+
+        if (type2Obj != null) {
+            pokemonShiny = new PokemonShiny(numDex, nomPokemon, nature, dresseur, pokeball, ivManquant,
+                    type1Obj, type2Obj, sexe, attaque1Obj, attaque2Obj, attaque3Obj, attaque4Obj,
+                    boite, position, regionShiny);
+            typeService.incrementerNbShiny(type2Obj.getId());
+        } else {
+            pokemonShiny = new PokemonShiny(numDex, nomPokemon, nature, dresseur, pokeball, ivManquant,
+                    type1Obj, sexe, attaque1Obj, attaque2Obj, attaque3Obj, attaque4Obj,
+                    boite, position, regionShiny);
+        }
 
         natureService.incrementerNbShiny(nature.getId());
         dresseurService.incrementerNbShiny(dresseur.getId());
         pokeballService.incrementerNbShiny(pokeball.getId());
         typeService.incrementerNbShiny(type1Obj.getId());
-        if (type2 != null) {
-            typeService.incrementerNbShiny(type2Obj.getId());
-        }
 
         return shinyRepository.save(pokemonShiny);
     }
@@ -136,7 +130,11 @@ public class PokemonShinyService {
      * @return la liste ordonnée de tous les shiny
      */
     public List<PokemonDTO> findAllShinies() {
-        List<PokemonShiny> shinyList = shinyRepository.findAll(Sort.by(Sort.Order.asc("id"), Sort.Order.asc("numDex")));
+        List<PokemonShiny> shinyList = shinyRepository.findAll();
+
+        // Trier en fonction de numDex en convertissant en Integer
+        shinyList.sort(Comparator.comparing(shiny -> Integer.parseInt(shiny.getNumDex())));
+
         return shinyList.stream()
                 .map(shiny -> objectMapper.convertValue(shiny, PokemonDTO.class))
                 .collect(Collectors.toList());
@@ -204,7 +202,25 @@ public class PokemonShinyService {
      * @return le pokemon recherché
      */
     public List<PokemonShiny> getPokemonByRegion(Long regionId) {
-        return shinyRepository.findByRegion(regionId);
+        List<PokemonShiny> shinyList = shinyRepository.findByRegion(regionId);
+
+        // Parcours la liste et vérifie si le Pokémon récemment ajouté doit être réordonné
+        for (int i = 1; i < shinyList.size(); i++) {
+            PokemonShiny current = shinyList.get(i);
+            PokemonShiny previous = shinyList.get(i - 1);
+
+            // Si le numDex du Pokémon actuel est inférieur à celui du Pokémon précédent
+            // et que l'id du Pokémon actuel est plus grand, alors on réorganise la position
+            if (Integer.parseInt(current.getNumDex()) < Integer.parseInt(previous.getNumDex())
+                    && current.getId() > previous.getId()) {
+
+                // Place le Pokémon actuel à la bonne position par rapport au numDex
+                shinyList.add(i - 1, shinyList.remove(i));
+                i = 0; // Recommence à vérifier du début
+            }
+        }
+
+        return shinyList;
     }
 
     /**

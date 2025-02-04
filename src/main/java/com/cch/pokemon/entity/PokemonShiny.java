@@ -100,6 +100,28 @@ public class PokemonShiny {
         this.regionShiny = regionShiny;
     }
 
+    public PokemonShiny(String numDex, String nomPokemon, Natures nature, Dresseurs dresseur, Pokeballs pokeball, String ivManquant,
+                        Types type1, Sexe sexe, Attaques attaque1, Attaques attaque2, Attaques attaque3, Attaques attaque4,
+                        String boite, Integer position, Regions regionShiny) {
+        this.numDex = numDex;
+        this.nomPokemon = nomPokemon;
+        this.nature = nature;
+        this.dresseur = dresseur;
+        this.pokeball = pokeball;
+        this.ivManquant = ivManquant;
+        this.type1 = type1;
+        this.type2 = null; // 👈 On met explicitement `null` si ce constructeur est utilisé
+        this.sexe = sexe;
+        this.attaque1 = attaque1;
+        this.attaque2 = attaque2;
+        this.attaque3 = attaque3;
+        this.attaque4 = attaque4;
+        this.boite = boite;
+        this.position = position;
+        this.regionShiny = regionShiny;
+    }
+
+
     @Override
     public String toString() {
         return "PokemonShiny{" +

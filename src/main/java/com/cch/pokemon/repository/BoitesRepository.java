@@ -50,10 +50,16 @@ public interface BoitesRepository extends JpaRepository<Boites, Integer> {
             "WHERE bp.boite.id = :boiteId")
     List<Object[]> statsByBoitePokeball(@Param("boiteId") Integer boiteId);
 
-    @Query("SELECT d.numDresseur AS numDresseur, d.nomDresseur AS dresseur, bd.nbPokemon " +
+    @Query("SELECT " +
+            "CASE WHEN d.nomDresseur LIKE 'Event%' THEN 'Event' ELSE d.numDresseur END AS numDresseur, " +
+            "CASE WHEN d.nomDresseur LIKE 'Event%' THEN 'Event' ELSE d.nomDresseur END AS dresseur, " +
+            "SUM(bd.nbPokemon) AS nbPokemon " +
             "FROM BoiteDresseur bd " +
             "JOIN bd.dresseur d " +
-            "WHERE bd.boite.id = :boiteId ")
+            "WHERE bd.boite.id = :boiteId " +
+            "GROUP BY CASE WHEN d.nomDresseur LIKE 'Event%' THEN 'Event' ELSE d.numDresseur END, " +
+            "CASE WHEN d.nomDresseur LIKE 'Event%' THEN 'Event' ELSE d.nomDresseur END " +
+            "ORDER BY CASE WHEN d.nomDresseur LIKE 'Event%' THEN 1 ELSE 0 END, d.numDresseur")
     List<Object[]> statsByBoiteDresseur(@Param("boiteId") Integer boiteId);
 
     @Query("SELECT s.sexe AS sexe, bs.nbPokemon " +

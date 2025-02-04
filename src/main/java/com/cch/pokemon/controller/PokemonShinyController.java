@@ -46,7 +46,7 @@ public class PokemonShinyController {
                 pokemonShiny.getPokeball().getId(),
                 pokemonShiny.getIvManquant(),
                 pokemonShiny.getType1().getId(),
-                pokemonShiny.getType2().getId(),
+                pokemonShiny.getType2() != null ? pokemonShiny.getType2().getId() : null, // ✅ Évite le NullPointerException
                 pokemonShiny.getSexe().getId(),
                 pokemonShiny.getAttaque1().getId(),
                 pokemonShiny.getAttaque2().getId(),
