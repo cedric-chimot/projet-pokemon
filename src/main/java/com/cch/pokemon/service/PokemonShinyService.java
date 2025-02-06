@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -131,10 +130,6 @@ public class PokemonShinyService {
      */
     public List<PokemonDTO> findAllShinies() {
         List<PokemonShiny> shinyList = shinyRepository.findAll();
-
-        // Trier en fonction de numDex en convertissant en Integer
-        shinyList.sort(Comparator.comparing(shiny -> Integer.parseInt(shiny.getNumDex())));
-
         return shinyList.stream()
                 .map(shiny -> objectMapper.convertValue(shiny, PokemonDTO.class))
                 .collect(Collectors.toList());

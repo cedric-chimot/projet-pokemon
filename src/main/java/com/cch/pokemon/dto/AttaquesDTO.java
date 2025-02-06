@@ -13,6 +13,6 @@ public class AttaquesDTO {
 
     private String nomAttaque;
 
-    private TypeShinyDTO type;
+    private TypeShinyDTO typeAttaque;
 
 }
