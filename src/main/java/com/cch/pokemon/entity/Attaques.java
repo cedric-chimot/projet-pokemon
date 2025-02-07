@@ -30,7 +30,6 @@ public class Attaques {
     @JoinColumn(name = "id_type")
     private Types typeAttaque;
 
-    // Relation OneToMany pour les PokémonShiny qui possèdent cette attaque
     @JsonIgnore
     @OneToMany(mappedBy = "attaque1")
     private Set<PokemonShiny> pokemonShinysAttaque1 = new HashSet<>();
