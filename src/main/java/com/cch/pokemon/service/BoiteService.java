@@ -177,6 +177,15 @@ public class BoiteService {
     }
 
     /**
+     * Trouver une boite par son nom
+     * @param nomBoite le nom de la boite
+     * @return la boite par son nom
+     */
+    public Boites findByNom(String nomBoite) {
+      return boitesRepository.findByNom(nomBoite);  // Assume qu'il y a une méthode dans ton repository qui trouve une Boite par son nom
+    }
+
+    /**
      * Mettre à jour une boite
      * @param boite L'objet à mettre à jour
      * @return L'objet mis à jour

@@ -121,7 +121,6 @@ public class PokemonShiny {
         this.regionShiny = regionShiny;
     }
 
-
     @Override
     public String toString() {
         return "PokemonShiny{" +
