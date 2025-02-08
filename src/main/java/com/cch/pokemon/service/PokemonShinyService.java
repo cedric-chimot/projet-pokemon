@@ -103,25 +103,31 @@ public class PokemonShinyService {
     Attaques attaque4Obj = attaquesService.findById(attaque4);
     Regions regionShiny = regionsService.findById(idRegion);
 
-    PokemonShiny pokemonShiny;
+    // Créer l'objet PokémonShiny
+    PokemonShiny pokemonShiny = (type2Obj != null)
+      ? new PokemonShiny(numDex, nomPokemon, nature, dresseur, pokeball, ivManquant,
+      type1Obj, type2Obj, sexe, attaque1Obj, attaque2Obj, attaque3Obj, attaque4Obj,
+      boite, position, regionShiny)
+      : new PokemonShiny(numDex, nomPokemon, nature, dresseur, pokeball, ivManquant,
+      type1Obj, sexe, attaque1Obj, attaque2Obj, attaque3Obj, attaque4Obj,
+      boite, position, regionShiny);
 
-    if (type2Obj != null) {
-      pokemonShiny = new PokemonShiny(numDex, nomPokemon, nature, dresseur, pokeball, ivManquant,
-        type1Obj, type2Obj, sexe, attaque1Obj, attaque2Obj, attaque3Obj, attaque4Obj,
-        boite, position, regionShiny);
-      typeService.incrementerNbShiny(type2Obj.getId());
-    } else {
-      pokemonShiny = new PokemonShiny(numDex, nomPokemon, nature, dresseur, pokeball, ivManquant,
-        type1Obj, sexe, attaque1Obj, attaque2Obj, attaque3Obj, attaque4Obj,
-        boite, position, regionShiny);
-    }
+    // Incrémenter les compteurs
+    incrementerCompteurs(nature, dresseur, pokeball, type1Obj, type2Obj);
 
+    return shinyRepository.save(pokemonShiny);
+  }
+
+  // Centraliser l'incrémentation des compteurs
+  private void incrementerCompteurs(Natures nature, Dresseurs dresseur, Pokeballs pokeball,
+                                    Types type1, Types type2) {
     natureService.incrementerNbShiny(nature.getId());
     dresseurService.incrementerNbShiny(dresseur.getId());
     pokeballService.incrementerNbShiny(pokeball.getId());
-    typeService.incrementerNbShiny(type1Obj.getId());
-
-    return shinyRepository.save(pokemonShiny);
+    typeService.incrementerNbShiny(type1.getId());
+    if (type2 != null) {
+      typeService.incrementerNbShiny(type2.getId());
+    }
   }
 
   /**

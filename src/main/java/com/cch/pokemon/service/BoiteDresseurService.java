@@ -7,6 +7,8 @@ import com.cch.pokemon.repository.BoiteDresseurRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Le service BoiteDresseur
  */
@@ -25,6 +27,10 @@ public class BoiteDresseurService {
    */
   public BoiteDresseurService(BoiteDresseurRepository boiteDresseurRepository) {
     this.boiteDresseurRepository = boiteDresseurRepository;
+  }
+
+  public List<BoiteDresseur> findAllRelations() {
+    return boiteDresseurRepository.findAll();
   }
 
   /**
