@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -68,6 +69,10 @@ public class Boites {
           inverseJoinColumns = @JoinColumn(name = "pokeball_id")
   )
   private Set<Pokeballs> pokeballs = new HashSet<>();
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "boite")
+  private List<PokemonShiny> shinyList;
 
   @Override
   public String toString() {

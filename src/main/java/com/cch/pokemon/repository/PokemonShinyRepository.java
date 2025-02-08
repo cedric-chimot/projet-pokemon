@@ -17,12 +17,12 @@ public interface PokemonShinyRepository extends JpaRepository<PokemonShiny, Inte
     List<PokemonReduitDTO> findByNumDex(@Param("numDex") String numDex);
 
     /**
-     * Requête pour ordonner une liste de shiny dans une boite
-     * @param boite la boite à trier
+     * Requête pour ordonner une liste de shiny dans une boite selon l'id de la boite
+     * @param idBoite la boite à trier
      * @return La liste ordonnée des pokemons shiny d'une boite
      */
-    @Query("SELECT p FROM PokemonShiny p WHERE p.boite = :boite ORDER BY p.position ASC")
-    List<PokemonShiny> findByBoitePosition(@Param("boite") String boite);
+    @Query("SELECT p FROM PokemonShiny p WHERE p.boite.id = :idBoite ORDER BY p.position ASC")
+    List<PokemonShiny> findByBoitePosition(@Param("idBoite") Integer idBoite);
 
     /**
      * Requête pour comptabiliser le nombre de shiny par Ivs manquants

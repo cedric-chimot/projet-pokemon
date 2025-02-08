@@ -35,7 +35,13 @@ public class PokemonShinyService {
   private final TypeService typeService;
   private final SexeService sexeService;
   private final AttaquesService attaquesService;
+  private final BoiteService boiteService;
   private final RegionsService regionsService;
+  private final BoiteDresseurService boiteDresseurService;
+  private final BoiteNatureService boiteNatureService;
+  private final BoitePokeballService boitePokeballService;
+  private final BoiteTypeService boiteTypeService;
+  private final BoiteSexeService boiteSexeService;
 
 
   /**
@@ -50,8 +56,10 @@ public class PokemonShinyService {
    * @param objectMapper Injection de l'ObjectMapper
    */
   public PokemonShinyService(PokemonShinyRepository shinyRepository, NatureService natureService, DresseurService dresseurService,
-                             PokeballService pokeballService, TypeService typeService, SexeService sexeService, AttaquesService attaquesService, RegionsService regionsService,
-                             ObjectMapper objectMapper) {
+                             PokeballService pokeballService, TypeService typeService, SexeService sexeService, AttaquesService attaquesService,
+                             BoiteService boiteService, RegionsService regionsService, BoiteDresseurService boiteDresseurService,
+                             BoiteNatureService boiteNatureService, BoitePokeballService boitePokeballService, BoiteTypeService boiteTypeService,
+                             BoiteSexeService boiteSexeService, ObjectMapper objectMapper) {
     this.shinyRepository = shinyRepository;
     this.natureService = natureService;
     this.dresseurService = dresseurService;
@@ -59,7 +67,13 @@ public class PokemonShinyService {
     this.typeService = typeService;
     this.sexeService = sexeService;
     this.attaquesService = attaquesService;
+    this.boiteService = boiteService;
     this.regionsService = regionsService;
+    this.boiteDresseurService = boiteDresseurService;
+    this.boiteNatureService = boiteNatureService;
+    this.boitePokeballService = boitePokeballService;
+    this.boiteTypeService = boiteTypeService;
+    this.boiteSexeService = boiteSexeService;
     this.objectMapper = objectMapper;
   }
 
@@ -75,7 +89,7 @@ public class PokemonShinyService {
    * @param type2 le second type s'il en possède un
    * @param idSexe son genre
    * @param attaque1, attaque2, attaque3, attaque4 : la liste de ses attaques
-   * @param boite sa boite
+   * @param idBoite sa boite
    * @param position sa position dans la boite
    * @param idRegion sa région d'origine
    * @return Le shiny nouvellement ajouté
@@ -84,7 +98,7 @@ public class PokemonShinyService {
                            Integer idDresseur, Integer idPokeball, String ivManquant,
                            Integer type1, Integer type2, Integer idSexe,
                            Long attaque1, Long attaque2, Long attaque3, Long attaque4,
-                           String boite, Integer position, Long idRegion) {
+                           Integer idBoite, Integer position, Long idRegion) {
 
     // Récupérer les objets associés à partir des IDs
     Natures nature = natureService.findById(idNature);
@@ -101,6 +115,7 @@ public class PokemonShinyService {
     Attaques attaque2Obj = attaquesService.findById(attaque2);
     Attaques attaque3Obj = attaquesService.findById(attaque3);
     Attaques attaque4Obj = attaquesService.findById(attaque4);
+    Boites boite = boiteService.findBoiteById(idBoite);
     Regions regionShiny = regionsService.findById(idRegion);
 
     // Créer l'objet PokémonShiny
@@ -112,21 +127,37 @@ public class PokemonShinyService {
       type1Obj, sexe, attaque1Obj, attaque2Obj, attaque3Obj, attaque4Obj,
       boite, position, regionShiny);
 
-    // Incrémenter les compteurs
-    incrementerCompteurs(nature, dresseur, pokeball, type1Obj, type2Obj);
+    // Appel de la méthode d'incrémentation des compteurs
+    incrementerCompteurs(nature, dresseur, pokeball, type1Obj, type2Obj, idBoite);
 
+    // Appel des services pour gérer les insertions dans les tables de liaison
+    boiteDresseurService.updateBoiteDresseur(dresseur, boite);
+    boiteNatureService.updateBoiteNature(nature, boite);
+    boitePokeballService.updateBoitePokeball(pokeball, boite);
+    boiteTypeService.updateBoiteType(type1Obj, boite);
+    if (type2Obj != null) {
+      boiteTypeService.updateBoiteType(type2Obj, boite);
+    }
+    boiteSexeService.updateBoiteSexe(sexe, boite);
+
+    // Sauvegarder le PokémonShiny
     return shinyRepository.save(pokemonShiny);
   }
 
   // Centraliser l'incrémentation des compteurs
   private void incrementerCompteurs(Natures nature, Dresseurs dresseur, Pokeballs pokeball,
-                                    Types type1, Types type2) {
-    natureService.incrementerNbShiny(nature.getId());
+                                    Types type1, Types type2, Integer idBoite) {
+    // Incrémentation des compteurs pour dresseur, pokeball, et sexe
     dresseurService.incrementerNbShiny(dresseur.getId());
     pokeballService.incrementerNbShiny(pokeball.getId());
-    typeService.incrementerNbShiny(type1.getId());
-    if (type2 != null) {
-      typeService.incrementerNbShiny(type2.getId());
+
+    // Si l'ID de la boîte n'est pas 7, 8 ou 9, incrémenter les compteurs pour nature et type
+    if (!(idBoite == 7 || idBoite == 8 || idBoite == 9)) {
+      natureService.incrementerNbShiny(nature.getId());
+      typeService.incrementerNbShiny(type1.getId());
+      if (type2 != null) {
+        typeService.incrementerNbShiny(type2.getId());
+      }
     }
   }
 
@@ -174,12 +205,12 @@ public class PokemonShinyService {
   }
 
   /**
-   * Méthode pour trouver et afficher tous les shinies d'une boite
-   * @param boite La boite recherchée
+   * Méthode pour trouver et afficher tous les shinies d'une boite selon son id
+   * @param idBoite La boite recherchée
    * @return La liste des shinies de la boite
    */
-  public List<PokemonDTO> findByBoite(String boite) {
-    List<PokemonShiny> shinyList = shinyRepository.findByBoitePosition(boite);
+  public List<PokemonDTO> findByIdBoite(Integer idBoite) {
+    List<PokemonShiny> shinyList = shinyRepository.findByBoitePosition(idBoite);
     return shinyList.stream()
       .map(shiny -> objectMapper.convertValue(shiny, PokemonDTO.class))
       .collect(Collectors.toList());
@@ -243,7 +274,7 @@ public class PokemonShinyService {
     if (existingInPokedex.isPresent()) {
       PokemonShiny existingPokemon = existingInPokedex.get();
 
-      // Mettre à jour les informations de l'entité existante en conservant les anciennes valeurs si null
+      // Mettre à jour les autres informations
       existingPokemon.setNumDex(shiny.getNumDex() != null ? shiny.getNumDex() : existingPokemon.getNumDex());
       existingPokemon.setNomPokemon(shiny.getNomPokemon() != null ? shiny.getNomPokemon() : existingPokemon.getNomPokemon());
       existingPokemon.setNature(shiny.getNature() != null ? shiny.getNature() : existingPokemon.getNature());

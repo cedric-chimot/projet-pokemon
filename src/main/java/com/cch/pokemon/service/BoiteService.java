@@ -53,8 +53,9 @@ public class BoiteService {
      * @param id l'id de la boite recherchée
      * @return la boite trouvée et toutes ses données
      */
-    public Optional<Boites> getBoiteById(Integer id) {
-        return boitesRepository.findById(id);
+    public Boites findBoiteById(Integer id) {
+        return boitesRepository.findById(id)
+          .orElseThrow(() -> new CustomException("Boite", "id", id)); // Renvoie l'entité
     }
 
     /**

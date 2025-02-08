@@ -29,10 +29,6 @@ public class BoiteDresseurService {
     this.boiteDresseurRepository = boiteDresseurRepository;
   }
 
-  public List<BoiteDresseur> findAllRelations() {
-    return boiteDresseurRepository.findAll();
-  }
-
   /**
    * Méthode pour mettre à jour ou ajouter une liaison dans la table boite_dresseur
    * @param dresseur le dresseur

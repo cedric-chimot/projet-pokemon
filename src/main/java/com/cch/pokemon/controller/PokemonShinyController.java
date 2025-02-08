@@ -52,7 +52,7 @@ public class PokemonShinyController {
                 pokemonShiny.getAttaque2().getId(),
                 pokemonShiny.getAttaque3().getId(),
                 pokemonShiny.getAttaque4().getId(),
-                pokemonShiny.getBoite(),
+                pokemonShiny.getBoite().getId(),
                 pokemonShiny.getPosition(),
                 pokemonShiny.getRegionShiny().getId()
         );
@@ -106,18 +106,18 @@ public class PokemonShinyController {
     }
 
     /**
-     * Afficher la liste des shinies d'une boite
-     * @param boite la boite concernée
-     * @return la liste des shinies de la boite
-     */
-    @GetMapping("/boites")
-    public ResponseEntity<List<PokemonDTO>> getPokemonsByBoite(@RequestParam("boite") String boite) {
-        if (boite == null || boite.isEmpty()) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        System.out.println("Boite reçue: " + boite); // Pour le débogage
-        List<PokemonDTO> pokemons = shinyService.findByBoite(boite);
-        return ResponseEntity.ok(pokemons);
+      * Afficher la liste des shinies d'une boite selon son id
+      * @param idBoite la boite concernée
+      * @return la liste des shinies de la boite
+    */
+    @GetMapping("/idBoites")
+    public ResponseEntity<List<PokemonDTO>> getPokemonsByBoite(@RequestParam("idBoite") Integer idBoite) {
+      if (idBoite == null) {
+        return ResponseEntity.badRequest().body(null);
+      }
+      System.out.println("ID Boite reçue: " + idBoite); // Debug
+      List<PokemonDTO> pokemons = shinyService.findByIdBoite(idBoite);
+      return ResponseEntity.ok(pokemons);
     }
 
     /**

@@ -38,7 +38,7 @@ public class PokemonDTO {
 
     private AttaquesDTO attaque4;
 
-    private String boite;
+    private BoitesDTO boite;
 
     private Integer position;
 
@@ -47,7 +47,7 @@ public class PokemonDTO {
     public PokemonDTO(Integer id, String numDex, String nomPokemon, String nomNature, String numDresseur,
                       String nomDresseur, String pokeball, String ivManquant, TypeShinyDTO type1, TypeShinyDTO type2,
                       SexeShinyDTO sexe, AttaquesDTO attaque1, AttaquesDTO attaque2, AttaquesDTO attaque3, AttaquesDTO attaque4,
-                      String boite, Integer position, Regions regionShiny) {
+                      BoitesDTO boite, Integer position, Regions regionShiny) {
         this.id = id;
         this.numDex = numDex;
         this.nomPokemon = nomPokemon;

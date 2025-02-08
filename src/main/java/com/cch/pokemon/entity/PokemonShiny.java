@@ -69,8 +69,9 @@ public class PokemonShiny {
     @JoinColumn(name = "attaque4")
     private Attaques attaque4;
 
-    @Column(name = "boite", nullable = false)
-    private String boite;
+    @ManyToOne
+    @JoinColumn(name = "id_boite")
+    private Boites boite;
 
     @Column(name = "position", nullable = false)
     private Integer position;
@@ -81,7 +82,7 @@ public class PokemonShiny {
 
     public PokemonShiny(String numDex, String nomPokemon, Natures nature, Dresseurs dresseur, Pokeballs pokeball, String ivManquant,
                         Types type1, Types type2, Sexe sexe, Attaques attaque1, Attaques attaque2, Attaques attaque3, Attaques attaque4,
-                        String boite, Integer position, Regions regionShiny) {
+                        Boites boite, Integer position, Regions regionShiny) {
         this.numDex = numDex;
         this.nomPokemon = nomPokemon;
         this.nature = nature;
@@ -102,7 +103,7 @@ public class PokemonShiny {
 
     public PokemonShiny(String numDex, String nomPokemon, Natures nature, Dresseurs dresseur, Pokeballs pokeball, String ivManquant,
                         Types type1, Sexe sexe, Attaques attaque1, Attaques attaque2, Attaques attaque3, Attaques attaque4,
-                        String boite, Integer position, Regions regionShiny) {
+                        Boites boite, Integer position, Regions regionShiny) {
         this.numDex = numDex;
         this.nomPokemon = nomPokemon;
         this.nature = nature;
@@ -123,23 +124,24 @@ public class PokemonShiny {
 
     @Override
     public String toString() {
-        return "PokemonShiny{" +
-                "id=" + id +
-                ", numDex='" + numDex + '\'' +
-                ", nomPokemon='" + nomPokemon + '\'' +
-                ", nature=" + nature +
-                ", dresseur=" + dresseur +
-                ", pokeball=" + pokeball +
-                ", ivManquant='" + ivManquant + '\'' +
-                ", type1=" + type1 +
-                ", type2=" + type2 +
-                ", sexe=" + sexe +
-                ", attaque1=" + attaque1 +
-                ", attaque2=" + attaque2 +
-                ", attaque3=" + attaque3 +
-                ", attaque4=" + attaque4 +
-                ", boite='" + boite + '\'' +
-                ", regionShiny=" + regionShiny +
-                '}';
+      return "PokemonShiny{" +
+        "id=" + id +
+        ", numDex='" + numDex + '\'' +
+        ", nomPokemon='" + nomPokemon + '\'' +
+        ", nature=" + (nature != null ? nature.getNomNature() : "null") +
+        ", dresseur=" + (dresseur != null ? dresseur.getNomDresseur() : "null") +
+        ", pokeball=" + (pokeball != null ? pokeball.getNomPokeball() : "null") +
+        ", ivManquant='" + ivManquant + '\'' +
+        ", type1=" + (type1 != null ? type1.getNomType() : "null") +
+        ", type2=" + (type2 != null ? type2.getNomType() : "null") +
+        ", sexe=" + (sexe != null ? sexe.getSexe() : "null") +
+        ", attaque1=" + (attaque1 != null ? attaque1.getNomAttaque() : "null") +
+        ", attaque2=" + (attaque2 != null ? attaque2.getNomAttaque() : "null") +
+        ", attaque3=" + (attaque3 != null ? attaque3.getNomAttaque() : "null") +
+        ", attaque4=" + (attaque4 != null ? attaque4.getNomAttaque() : "null") +
+        ", boiteShiny=" + (boite != null ? boite.getNom() : "null") +
+        ", regionShiny=" + (regionShiny != null ? regionShiny.getNomRegion() : "null") +
+        '}';
     }
+
 }

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Le controller des boites
@@ -45,20 +44,20 @@ public class BoitesController {
      * Afficher toutes les boites
      * @return la liste des boites
      */
-    @GetMapping
+    @GetMapping("/all")
     public List<Boites> getAllBoites() {
         return boiteService.getAllBoites();
     }
 
     /**
      * Rechercher une boite par son id
+     *
      * @param id l'id de la boite
      * @return la boite trouvée
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Boites> getBoiteById(@PathVariable Integer id) {
-        Optional<Boites> boite = boiteService.getBoiteById(id);
-        return boite.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public Boites getBoiteById(@PathVariable Integer id) {
+       return boiteService.findBoiteById(id);
     }
 
     /**
