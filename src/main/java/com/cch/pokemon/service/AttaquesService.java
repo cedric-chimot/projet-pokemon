@@ -56,7 +56,7 @@ public class AttaquesService {
      * @return la liste des attaques
      */
     public List<Attaques> findAll() {
-        return attaqueRepository.findAll();
+        return attaqueRepository.findAllSortedByNom();
     }
 
     /**
