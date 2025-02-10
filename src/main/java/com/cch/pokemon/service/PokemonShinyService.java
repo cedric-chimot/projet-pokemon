@@ -144,7 +144,15 @@ public class PokemonShinyService {
     return shinyRepository.save(pokemonShiny);
   }
 
-  // Centraliser l'incrémentation des compteurs
+  /**
+   * Centraliser l'incrémentation des compteurs
+   * @param nature la nature à incrémenter (selon la boite)
+   * @param dresseur le dresseur à incrémenter
+   * @param pokeball la pokeball à incrémenter
+   * @param type1 le type1 à incrémenter (selon la boite)
+   * @param type2 le type2 à incrémenter (selon la boite et s'il existe)
+   * @param idBoite la boite à vérifier selon les données à incrémenter
+   */
   private void incrementerCompteurs(Natures nature, Dresseurs dresseur, Pokeballs pokeball,
                                     Types type1, Types type2, Integer idBoite) {
     // Incrémentation des compteurs pour dresseur, pokeball, et sexe
