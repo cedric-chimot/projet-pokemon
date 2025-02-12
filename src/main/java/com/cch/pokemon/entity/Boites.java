@@ -25,6 +25,9 @@ public class Boites {
   @Column(name = "nom")
   private String nom;
 
+  @Column(name = "nb_level100")
+  private Long nbLevel100;
+
   @JsonIgnore
   @ManyToMany
   @JoinTable(

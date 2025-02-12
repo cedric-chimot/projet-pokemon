@@ -13,4 +13,6 @@ public class BoitesDTO {
 
   private String nom;
 
+  private Long nbLevel100;
+
 }

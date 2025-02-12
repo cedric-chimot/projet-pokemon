@@ -198,6 +198,7 @@ public class BoiteService {
             Boites existingBoite = existingBoiteShiny.get();
 
             existingBoite.setNom(boite.getNom());
+            existingBoite.setNbLevel100(boite.getNbLevel100());
             return boitesRepository.save(existingBoite);
         } else {
             throw new CustomException("La boite est inconnue", "id", boite.getId());
