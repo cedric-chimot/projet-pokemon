@@ -2,7 +2,9 @@ package com.cch.pokemon.service;
 
 import com.cch.pokemon.dto.DresseurReduitDTO;
 import com.cch.pokemon.entity.Dresseurs;
+import com.cch.pokemon.entity.PokemonShiny;
 import com.cch.pokemon.entity.RegionDresseur;
+import com.cch.pokemon.entity.Regions;
 import com.cch.pokemon.exceptions.CustomException;
 import com.cch.pokemon.repository.DresseurRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -56,11 +58,13 @@ public class DresseurService {
    */
   public Dresseurs save(String numDresseur, String nomDresseur, Long nbPokemon, Long nbShiny,
                         Long idRegionDresseur) {
-      RegionDresseur regionDresseur = regionDresseurService.findById(idRegionDresseur);
+    RegionDresseur regionDresseur = (idRegionDresseur != null) ? regionDresseurService.findById(idRegionDresseur) : null;
 
-      Dresseurs dresseur = new Dresseurs(numDresseur, nomDresseur, nbPokemon, nbShiny, regionDresseur);
+    Dresseurs dresseur = (regionDresseur != null)
+      ? new Dresseurs(numDresseur, nomDresseur, nbPokemon, nbShiny, regionDresseur)
+      : new Dresseurs(numDresseur, nomDresseur, nbPokemon, nbShiny);
 
-      return dresseurRepository.save(dresseur);
+    return dresseurRepository.save(dresseur);
   }
 
   /**

@@ -116,7 +116,7 @@ public class PokemonShinyService {
     Attaques attaque3Obj = attaquesService.findById(attaque3);
     Attaques attaque4Obj = attaquesService.findById(attaque4);
     Boites boite = boiteService.findBoiteById(idBoite);
-    Regions regionShiny = regionsService.findById(idRegion);
+    Regions regionShiny = (idRegion != null) ? regionsService.findById(idRegion) : null;
 
     // Créer l'objet PokémonShiny
     PokemonShiny pokemonShiny = (type2Obj != null)
@@ -277,10 +277,10 @@ public class PokemonShinyService {
    * @return L'objet mis à jour
    */
   public PokemonShiny updatePokemonShiny(PokemonShiny shiny) {
-    Optional<PokemonShiny> existingInPokedex = shinyRepository.findById(shiny.getId());
+    Optional<PokemonShiny> existingShiny = shinyRepository.findById(shiny.getId());
 
-    if (existingInPokedex.isPresent()) {
-      PokemonShiny existingPokemon = existingInPokedex.get();
+    if (existingShiny.isPresent()) {
+      PokemonShiny existingPokemon = existingShiny.get();
 
       // Mettre à jour les autres informations
       existingPokemon.setNumDex(shiny.getNumDex() != null ? shiny.getNumDex() : existingPokemon.getNumDex());
