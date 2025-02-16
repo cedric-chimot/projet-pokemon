@@ -1,0 +1,22 @@
+version: '3.8'  # Version du fichier Docker Compose (ici, version 3.8)
+
+services:
+  db:  # Définition du service db (la base de données MySQL)
+    image: mysql:8.0  # Utilisation de l'image officielle MySQL version 8.0
+    container_name: pokemon-mysql  # Nom du conteneur MySQL
+    environment:  # Définition des variables d'environnement pour configurer la base de données MySQL
+      MYSQL_ROOT_PASSWORD: ""  # Le mot de passe de l'utilisateur root de MySQL (ici vide pour des fins de développement)
+      MYSQL_DATABASE: pokemon  # La base de données à créer au démarrage du conteneur (ici "pokemon")
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # Autorise un mot de passe vide pour l'utilisateur root (à utiliser uniquement en développement)
+    ports:
+      - "3306:3306"  # Mappage des ports, ici le port 3306 du conteneur est exposé au port 3306 de la machine hôte
+    volumes:
+      - pokemon_mysql_data:/var/lib/mysql  # Utilisation d'un volume Docker pour persister les données de MySQL même après le redémarrage du conteneur
+    networks:
+      - pokemon-network  # Le service fait partie du réseau "pokemon-network" pour permettre la communication entre les conteneurs
+
+networks:
+  pokemon-network:  # Définition du réseau Docker pour connecter les services
+
+volumes:
+  pokemon_mysql_data:  # Définition d'un volume persistant pour stocker les données de la base de données MySQL
