@@ -282,6 +282,9 @@ public class PokemonShinyService {
     if (existingShiny.isPresent()) {
       PokemonShiny existingPokemon = existingShiny.get();
 
+      // Gestion des relations
+      updatePokemonShinyRelations(existingPokemon, shiny);
+
       // Mettre à jour les autres informations
       existingPokemon.setNumDex(shiny.getNumDex() != null ? shiny.getNumDex() : existingPokemon.getNumDex());
       existingPokemon.setNomPokemon(shiny.getNomPokemon() != null ? shiny.getNomPokemon() : existingPokemon.getNomPokemon());
@@ -304,6 +307,55 @@ public class PokemonShinyService {
       return shinyRepository.save(existingPokemon);
     } else {
       throw new CustomException("Le pokemon n'est pas présent dans le pokedex", "id", shiny.getId());
+    }
+  }
+
+  /**
+   * Méthode pour mettre à jour les relations en cas de modification d'un shiny
+   * @param existingPokemon le shiny existant
+   * @param updatedPokemon le shiny mis à jour
+   */
+  public void updatePokemonShinyRelations(PokemonShiny existingPokemon, PokemonShiny updatedPokemon) {
+    // Gestion de la relation avec le dresseur
+    if (!existingPokemon.getDresseur().equals(updatedPokemon.getDresseur())) {
+      boiteDresseurService.decrementBoiteDresseur(existingPokemon.getDresseur(), existingPokemon.getBoite());
+      boiteDresseurService.updateBoiteDresseur(updatedPokemon.getDresseur(), updatedPokemon.getBoite());
+    }
+
+    // Gestion de la relation avec la nature
+    if (!existingPokemon.getNature().equals(updatedPokemon.getNature())) {
+      boiteNatureService.decrementBoiteNature(existingPokemon.getNature(), existingPokemon.getBoite());
+      boiteNatureService.updateBoiteNature(updatedPokemon.getNature(), updatedPokemon.getBoite());
+    }
+
+    // Gestion de la relation avec la Pokeball
+    if (!existingPokemon.getPokeball().equals(updatedPokemon.getPokeball())) {
+      boitePokeballService.decrementBoitePokeball(existingPokemon.getPokeball(), existingPokemon.getBoite());
+      boitePokeballService.updateBoitePokeball(updatedPokemon.getPokeball(), updatedPokemon.getBoite());
+    }
+
+    // Gestion de la relation avec le Type 1
+    if (!existingPokemon.getType1().equals(updatedPokemon.getType1())) {
+      boiteTypeService.decrementBoiteType(existingPokemon.getType1(), existingPokemon.getBoite());
+      boiteTypeService.updateBoiteType(updatedPokemon.getType1(), updatedPokemon.getBoite());
+    }
+
+    // Gestion de la relation avec le Type 2 (si existant)
+    if (existingPokemon.getType2() != null || updatedPokemon.getType2() != null) {
+      if (existingPokemon.getType2() == null || !existingPokemon.getType2().equals(updatedPokemon.getType2())) {
+        if (existingPokemon.getType2() != null) {
+          boiteTypeService.decrementBoiteType(existingPokemon.getType2(), existingPokemon.getBoite());
+        }
+        if (updatedPokemon.getType2() != null) {
+          boiteTypeService.updateBoiteType(updatedPokemon.getType2(), updatedPokemon.getBoite());
+        }
+      }
+    }
+
+    // Gestion de la relation avec le Sexe
+    if (!existingPokemon.getSexe().equals(updatedPokemon.getSexe())) {
+      boiteSexeService.decrementBoiteSexe(existingPokemon.getSexe(), existingPokemon.getBoite());
+      boiteSexeService.updateBoiteSexe(updatedPokemon.getSexe(), updatedPokemon.getBoite());
     }
   }
 

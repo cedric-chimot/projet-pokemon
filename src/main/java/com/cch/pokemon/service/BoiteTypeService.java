@@ -52,4 +52,16 @@ public class BoiteTypeService {
     }
   }
 
+  public void decrementBoiteType(Types type, Boites boite) {
+    BoiteType boiteType = boiteTypeRepository.findByBoiteAndType(boite, type);
+    if (boiteType != null) {
+      boiteType.setNbPokemon(boiteType.getNbPokemon() - 1);
+      if (boiteType.getNbPokemon() <= 0) {
+        boiteTypeRepository.delete(boiteType);
+      } else {
+        boiteTypeRepository.save(boiteType);
+      }
+    }
+  }
+
 }

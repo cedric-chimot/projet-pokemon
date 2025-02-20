@@ -51,4 +51,17 @@ public class BoiteDresseurService {
     }
   }
 
+  // Méthodes de décrémentation
+  public void decrementBoiteDresseur(Dresseurs dresseur, Boites boite) {
+    BoiteDresseur boiteDresseur = boiteDresseurRepository.findByBoiteAndDresseur(boite, dresseur);
+    if (boiteDresseur != null) {
+      boiteDresseur.setNbPokemon(boiteDresseur.getNbPokemon() - 1);
+      if (boiteDresseur.getNbPokemon() <= 0) {
+        boiteDresseurRepository.delete(boiteDresseur);
+      } else {
+        boiteDresseurRepository.save(boiteDresseur);
+      }
+    }
+  }
+
 }

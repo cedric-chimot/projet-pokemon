@@ -49,4 +49,16 @@ public class BoiteSexeService {
     }
   }
 
+  public void decrementBoiteSexe(Sexe sexe, Boites boite) {
+    BoiteSexe boiteSexe = boiteSexeRepository.findByBoiteAndSexe(boite, sexe);
+    if (boiteSexe != null) {
+      boiteSexe.setNbPokemon(boiteSexe.getNbPokemon() - 1);
+      if (boiteSexe.getNbPokemon() <= 0) {
+        boiteSexeRepository.delete(boiteSexe);
+      } else {
+        boiteSexeRepository.save(boiteSexe);
+      }
+    }
+  }
+
 }

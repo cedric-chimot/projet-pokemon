@@ -49,4 +49,16 @@ public class BoitePokeballService {
     }
   }
 
+  public void decrementBoitePokeball(Pokeballs pokeball, Boites boite) {
+    BoitePokeball boitePokeball = boitePokeballRepository.findByBoiteAndPokeball(boite, pokeball);
+    if (boitePokeball != null) {
+      boitePokeball.setNbPokemon(boitePokeball.getNbPokemon() - 1);
+      if (boitePokeball.getNbPokemon() <= 0) {
+        boitePokeballRepository.delete(boitePokeball);
+      } else {
+        boitePokeballRepository.save(boitePokeball);
+      }
+    }
+  }
+
 }

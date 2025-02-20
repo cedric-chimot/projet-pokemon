@@ -53,4 +53,16 @@ public class BoiteNatureService {
     }
   }
 
+  public void decrementBoiteNature(Natures nature, Boites boite) {
+    BoiteNature boiteNature = boiteNatureRepository.findByBoiteAndNature(boite, nature);
+    if (boiteNature != null) {
+      boiteNature.setNbPokemon(boiteNature.getNbPokemon() - 1);
+      if (boiteNature.getNbPokemon() <= 0) {
+        boiteNatureRepository.delete(boiteNature);
+      } else {
+        boiteNatureRepository.save(boiteNature);
+      }
+    }
+  }
+
 }
