@@ -1,27 +1,23 @@
-# projet-pokemon
+# 🚀 _Projet Pokémon_
 
-## _Le MCD_
+## 🗂️ Le MCD (Modèle Conceptuel de Données)
 
-![pokemon-mcd](https://github.com/user-attachments/assets/804a90a6-a97a-48a0-bc59-770facc5d4c7)
+![pokemon-mcd](https://github.com/user-attachments/assets/b60730ae-9318-44da-b4b7-438da239455c)
 
+## 📊 Le MLD (Modèle Logique de Données)
 
-## _Le MLD_
+![pokemon-mld](https://github.com/user-attachments/assets/205e3553-1d65-45b4-a243-4773109242c0)
 
-![pokemon-mld](https://github.com/user-attachments/assets/dfc1c71f-93d8-4822-adca-37dc0806ea9a)
+## 🖥️ Le rendu sur Workbench
 
+![pokemon-workbench](https://github.com/user-attachments/assets/b55ce62b-27e3-410c-ba86-4fbd4fe5f0ef)
 
-## _Le rendu sur Workbench_
+## 🚢 Docker
 
-![pokemon-workbench](https://github.com/user-attachments/assets/24837ef7-0a10-4de0-a87b-cb584d8950bd)
+La base de données est stockée dans un conteneur Docker :
 
+![pokemonDocker](https://github.com/user-attachments/assets/c455eed7-ebb3-4c92-9847-a33f95109d25)
 
-## _Docker_
-
-_La base de données est stockée dans un conteneur Docker :_
-
-![Capture d'écran 2025-02-17 173432](https://github.com/user-attachments/assets/a64d709e-464c-4d3d-a164-bdd183dba4f4)
-
-
-## Liens 
+## 🔗 Liens
 
 **[Frontend Repository](https://github.com/cedric-chimot/pokemon-angular)** : Le lien vers le repository GitHub contenant le code frontend.
