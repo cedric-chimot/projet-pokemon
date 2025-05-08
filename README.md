@@ -12,12 +12,6 @@
 
 ![pokemon-workbench](https://github.com/user-attachments/assets/b55ce62b-27e3-410c-ba86-4fbd4fe5f0ef)
 
-## 🚢 Docker
-
-La base de données est stockée dans un conteneur Docker :
-
-![pokemonDocker](https://github.com/user-attachments/assets/c455eed7-ebb3-4c92-9847-a33f95109d25)
-
 ## 🔗 Liens
 
 **[Frontend Repository](https://github.com/cedric-chimot/pokemon-angular)** : Le lien vers le repository GitHub contenant le code frontend.
