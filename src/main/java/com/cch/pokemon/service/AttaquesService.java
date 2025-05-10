@@ -22,7 +22,6 @@ public class AttaquesService {
      */
     private final AttaquesRepository attaqueRepository;
 
-
     /**
      * Le service des types
      */
